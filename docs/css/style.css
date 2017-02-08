@@ -774,6 +774,10 @@ a:hover {
     color: #159957;
 }
 
+.main-content h3 {
+    color: #303030;
+}
+
 .main-content p {
     margin-bottom: 1em;
 }
