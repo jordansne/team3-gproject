@@ -917,6 +917,19 @@ a:hover {
     margin-bottom: 25px;
 }
 
+.main-content section.proposal-paragraph {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.main-content section.proposal-paragraph h4 {
+    display: inline;
+}
+
+.main-content section.proposal-paragraph p {
+    display: inline;
+}
+
 .site-footer {
     padding-top: 2rem;
     margin-top: 2rem;
