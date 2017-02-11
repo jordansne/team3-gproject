@@ -766,6 +766,8 @@ a:hover {
 
 .main-content img {
     max-width: 100%;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
@@ -773,6 +775,20 @@ a:hover {
     margin-bottom: 1rem;
     font-weight: normal;
     color: #159957;
+}
+
+.main-content h1.index {
+    padding-top: 5px;
+    margin-top: 5px;
+
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.main-content h2.index {
+    color: black;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .main-content h3 {
