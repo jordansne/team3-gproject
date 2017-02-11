@@ -95,6 +95,7 @@ dfn {
 h1 {
     font-size: 2em;
     margin: 0.67em 0;
+    padding-bottom: 0.5em;
 }
 
 /** Address styling not present in IE 8/9. */
@@ -669,13 +670,13 @@ a:hover {
 
 @media screen and (min-width: 64em) {
     .page-header {
-        padding: 5rem 6rem;
+        padding: 2em 6rem;
     }
 }
 
 @media screen and (min-width: 42em) and (max-width: 64em) {
     .page-header {
-        padding: 3rem 4rem;
+        padding: 1rem 4rem;
     }
 }
 
@@ -765,6 +766,24 @@ a:hover {
 
 .main-content img {
     max-width: 100%;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.main-content section.ui {
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.main-content section.ui img {
+    width: 80%;
+    border: 2px solid black;
+}
+
+.main-content section.ui h4 {
+    margin-top: 0em;
+    margin-bottom: 4em;
 }
 
 .main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
@@ -774,12 +793,28 @@ a:hover {
     color: #159957;
 }
 
+.main-content h1.index {
+    padding-top: 5px;
+    margin-top: 5px;
+
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.main-content h2.index {
+    color: black;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 .main-content h3 {
     color: #303030;
+    font-weight: bold;
 }
 
 .main-content p {
-    margin-bottom: 1em;
+    margin-top: 1em;
+    margin-bottom: 3em;
 }
 
 .main-content code {
@@ -912,6 +947,19 @@ a:hover {
 .main-content hr.footer {
     margin-top: 75px;
     margin-bottom: 25px;
+}
+
+.main-content section.proposal-paragraph {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.main-content section.proposal-paragraph h4 {
+    display: inline;
+}
+
+.main-content section.proposal-paragraph p {
+    display: inline;
 }
 
 .site-footer {

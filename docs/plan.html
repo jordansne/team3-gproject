@@ -11,7 +11,6 @@
 <body>
     <section class="page-header">
         <h1 class="project-name">Team 3's Software Project</h1>
-        <h2 class="project-tagline">Project website for Team 3 of CS 2212.</h2>
 
         <a href="index.html" class="btn">Home</a>
         <a href="plan.html" class="btn">Project Plan</a>
@@ -21,9 +20,57 @@
     </section>
 
     <section class="main-content">
-        <h1>Project Plan</h3>
+        <h1>Project Plan</h1>
 
-        // TODO ..
+        <p>Here are some of the proposed features that is being considered to add to our project:</p>
+
+        <h3>Ingredient Suggestions</h3>
+
+        <section class="proposal-paragraph">
+            <h4>Description: </h4>
+            <p>As the user types in their ingredients, a list of auto-complete suggestions appears. For example,
+            if a user types in “chicken”, suggestions such as “chicken breast” and “chicken wings” could pop up. One of the
+            websites we are taking inspiration from, supercook.com, does this; it seems to be a helpful feature that helps
+            avoid typos when searching.</p>
+        </section>
+        <section class="proposal-paragraph">
+            <h4>Implementation: </h4>
+            <p>Implementing this would involve utilizing interactive JavaScript to update the suggestion list at every change to
+            the search box. The suggestions list would have be retrieved from the backend, so a list of ingredient would have
+            to be stored in a database for retrieve. This is feasible given extra time is available.</p>
+        </section>
+        <section class="proposal-paragraph">
+            <h4>Dependency: </h4>
+            <p>The project does not heavily rely on this feature, as it's only purpose is to improve ease-of-use for the user,
+            and therefore does not affect the overall purpose of the website.</p>
+        </section>
+
+        <h3>Intelligent Search Result Ranking</h3>
+
+        <section class="proposal-paragraph">
+            <h4>Description: </h4>
+            <p>Time permitting, it would be interesting to implement search result tailoring based on past user behaviour.
+            Similar to how Google or YouTube present search results to users based on things they have previously searched for,
+            liked, or watched, our website would return results based on the types of food the user has previously liked. For
+            example, a user who has liked or saved a number of Indian recipes will see Indian recipes higher up in the search
+            results the next time they perform a search.</p>
+        </section>
+        <section class="proposal-paragraph">
+            <h4>Implementation: </h4>
+            <p>Adding this feature to our project would require a heavy amount of backend work in order to generate suggestions
+            for the user. This could be implemented using a heuristic analysis which looks at the tags in the list of user
+            likes or favourites, and weights results accordingly. Results could be scored based on relevance and number of
+            missing ingredients, and points could be added based on whether the user has liked similar recipes in the past. The
+            results will then be listed based on score, with the highest scoring results appearing first. Granted this will
+            require a lot of work to be effective, it is only feasible given there is enough time to implement if other aspects
+            of project go smoothly.</p>
+        </section>
+        <section class="proposal-paragraph">
+            <h4>Dependency: </h4>
+            <p>While this rest of the project does not rely on this feature, it would greatly improve the satisfaction of the
+            user on the site. This might help to increase the user's interest in the site.</p>
+            </thead></p>
+        </section>
 
         <hr class="footer">
     </section>
