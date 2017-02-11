@@ -770,6 +770,22 @@ a:hover {
     margin-bottom: 1em;
 }
 
+.main-content section.ui {
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.main-content section.ui img {
+    width: 80%;
+    border: 2px solid black;
+}
+
+.main-content section.ui h4 {
+    margin-top: 0em;
+    margin-bottom: 4em;
+}
+
 .main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
     margin-top: 2rem;
     margin-bottom: 1rem;
