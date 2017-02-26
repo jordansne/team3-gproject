@@ -11,22 +11,25 @@
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico" />
 
     <asset:stylesheet src="application.css"/>
-    <asset:javascript src="application.js"/>
 
     <g:layoutHead/>
 </head>
 <body>
     <header>
         <h1><a href="./">EmptyMyFridge</a></h1>
-        <ul>
-            <li><a href="./explore">Explore</a></li>
-            <li><a href="">Signup</a></li>
-        </ul>
+
+        <aside id="right">
+            <ul>
+                <li><a href="./explore">Explore</a></li>
+            </ul>
+            <div id="userbox"></div>
+        </aside>
     </header>
 
     <div id="grails_layout">
         <g:layoutBody/>
     </div>
 
+    <asset:javascript src="application.js"/>
 </body>
 </html>
