@@ -1,85 +1,9 @@
-/*
+/**
  * main.css - EmptyMyFridge
  * Primary stylesheet used across the site.
  */
 
-/*
- * ======================================================
- * ===================== Header CSS =====================
- * ======================================================
- */
-
-/* Full width Header Bar */
-header {
-    font-size: 1em;
-    background-color: #f4f4f4;
-
-    position: relative;
-    width: auto;
-
-    padding: 0em 5em;
-}
-
-/* Header Bar Title (Replace with logo?) */
-header h1 {
-    display: inline-block;
-
-    margin: 0em;
-    padding: 1em 0em;
-}
-
-/* Header Bar link list */
-header ul {
-    font-size: 1.15em;
-    list-style: none;
-
-    display: inline-block;
-    padding: inherit;
-    margin: 0em;
-
-    position: absolute;
-    bottom: 0em;
-    right: 0em;
-}
-
-/* Header bar link containers */
-header ul li {
-    color: white;
-    background-color: rgba(110, 110, 110, 0.6);
-
-    display: block;
-    float: left;
-
-    margin-right: 0.25em;
-
-    /* Prevent accidental text hightlighting */
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* Clear right margin on last element so margin spacing is only between li elements. */
-header ul > li:last-child {
-    margin-right: 0em;
-}
-
-/* Header bar a links */
-header ul li a {
-    display: block;
-    cursor: pointer;
-
-    padding: 0.75em 1.1em;
-}
-
-/* Navigation bar rollover */
-header li:hover {
-    background-color: rgba(110, 110, 110, 0.9);
-}
-
-/*
+/**
  * ======================================================
  * ====================== Body CSS ======================
  * ======================================================
@@ -99,7 +23,7 @@ ul#errors li {
     padding: 0.25em 0em;
 }
 
-/*
+/**
  * ======================================================
  * ================== General CSS =======================
  * ======================================================
