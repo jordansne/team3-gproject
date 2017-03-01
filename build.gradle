@@ -10,6 +10,11 @@ buildscript {
     }
 }
 
+/* For Node Support */
+plugins {
+    id "com.moowork.node" version "1.1.1"
+}
+
 version "0.1"
 group "emptymyfridge"
 
@@ -64,3 +69,14 @@ assets {
     minifyJs = true
     minifyCss = true
 }
+
+/* For Node.js Support */
+node {
+    version = '7.7.0'
+    npmVersion = '3.8.3'
+    distBaseUrl = 'https://nodejs.org/dist'
+    download = true
+}
+
+processResources.dependsOn(['npmInstall', 'npm_run_bundle'])
+assetCompile.dependsOn(['npmInstall', 'npm_run_bundle'])
