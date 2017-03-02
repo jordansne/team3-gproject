@@ -9645,7 +9645,7 @@ var IngredientListBuilder = exports.IngredientListBuilder = function (_React$Com
         // Initialize state
         var _this = _possibleConstructorReturn(this, (IngredientListBuilder.__proto__ || Object.getPrototypeOf(IngredientListBuilder)).call(this));
 
-        _this.setState({});
+        _this.state = {};
         return _this;
     }
 

@@ -16,7 +16,7 @@ export class IngredientListBuilder extends React.Component {
         // TODO: Write constructor
 
         // Initialize state
-        this.setState({
+        this.state = ({
 
         });
     }
