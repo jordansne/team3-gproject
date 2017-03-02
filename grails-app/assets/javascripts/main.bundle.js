@@ -9502,11 +9502,29 @@ var LoginButton = exports.LoginButton = function (_React$Component) {
         key: "render",
         value: function render() {
             var buttonText = this.props.signedIn ? "Log Out" : "Log In / Sign Up";
+            var profileLink = "";
+
+            if (this.props.signedIn) {
+                profileLink = _react2.default.createElement(
+                    "h5",
+                    null,
+                    _react2.default.createElement(
+                        "a",
+                        { href: "./profile" },
+                        "Profile"
+                    )
+                );
+            }
 
             return _react2.default.createElement(
-                "button",
-                { onClick: this.props.handleClick },
-                buttonText
+                "div",
+                null,
+                profileLink,
+                _react2.default.createElement(
+                    "button",
+                    { onClick: this.props.handleClick },
+                    buttonText
+                )
             );
         }
     }]);
@@ -9551,18 +9569,99 @@ var UserBox = exports.UserBox = function (_React$Component) {
     function UserBox() {
         _classCallCheck(this, UserBox);
 
+        // Initialize secure cookie
         var _this = _possibleConstructorReturn(this, (UserBox.__proto__ || Object.getPrototypeOf(UserBox)).call(this));
 
-        _this.state = {
-            signedIn: false
-        };
+        if (document.cookie.indexOf("secure") === -1) {
+            document.cookie = "secure";
+        }
+
+        // Determine initial state
+        if (_this.isSignedIn()) {
+            _this.state = {
+                signedIn: true
+            };
+        } else {
+            _this.state = {
+                signedIn: false
+            };
+        }
         return _this;
     }
 
+    /**
+     * Called when the sign in button is pressed.
+     */
+
+
     _createClass(UserBox, [{
-        key: 'openLoginWindow',
-        value: function openLoginWindow() {
-            alert("WIP");
+        key: 'handleSignButton',
+        value: function handleSignButton() {
+            if (!this.state.signedIn) {
+                this.signIn();
+            } else {
+                this.signOut();
+            }
+        }
+
+        /**
+         * Display the Google Sign in/sign up dialog.
+         */
+
+    }, {
+        key: 'signIn',
+        value: function signIn() {
+            var _this2 = this;
+
+            var fbProvider = new firebase.auth.GoogleAuthProvider();
+
+            firebase.auth().signInWithPopup(fbProvider).then(function (result) {
+                var token = result.credential.accessToken;
+                var user = result.user;
+
+                // Save access token in a cookie
+                document.cookie = "access_token=" + token + ";";
+
+                _this2.setState({
+                    signedIn: true
+                });
+            }).catch(function (error) {
+                console.error("Error " + error.code + ": Could not sign in: " + error.message);
+            });
+        }
+
+        /**
+         * Display the Google Sign in/sign up dialog.
+         */
+
+    }, {
+        key: 'signOut',
+        value: function signOut() {
+            var _this3 = this;
+
+            firebase.auth().signOut().then(function () {
+                console.log("Signed Out");
+
+                // Clear the token in the cookie
+                document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+
+                _this3.setState({
+                    signedIn: false
+                });
+            }, function (error) {
+                console.log("Error " + error.code + ": Could not sign out: " + error.message);
+            });
+        }
+
+        /**
+         * Check if the user is signed in.
+         */
+
+    }, {
+        key: 'isSignedIn',
+        value: function isSignedIn() {
+            var cookie = document.cookie;
+            return !(cookie === "" || cookie.indexOf("access_token") == -1);
         }
     }, {
         key: 'getProfileImage',
@@ -9572,7 +9671,7 @@ var UserBox = exports.UserBox = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this4 = this;
 
             return _react2.default.createElement(
                 'div',
@@ -9581,7 +9680,7 @@ var UserBox = exports.UserBox = function (_React$Component) {
                     'section',
                     { id: 'info' },
                     _react2.default.createElement(_LoginButton.LoginButton, { signedIn: this.state.signedIn, handleClick: function handleClick() {
-                            return _this2.openLoginWindow();
+                            return _this4.handleSignButton();
                         } })
                 ),
                 _react2.default.createElement(
