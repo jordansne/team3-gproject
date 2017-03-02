@@ -4,6 +4,6 @@
     <meta name="layout" content="main"/>
 </head>
 <body>
-    TODO: Home Page Content
+    <div id="ingredientListBuilder"></div>
 </body>
 </html>
