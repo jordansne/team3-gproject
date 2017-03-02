@@ -82,3 +82,6 @@ node {
 
 processResources.dependsOn(['npmInstall', 'npm_run_bundle'])
 assetCompile.dependsOn(['npmInstall', 'npm_run_bundle'])
+
+// Rebundle task
+task rebundle(dependsOn: 'npm_run_bundle')
