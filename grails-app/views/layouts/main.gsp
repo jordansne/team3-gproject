@@ -15,6 +15,19 @@
     <g:layoutHead/>
 </head>
 <body>
+    <!-- Firebase intialization -->
+    <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+    <script>
+        const config = {
+            apiKey: "AIzaSyAb4g1TxKKQBkoJTlZvXof_4PtFhIFuMNw",
+            authDomain: "emptymyfridge.firebaseapp.com",
+            databaseURL: "https://emptymyfridge.firebaseio.com",
+            storageBucket: "emptymyfridge.appspot.com",
+            messagingSenderId: "293828392328"
+        };
+        firebase.initializeApp(config);
+    </script>
+
     <header>
         <h1><a href="./">EmptyMyFridge</a></h1>
 

@@ -129,6 +129,12 @@ header div#userbox section#info button {
     border: none;
 }
 
+header div#userbox section#info h5 {
+    font-weight: normal;
+    text-decoration: underline;
+    margin: 1em;
+}
+
 
 header div#userbox section#info button:hover {
     background-color: rgba(110, 110, 110, 0.9);
@@ -145,5 +151,6 @@ header div#userbox section#pic img {
     width: 4em;
     height: 4em;
     margin-bottom: -0.4em;
+    background-color: #bcbcbc;
 }
 
