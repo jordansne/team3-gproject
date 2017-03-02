@@ -4,3 +4,4 @@
  */
 
 import { UserBox } from './views/UserBox/index.jsx';
+import { IngredientListBuilder } from './views/Home/index.jsx';
