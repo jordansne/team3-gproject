@@ -10,14 +10,42 @@ import { Ingredient } from './Ingredient.jsx';
 export class IngredientList extends React.Component {
 
     render() {
+        let componentContent;
         let ingredientHTML = [];
+        let counter = 0;
 
-        // TODO: Write method
+        // Build an array of Ingredient components
+        this.props.ingredientList.forEach((ingredient) => {
+            ingredientHTML.push(
+                <Ingredient
+                    name={ingredient}
+                    removeFromList={this.props.removeFromList}
+                    key={counter}
+                />
+            );
+            counter++;
+        });
+
+        // Display a message if no ingredients have been added
+        if (ingredientHTML.length <= 0) {
+            componentContent = (
+                <h4 id="empty">Start by adding an ingredient above!</h4>
+            );
+        } else {
+            componentContent = (
+                <div>
+                    <h4>Ingredient List</h4>
+                    <ul id="ingredientList">
+                        {ingredientHTML}
+                    </ul>
+                </div>
+            );
+        }
 
         return (
-            <ul>
-                {ingredientHTML}
-            </ul>
+            <div id="ingredientList">
+                {componentContent}
+            </div>
         );
     }
 }

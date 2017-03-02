@@ -3,3 +3,84 @@
  * Stylesheet for the homepage.
  */
 
+/**
+ * ======================================================
+ * ================== IngredientList CSS ================
+ * ======================================================
+ */
+
+/* Entire IngredientList component. */
+div#ingredientList {
+    background-color: #e5e5e5;
+    border-radius: 3px;
+
+    padding: 2em 3em;
+    margin: 0 auto;
+
+    width: 85%;
+    max-width: 700px;
+}
+
+/* Component . */
+div#ingredientList h4 {
+    color: gray;
+
+    font-weight: normal;
+    font-size: 1.5em;
+    margin: 0em 0.5em;
+}
+
+div#ingredientList h4#empty {
+    color: black;
+    text-align: center;
+}
+
+ul#ingredientList {
+    list-style-type: none;
+
+    padding: 0.5em;
+}
+
+/**
+ * ======================================================
+ * =================== Ingredient CSS ===================
+ * ======================================================
+ */
+
+ul#ingredientList li.ingredient {
+    background-color: white;
+    border-radius: 3px;
+
+    padding: 0em;
+    margin: 0.5em 0em;
+
+    width: 100%;
+    height: 3em;
+}
+
+ul#ingredientList li.ingredient h5 {
+    font-size: 1em;
+    font-weight: normal;
+
+    display: inline-block;
+    margin: 1em 2em;
+}
+
+ul#ingredientList li.ingredient button {
+    background-color: red;
+    color: white;
+    font-size: 1em;
+    border: none;
+    border-radius: 3px;
+
+    padding: 0.7em;
+    margin: 0.25em 0.25em;
+
+    display: inline-block;
+    float: right;
+}
+
+ul#ingredientList li.ingredient button:hover {
+    background-color: #bf1401;
+    cursor: pointer;
+}

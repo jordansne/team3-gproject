@@ -9533,10 +9533,26 @@ var Ingredient = exports.Ingredient = function (_React$Component) {
     }
 
     _createClass(Ingredient, [{
-        key: 'render',
+        key: "render",
         value: function render() {
-            // TODO: Write HTML render
-            return _react2.default.createElement('div', null);
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                "li",
+                { className: "ingredient" },
+                _react2.default.createElement(
+                    "h5",
+                    null,
+                    this.props.name
+                ),
+                _react2.default.createElement(
+                    "button",
+                    { onClick: function onClick() {
+                            return _this2.props.removeFromList(_this2.props.name);
+                        } },
+                    "Remove"
+                )
+            );
         }
     }]);
 
@@ -9586,14 +9602,50 @@ var IngredientList = exports.IngredientList = function (_React$Component) {
     _createClass(IngredientList, [{
         key: 'render',
         value: function render() {
-            var ingredientHTML = [];
+            var _this2 = this;
 
-            // TODO: Write method
+            var componentContent = void 0;
+            var ingredientHTML = [];
+            var counter = 0;
+
+            // Build an array of Ingredient components
+            this.props.ingredientList.forEach(function (ingredient) {
+                ingredientHTML.push(_react2.default.createElement(_Ingredient.Ingredient, {
+                    name: ingredient,
+                    removeFromList: _this2.props.removeFromList,
+                    key: counter
+                }));
+                counter++;
+            });
+
+            // Display a message if no ingredients have been added
+            if (ingredientHTML.length <= 0) {
+                componentContent = _react2.default.createElement(
+                    'h4',
+                    { id: 'empty' },
+                    'Start by adding an ingredient above!'
+                );
+            } else {
+                componentContent = _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'h4',
+                        null,
+                        'Ingredient List'
+                    ),
+                    _react2.default.createElement(
+                        'ul',
+                        { id: 'ingredientList' },
+                        ingredientHTML
+                    )
+                );
+            }
 
             return _react2.default.createElement(
-                'ul',
-                null,
-                ingredientHTML
+                'div',
+                { id: 'ingredientList' },
+                componentContent
             );
         }
     }]);
@@ -9645,7 +9697,9 @@ var IngredientListBuilder = exports.IngredientListBuilder = function (_React$Com
         // Initialize state
         var _this = _possibleConstructorReturn(this, (IngredientListBuilder.__proto__ || Object.getPrototypeOf(IngredientListBuilder)).call(this));
 
-        _this.state = {};
+        _this.state = {
+            ingredientList: []
+        };
         return _this;
     }
 
@@ -9689,14 +9743,20 @@ var IngredientListBuilder = exports.IngredientListBuilder = function (_React$Com
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_TextBox.TextBox, { addToList: function addToList() {
+                _react2.default.createElement(_TextBox.TextBox, {
+                    addToList: function addToList() {
                         return _this2.addToList();
-                    }, updateText: function updateText(e) {
+                    },
+                    updateText: function updateText(e) {
                         return _this2.updateText(e);
-                    } }),
-                _react2.default.createElement(_IngredientList.IngredientList, { removeFromList: function removeFromList(name) {
+                    }
+                }),
+                _react2.default.createElement(_IngredientList.IngredientList, {
+                    ingredientList: this.state.ingredientList,
+                    removeFromList: function removeFromList(name) {
                         return _this2.removeFromList(name);
-                    } })
+                    }
+                })
             );
         }
     }]);

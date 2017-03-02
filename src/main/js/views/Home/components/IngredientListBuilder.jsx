@@ -17,7 +17,7 @@ export class IngredientListBuilder extends React.Component {
 
         // Initialize state
         this.state = ({
-
+            ingredientList: []
         });
     }
 
@@ -47,8 +47,14 @@ export class IngredientListBuilder extends React.Component {
     render() {
         return (
             <div>
-                <TextBox addToList={() => this.addToList()} updateText={(e) => this.updateText(e)}/>
-                <IngredientList removeFromList={(name) => this.removeFromList(name)}/>
+                <TextBox
+                    addToList={() => this.addToList()}
+                    updateText={(e) => this.updateText(e)}
+                />
+                <IngredientList
+                    ingredientList={this.state.ingredientList}
+                    removeFromList={(name) => this.removeFromList(name)}
+                />
             </div>
         );
     }
