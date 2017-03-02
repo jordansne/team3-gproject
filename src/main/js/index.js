@@ -4,3 +4,5 @@
  */
 
 import { UserBox } from './views/UserBox/index.jsx';
+import { RecipeGrid } from './views/viewRecipeResults/index.jsx';
+
