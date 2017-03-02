@@ -11,9 +11,11 @@ export class LoginButton extends React.Component {
         const buttonText = this.props.signedIn ? "Log Out" : "Log In / Sign Up";
 
         return (
-            <button onClick={this.props.handleClick}>
-                {buttonText}
-            </button>
+            <div>
+                <button onClick={this.props.handleClick}>
+                    {buttonText}
+                </button>
+            </div>
         );
     }
 
