@@ -12269,7 +12269,16 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList });
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'h1',
+                    null,
+                    'Recipe Search Results'
+                ),
+                _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList })
+            );
         }
     }]);
 

@@ -67,7 +67,10 @@ export class RecipeView extends React.Component {
 
     render() {
         return(
-            <RecipeGrid recipes={this.state.recipeList}/>
+            <div>
+                <h1>Recipe Search Results</h1>
+                <RecipeGrid recipes={this.state.recipeList}/>
+            </div>
         );
     }
 }
