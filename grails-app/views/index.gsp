@@ -4,6 +4,6 @@
     <meta name="layout" content="main"/>
 </head>
 <body>
-//Home page
+    <div id="app"></div>
 </body>
 </html>

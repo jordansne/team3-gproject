@@ -74,11 +74,6 @@ header ul li {
     user-select: none;
 }
 
-/* Clear right margin on last element so margin spacing is only between li elements. */
-header ul > li:last-child {
-    margin-right: 0em;
-}
-
 /* Header bar a links */
 header ul li a {
     display: block;
