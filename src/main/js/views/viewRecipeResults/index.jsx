@@ -8,4 +8,11 @@ import ReactDOM from 'react-dom';
 
 import { RecipeGrid } from './components/RecipeGrid.jsx';
 
-ReactDOM.render(<RecipeGrid/>, document.getElementById('recipegrid'));
+export class RecipeView extends React.Component {
+
+    render() {
+        return(
+            <RecipeGrid/>
+        );
+    }
+}

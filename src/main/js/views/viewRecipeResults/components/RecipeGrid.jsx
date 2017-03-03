@@ -35,7 +35,7 @@ export class RecipeGrid extends React.Component {
     }
     render() {
         return(
-            <div>
+            <div id="recipegrid">
                 {this.getRecipeBoxes()}
             </div>
         );
