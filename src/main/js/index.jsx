@@ -31,6 +31,7 @@ ReactDOM.render((
     <Router history={hashHistory}>
         <Route component={App}>
             <Route path="/"/>
+            <Route path="*" component={Error}/>
         </Route>
     </Router>
 ), document.getElementById('app'));
