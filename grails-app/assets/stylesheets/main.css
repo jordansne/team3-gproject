@@ -32,6 +32,7 @@ ul#errors li {
 body {
     margin: 0em;
     font-family: 'Montserrat', sans-serif;
+    min-width: 900px;
 }
 
 a {
