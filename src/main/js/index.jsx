@@ -9,6 +9,7 @@ import { Router, Route, hashHistory } from 'react-router';
 
 import { Header } from './views/Header/index.jsx';
 import { Error } from './Error.jsx';
+import { RecipeView } from './views/RecipeResults/index.jsx';
 
 // App component that represent the entire web app
 export class App extends React.Component {
@@ -31,6 +32,7 @@ ReactDOM.render((
     <Router history={hashHistory}>
         <Route component={App}>
             <Route path="/"/>
+            <Route path="/recipeSearch" component={RecipeView}/>
             <Route path="*" component={Error}/>
         </Route>
     </Router>

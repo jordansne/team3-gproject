@@ -94,7 +94,7 @@ header li:hover {
  */
 
 /* Entire UserBox element */
-header div#userbox {
+header div#userBox {
     display: inline-block;
     background-color: rgba(190, 190, 190, 0.6);
 
@@ -104,19 +104,19 @@ header div#userbox {
 }
 
 /* Each half of the UserBox */
-header div#userbox section {
+header div#userBox section {
     height: 100%;
     display: inline-block;
 }
 
 /* Info Half (Left) */
-header div#userbox section#info {
+header div#userBox section#info {
     width: 55%;
     text-align: center;
 }
 
 
-header div#userbox section#info button {
+header div#userBox section#info button {
     color: white;
     background-color: rgba(110, 110, 110, 0.6);
 
@@ -124,28 +124,27 @@ header div#userbox section#info button {
     border: none;
 }
 
-header div#userbox section#info h5 {
+header div#userBox section#info h5 {
     font-weight: normal;
     text-decoration: underline;
     margin: 1em;
 }
 
 
-header div#userbox section#info button:hover {
+header div#userBox section#info button:hover {
     background-color: rgba(110, 110, 110, 0.9);
     cursor: pointer;
 }
 
 /* Picture Half (Right) */
-header div#userbox section#pic {
+header div#userBox section#pic {
     width: 45%;
     text-align: center;
 }
 
-header div#userbox section#pic img {
+header div#userBox section#pic img {
     width: 4em;
     height: 4em;
     margin-bottom: -0.4em;
     background-color: #bcbcbc;
 }
-
