@@ -13,11 +13,10 @@ export class IngredientListBuilder extends React.Component {
     constructor() {
         super();
 
-        // TODO: Write constructor
 
-        // Initialize state
         this.state = ({
-            ingredientList: []
+            ingredientList: [],
+            searchTextBox: "" //?
         });
     }
 
@@ -25,7 +24,14 @@ export class IngredientListBuilder extends React.Component {
      * Add an ingredient to the list.
      */
     addToList() {
-        // TODO: Write method
+        const ingredientListNew = this.state.ingredientList.slice();
+        ingredientListNew.push(this.state.searchTextBox);
+        this.setState( { ingredientList : ingredientListNew, searchTextBox: ""});
+
+
+
+
+
     }
 
     /**
@@ -33,23 +39,43 @@ export class IngredientListBuilder extends React.Component {
      * @param name The name of the ingredient.
      */
     removeFromList(name) {
-        // TODO: Write method
+        const ingredientListNew = this.state.ingredientList.slice();
+        const index = ingredientListNew.indexOf(name);
+        ingredientListNew.splice(index,1);
+        this.setState( {ingredientList: ingredientListNew, searchTextBox: this.state.searchTextBox});
+
     }
 
     /**
-     * Update the state of textBox variable.
+     * Update the state of textBox varie.
      * @param event: HTML input event.
      */
     updateText(event) {
-        // TODO: Write method
+        event.preventDefault();
+        this.setState({ searchTextBox : event.target.value, ingredientList : this.state.ingredientList });
     }
 
-    render() {
-        return (
+    search(){
+        let ingredientListString = "/#/recipeSearch?ingredients=";
+
+        for(let i=0; i< this.state.ingredientList.length; i++){
+
+            ingredientListString += this.state.ingredientList[i];
+            if( i < this.state.ingredientList.length-1){
+                ingredientListString += ",";
+            }
+        }
+        window.location.href = ingredientListString;
+
+    }
+
+    render(){
+        return(
             <div>
                 <TextBox
                     addToList={() => this.addToList()}
                     updateText={(e) => this.updateText(e)}
+                    search ={() => this.search() }
                 />
                 <IngredientList
                     ingredientList={this.state.ingredientList}
@@ -59,3 +85,4 @@ export class IngredientListBuilder extends React.Component {
         );
     }
 }
+
