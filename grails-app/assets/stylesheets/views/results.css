@@ -1,29 +1,36 @@
+/**
+ * results.css - EmptyMyFridge
+ * Stylesheet for recipe search result page.
+ */
 
-div#recipegrid {
+div#recipeGrid {
     text-align: center;
 }
 
 div.recipeBox {
-    width: 28%;
-    height: 100px;
-    display: inline-block;
-    padding: 1em;
-    margin: 1em 0.5%;
     background-color: gray;
 
+    width: 28%;
+    height: 100px;
+
+    padding: 1em;
+    margin: 1em 0.5%;
+
+    display: inline-block;
     position: relative;
 }
 
-div.recipeBox section#recipename {
+div.recipeBox section.recipeName {
     text-align: center;
+
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5em;
+
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    margin-left: auto;
-    margin-right: auto;
-
-    padding: 0.5em;
 }
 
 div.recipeBox button {

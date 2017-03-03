@@ -8,16 +8,16 @@ import React from 'react';
 export class RecipeBox extends React.Component {
 
     render() {
-        return(
+        return (
             <div className="recipeBox">
-                <section id="buttons">
+                <section className="buttons">
                     <button className="like">Like</button>
                     <button className="save">Save</button>
                 </section>
-                <section id="pic">
+                <section className="pic">
                     <img/>
                 </section>
-                <section id="recipename">
+                <section className="recipeName">
                     {this.props.name}
                 </section>
             </div>

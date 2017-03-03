@@ -12501,7 +12501,7 @@ var UserBox = exports.UserBox = function (_React$Component) {
 
             return _react2.default.createElement(
                 'div',
-                { id: 'userbox' },
+                { id: 'userBox' },
                 _react2.default.createElement(
                     'section',
                     { id: 'info' },
@@ -12567,7 +12567,7 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
                 { className: "recipeBox" },
                 _react2.default.createElement(
                     "section",
-                    { id: "buttons" },
+                    { className: "buttons" },
                     _react2.default.createElement(
                         "button",
                         { className: "like" },
@@ -12581,12 +12581,12 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     "section",
-                    { id: "pic" },
+                    { className: "pic" },
                     _react2.default.createElement("img", null)
                 ),
                 _react2.default.createElement(
                     "section",
-                    { id: "recipename" },
+                    { className: "recipeName" },
                     this.props.name
                 )
             );
@@ -12652,7 +12652,7 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
 
             return _react2.default.createElement(
                 'div',
-                { id: 'recipegrid' },
+                { id: 'recipeGrid' },
                 recipeBoxes
             );
         }

@@ -23,7 +23,7 @@ export class RecipeGrid extends React.Component {
         }
 
         return(
-            <div id="recipegrid">
+            <div id="recipeGrid">
                 {recipeBoxes}
             </div>
         );
