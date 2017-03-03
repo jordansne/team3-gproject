@@ -9,7 +9,7 @@
  * ======================================================
  */
 
-div#grails_layout {
+article#app {
     padding: 4em 5em;
 }
 

@@ -93,7 +93,7 @@ export class UserBox extends React.Component {
 
     render() {
         return (
-            <div>
+            <div id="userbox">
                 <section id="info">
                     <LoginButton signedIn={this.state.signedIn} handleClick={() => this.handleSignButton()}/>
                 </section>

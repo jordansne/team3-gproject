@@ -6,6 +6,6 @@
     <asset:stylesheet src="views/home.css"/>
 </head>
 <body>
-    <div id="ingredientListBuilder"></div>
+    <div id="app"></div>
 </body>
 </html>

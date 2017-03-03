@@ -1,11 +1,16 @@
 /**
  * index.jsx - EmptyMyFridge
- * Indexer & renderer of the IngredientListBuilder.
+ * Indexer of the Home Component.
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { IngredientListBuilder } from './components/IngredientListBuilder.jsx';
 
-ReactDOM.render(<IngredientListBuilder/>, document.getElementById('ingredientListBuilder'));
+export class Home extends React.Component {
+    render() {
+        return (
+            <IngredientListBuilder/>
+        );
+    }
+}

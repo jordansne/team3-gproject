@@ -28,17 +28,6 @@
         firebase.initializeApp(config);
     </script>
 
-    <header>
-        <h1><a href="./">EmptyMyFridge</a></h1>
-
-        <aside id="right">
-            <ul>
-                <li><a href="./explore">Explore</a></li>
-            </ul>
-            <div id="userbox"></div>
-        </aside>
-    </header>
-
     <div id="grails_layout">
         <g:layoutBody/>
     </div>
