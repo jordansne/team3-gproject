@@ -12204,13 +12204,72 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
     function RecipeView() {
         _classCallCheck(this, RecipeView);
 
-        return _possibleConstructorReturn(this, (RecipeView.__proto__ || Object.getPrototypeOf(RecipeView)).apply(this, arguments));
+        // Initialize state with blank array
+        var _this = _possibleConstructorReturn(this, (RecipeView.__proto__ || Object.getPrototypeOf(RecipeView)).call(this));
+
+        _this.state = {
+            recipeList: []
+        };
+        return _this;
     }
 
+    /**
+     * Beginning building the recipe list once the component is mounted.
+     */
+
+
     _createClass(RecipeView, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            var apiURL = "http://localhost:8080/Ingredient/getRecipesByIngredients";
+            apiURL += this.buildApiParams(this.props.location.query);
+
+            fetch(apiURL).then(function (response) {
+                if (response.ok) {
+
+                    // Process the JSON and update the component's state
+                    response.json().then(function (recipeObject) {
+                        _this2.setState({
+                            recipeList: recipeObject
+                        });
+                    });
+                } else {
+                    // TODO: Handle server response error
+                    console.error("Server response error: " + response.message);
+                }
+            }).catch(function (error) {
+                // TODO: Handle connection error
+                console.error("Server response error: " + error.message);
+            });
+        }
+
+        /**
+         * Takes the search parameters and converts to a GET API query string.
+         */
+
+    }, {
+        key: 'buildApiParams',
+        value: function buildApiParams(search) {
+            var paramString = "?ingredients=";
+
+            var ingredientArray = search.ingredients.split(",");
+            for (var i = 0; i < ingredientArray.length; i++) {
+                paramString += ingredientArray[i];
+
+                // Add separator between ingredients
+                if (i < ingredientArray.length - 1) {
+                    paramString += "%2C";
+                }
+            }
+
+            return paramString;
+        }
+    }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(_RecipeGrid.RecipeGrid, null);
+            return _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList });
         }
     }]);
 
@@ -12578,33 +12637,23 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
     }
 
     _createClass(RecipeGrid, [{
-        key: 'getRecipeBoxes',
-
-
-        //Returns box elements for each recipe result returned from the api
-        value: function getRecipeBoxes() {
-            var exampleData = [{ "name": "Brown Butter Apple Crumble" }, { "name": "Apple fritters" }, { "name": "Apple Tart" }, { "name": "Brown Butter Apple Crumble" }, { "name": "Apple fritters" }, { "name": "Apple Tart" }, { "name": "Brown Butter Apple Crumble" }, { "name": "Apple fritters" }];
-
-            //Array to store the recipe boxes
-            var recipeBoxes = [];
-
-            // Get recipe JSON from site header
-
-            var length = exampleData.length;
-
-            for (var i = 0; i < length; i++) {
-                recipeBoxes.push(_react2.default.createElement(_RecipeBox.RecipeBox, { name: exampleData[i].name, key: i })); //Append new recipe box to recipebox array
-            }
-
-            return recipeBoxes;
-        }
-    }, {
         key: 'render',
         value: function render() {
+            // Array to store the recipe boxes
+            var recipeBoxes = [];
+
+            for (var i = 0; i < this.props.recipes.length; i++) {
+                // Append new recipe box to recipeBox array
+                recipeBoxes.push(_react2.default.createElement(_RecipeBox.RecipeBox, {
+                    name: this.props.recipes[i].name,
+                    key: i
+                }));
+            }
+
             return _react2.default.createElement(
                 'div',
                 { id: 'recipegrid' },
-                this.getRecipeBoxes()
+                recipeBoxes
             );
         }
     }]);
@@ -27158,7 +27207,7 @@ _react2.default.createElement(
         _reactRouter.Route,
         { component: App },
         _react2.default.createElement(_reactRouter.Route, { path: '/' }),
-        _react2.default.createElement(_reactRouter.Route, { path: '/results', component: _index2.RecipeView }),
+        _react2.default.createElement(_reactRouter.Route, { path: '/recipeSearch', component: _index2.RecipeView }),
         _react2.default.createElement(_reactRouter.Route, { path: '*', component: _Error.Error })
     )
 ), document.getElementById('app'));

@@ -8,35 +8,23 @@ import { RecipeBox } from './RecipeBox.jsx';
 
 export class RecipeGrid extends React.Component {
 
-    //Returns box elements for each recipe result returned from the api
-    getRecipeBoxes() {
-        const exampleData = [
-            {"name":"Brown Butter Apple Crumble"},
-            {"name":"Apple fritters"},
-            {"name":"Apple Tart"},
-            {"name":"Brown Butter Apple Crumble"},
-            {"name":"Apple fritters"},
-            {"name":"Apple Tart"},
-            {"name":"Brown Butter Apple Crumble"},
-            {"name":"Apple fritters"}];
+    render() {
+        // Array to store the recipe boxes
+        const recipeBoxes = [];
 
-        //Array to store the recipe boxes
-        let recipeBoxes = [];
-
-        // Get recipe JSON from site header
-
-        const length = exampleData.length;
-
-        for (let i = 0; i < length; i++) {
-            recipeBoxes.push(<RecipeBox name={exampleData[i].name} key={i}/>); //Append new recipe box to recipebox array
+        for (let i = 0; i < this.props.recipes.length; i++) {
+            // Append new recipe box to recipeBox array
+            recipeBoxes.push(
+                <RecipeBox
+                    name={this.props.recipes[i].name}
+                    key={i}
+                />
+            );
         }
 
-        return recipeBoxes;
-    }
-    render() {
         return(
             <div id="recipegrid">
-                {this.getRecipeBoxes()}
+                {recipeBoxes}
             </div>
         );
     }
