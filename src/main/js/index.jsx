@@ -32,7 +32,7 @@ ReactDOM.render((
     <Router history={hashHistory}>
         <Route component={App}>
             <Route path="/"/>
-            <Route path="/results" component={RecipeView}/>
+            <Route path="/recipeSearch" component={RecipeView}/>
             <Route path="*" component={Error}/>
         </Route>
     </Router>
