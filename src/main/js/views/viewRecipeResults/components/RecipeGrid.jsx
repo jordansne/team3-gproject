@@ -8,14 +8,7 @@ import { RecipeBox } from './RecipeBox.jsx';
 
 export class RecipeGrid extends React.Component {
 
-    constructor() {
-        super();
-        this.state = {
-            numRecipes: 0,
-            boxes: null
-        };
-    }
-
+    //Returns box elements for each recipe result returned from the api
     getRecipeBoxes() {
         const exampleData = [
             {"name":"Brown Butter Apple Crumble"},
@@ -26,6 +19,8 @@ export class RecipeGrid extends React.Component {
             {"name":"Apple Tart"},
             {"name":"Brown Butter Apple Crumble"},
             {"name":"Apple fritters"}];
+
+        //Array to store the recipe boxes
         let recipeBoxes = [];
 
         // Get recipe JSON from site header
@@ -33,7 +28,7 @@ export class RecipeGrid extends React.Component {
         const length = exampleData.length;
 
         for (let i = 0; i < length; i++) {
-            recipeBoxes.push(<RecipeBox name={exampleData[i].name} key={i}/>);
+            recipeBoxes.push(<RecipeBox name={exampleData[i].name} key={i}/>); //Append new recipe box to recipebox array
         }
 
         return recipeBoxes;

@@ -9841,19 +9841,18 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
     function RecipeGrid() {
         _classCallCheck(this, RecipeGrid);
 
-        var _this = _possibleConstructorReturn(this, (RecipeGrid.__proto__ || Object.getPrototypeOf(RecipeGrid)).call(this));
-
-        _this.state = {
-            numRecipes: 0,
-            boxes: null
-        };
-        return _this;
+        return _possibleConstructorReturn(this, (RecipeGrid.__proto__ || Object.getPrototypeOf(RecipeGrid)).apply(this, arguments));
     }
 
     _createClass(RecipeGrid, [{
         key: 'getRecipeBoxes',
+
+
+        //Returns box elements for each recipe result returned from the api
         value: function getRecipeBoxes() {
             var exampleData = [{ "name": "Brown Butter Apple Crumble" }, { "name": "Apple fritters" }, { "name": "Apple Tart" }, { "name": "Brown Butter Apple Crumble" }, { "name": "Apple fritters" }, { "name": "Apple Tart" }, { "name": "Brown Butter Apple Crumble" }, { "name": "Apple fritters" }];
+
+            //Array to store the recipe boxes
             var recipeBoxes = [];
 
             // Get recipe JSON from site header
@@ -9861,7 +9860,7 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
             var length = exampleData.length;
 
             for (var i = 0; i < length; i++) {
-                recipeBoxes.push(_react2.default.createElement(_RecipeBox.RecipeBox, { name: exampleData[i].name, key: i }));
+                recipeBoxes.push(_react2.default.createElement(_RecipeBox.RecipeBox, { name: exampleData[i].name, key: i })); //Append new recipe box to recipebox array
             }
 
             return recipeBoxes;

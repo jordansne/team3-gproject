@@ -4,6 +4,6 @@
     <meta name="layout" content="main"/>
 </head>
 <body>
-<div id="recipegrid"></div>
+//Home page
 </body>
 </html>
