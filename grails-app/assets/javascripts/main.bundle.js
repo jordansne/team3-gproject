@@ -12711,7 +12711,7 @@ var IngredientList = exports.IngredientList = function (_React$Component) {
                 componentContent = _react2.default.createElement(
                     'h4',
                     { id: 'empty' },
-                    'Start by adding an ingredient above!'
+                    'What\'s in your fridge?'
                 );
             } else {
                 componentContent = _react2.default.createElement(
@@ -12950,7 +12950,7 @@ var TextBox = exports.TextBox = function (_React$Component) {
             this.props.addToList();
 
             // Clear the input box
-            document.getElementById("textBox").reset();
+            document.getElementById("textBoxForm").reset();
         }
     }, {
         key: "render",
@@ -12959,10 +12959,10 @@ var TextBox = exports.TextBox = function (_React$Component) {
 
             return _react2.default.createElement(
                 "div",
-                null,
+                { id: "textBox" },
                 _react2.default.createElement(
                     "form",
-                    { id: "textBox", onSubmit: function onSubmit(e) {
+                    { id: "textBoxForm", onSubmit: function onSubmit(e) {
                             return _this2.handleAdd(e);
                         } },
                     _react2.default.createElement(
@@ -12970,7 +12970,7 @@ var TextBox = exports.TextBox = function (_React$Component) {
                         null,
                         _react2.default.createElement("input", { type: "text", value: this.props.textBoxValue, onChange: this.props.updateText })
                     ),
-                    _react2.default.createElement("input", { type: "submit", value: "Add" })
+                    _react2.default.createElement("input", { id: "add", type: "submit", value: "Add" })
                 ),
                 _react2.default.createElement(
                     "button",

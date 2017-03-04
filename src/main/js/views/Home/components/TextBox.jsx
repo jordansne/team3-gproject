@@ -17,17 +17,17 @@ export class TextBox extends React.Component {
         this.props.addToList();
 
         // Clear the input box
-        document.getElementById("textBox").reset();
+        document.getElementById("textBoxForm").reset();
     }
 
     render() {
         return (
-            <div>
-                <form id="textBox" onSubmit={(e) => this.handleAdd(e)}>
+            <div id="textBox">
+                <form id="textBoxForm" onSubmit={(e) => this.handleAdd(e)}>
                     <label>
                         <input type="text" value={this.props.textBoxValue} onChange={this.props.updateText}/>
                     </label>
-                    <input type="submit" value="Add"/>
+                    <input id="add" type="submit" value="Add"/>
                 </form>
                 <button onClick={this.props.doSearch}>
                     Go
