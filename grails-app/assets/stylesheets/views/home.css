@@ -9,16 +9,19 @@
  * ======================================================
  */
 
+/* Entire TextBox component. */
 div#textBox {
     width: 85%;
     margin: 0 auto;
     max-width: 700px;
 }
 
+/* TextBox and Add button. */
 div#textBox form {
     display: inline-block;
 }
 
+/* Text box. */
 div#textBox form label input {
     border: 1px solid gray;
     border-radius: 3px;
@@ -31,6 +34,7 @@ div#textBox form label input {
     width: 400px;
 }
 
+/* Both Add & Go buttons. */
 div#textBox form input#add,
 div#textBox button {
     color: white;
@@ -44,6 +48,7 @@ div#textBox button {
     padding: 0.5em;
 }
 
+/* Add Button. */
 div#textBox form input#add {
     background-color: #00db19;
 }
@@ -53,6 +58,7 @@ div#textBox form input#add:hover {
     cursor: pointer;
 }
 
+/* Go Button. */
 div#textBox button {
     background-color: #2476c9;
     margin: 1em 0.5em;
