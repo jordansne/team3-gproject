@@ -12275,8 +12275,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            var apiURL = "http://localhost:8080/Ingredient/getRecipesByIngredients";
-            apiURL += this.buildApiParams(this.props.location.query);
+            var apiURL = this.buildApiParams(this.props.location.query);
 
             fetch(apiURL).then(function (response) {
                 if (response.ok) {
@@ -12304,7 +12303,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
     }, {
         key: 'buildApiParams',
         value: function buildApiParams(search) {
-            var paramString = "?ingredients=";
+            var paramString = "/Ingredient/getRecipesByIngredients?ingredients=";
 
             var ingredientArray = search.ingredients.split(",");
             for (var i = 0; i < ingredientArray.length; i++) {
@@ -12785,7 +12784,7 @@ var IngredientListBuilder = exports.IngredientListBuilder = function (_React$Com
 
         _this.state = {
             ingredientList: [],
-            searchTextBox: "" //?
+            textBoxValue: ""
         };
         return _this;
     }
@@ -12798,9 +12797,15 @@ var IngredientListBuilder = exports.IngredientListBuilder = function (_React$Com
     _createClass(IngredientListBuilder, [{
         key: 'addToList',
         value: function addToList() {
+            // Copy array & add the ingredient to new array
             var ingredientListNew = this.state.ingredientList.slice();
-            ingredientListNew.push(this.state.searchTextBox);
-            this.setState({ ingredientList: ingredientListNew, searchTextBox: "" });
+            ingredientListNew.push(this.state.textBoxValue);
+
+            // Update state
+            this.setState({
+                ingredientList: ingredientListNew,
+                textBoxValue: ""
+            });
         }
 
         /**
@@ -12811,14 +12816,20 @@ var IngredientListBuilder = exports.IngredientListBuilder = function (_React$Com
     }, {
         key: 'removeFromList',
         value: function removeFromList(name) {
+            // Copy array & remove the ingredient from new array
             var ingredientListNew = this.state.ingredientList.slice();
             var index = ingredientListNew.indexOf(name);
             ingredientListNew.splice(index, 1);
-            this.setState({ ingredientList: ingredientListNew, searchTextBox: this.state.searchTextBox });
+
+            // Update state
+            this.setState({
+                ingredientList: ingredientListNew,
+                textBoxValue: this.state.textBoxValue
+            });
         }
 
         /**
-         * Update the state of textBox varie.
+         * Update the state of textBoxValue variable.
          * @param event: HTML input event.
          */
 
@@ -12826,21 +12837,34 @@ var IngredientListBuilder = exports.IngredientListBuilder = function (_React$Com
         key: 'updateText',
         value: function updateText(event) {
             event.preventDefault();
-            this.setState({ searchTextBox: event.target.value, ingredientList: this.state.ingredientList });
+
+            this.setState({
+                textBoxValue: event.target.value,
+                ingredientList: this.state.ingredientList
+            });
         }
+
+        /**
+         * Redirect to the new page with ingredients as the parameters.
+         */
+
     }, {
-        key: 'search',
-        value: function search() {
-            var ingredientListString = "/#/recipeSearch?ingredients=";
+        key: 'doSearch',
+        value: function doSearch() {
+            var ingredientListURL = "/#/recipeSearch?ingredients=";
 
+            // Build the string from the ingredientList
             for (var i = 0; i < this.state.ingredientList.length; i++) {
+                ingredientListURL += this.state.ingredientList[i];
 
-                ingredientListString += this.state.ingredientList[i];
+                // Add separator between ingredients
                 if (i < this.state.ingredientList.length - 1) {
-                    ingredientListString += ",";
+                    ingredientListURL += ",";
                 }
             }
-            window.location.href = ingredientListString;
+
+            // Set the current window to the new URL
+            window.location.href = ingredientListURL;
         }
     }, {
         key: 'render',
@@ -12857,8 +12881,8 @@ var IngredientListBuilder = exports.IngredientListBuilder = function (_React$Com
                     updateText: function updateText(e) {
                         return _this2.updateText(e);
                     },
-                    search: function search() {
-                        return _this2.search();
+                    doSearch: function doSearch() {
+                        return _this2.doSearch();
                     }
                 }),
                 _react2.default.createElement(_IngredientList.IngredientList, {
@@ -12919,37 +12943,39 @@ var TextBox = exports.TextBox = function (_React$Component) {
         /**
          * Called when the add button is pressed.
          */
-
         value: function handleAdd(e) {
+            // Prevent window reload
             e.preventDefault();
+
             this.props.addToList();
-            document.getElementById("addingredient").reset();
+
+            // Clear the input box
+            document.getElementById("textBox").reset();
         }
     }, {
         key: "render",
         value: function render() {
             var _this2 = this;
 
-            // TODO: Writer HTML r
             return _react2.default.createElement(
                 "div",
                 null,
                 _react2.default.createElement(
                     "form",
-                    { id: "addingredient", onSubmit: function onSubmit(e) {
+                    { id: "textBox", onSubmit: function onSubmit(e) {
                             return _this2.handleAdd(e);
                         } },
                     _react2.default.createElement(
                         "label",
                         null,
-                        _react2.default.createElement("input", { type: "text", value: this.props.searchTextBox, onChange: this.props.updateText })
+                        _react2.default.createElement("input", { type: "text", value: this.props.textBoxValue, onChange: this.props.updateText })
                     ),
                     _react2.default.createElement("input", { type: "submit", value: "Add" })
                 ),
                 _react2.default.createElement(
                     "button",
-                    { onClick: this.props.search },
-                    "go"
+                    { onClick: this.props.doSearch },
+                    "Go"
                 )
             );
         }
@@ -12983,8 +13009,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeBox.jsx - EmptyMyFridge
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeBox component.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Filters.jsx - EmptyMyFridge
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Recipe filter selector component.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
 
 var Filters = exports.Filters = function (_React$Component) {

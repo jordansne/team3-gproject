@@ -10,31 +10,28 @@ export class TextBox extends React.Component {
     /**
      * Called when the add button is pressed.
      */
-
-    handleAdd(e){
+    handleAdd(e) {
+        // Prevent window reload
         e.preventDefault();
+
         this.props.addToList();
-        document.getElementById("addingredient").reset();
+
+        // Clear the input box
+        document.getElementById("textBox").reset();
     }
 
-
     render() {
-        // TODO: Writer HTML r
         return (
             <div>
-                <form id="addingredient" onSubmit={(e) => this.handleAdd(e)}>
+                <form id="textBox" onSubmit={(e) => this.handleAdd(e)}>
                     <label>
-                        <input type="text" value={this.props.searchTextBox} onChange={this.props.updateText}/>
+                        <input type="text" value={this.props.textBoxValue} onChange={this.props.updateText}/>
                     </label>
                     <input type="submit" value="Add"/>
                 </form>
-                <button onClick={this.props.search}>
-                    go
+                <button onClick={this.props.doSearch}>
+                    Go
                 </button>
-
-
-
-
             </div>
         );
     }
