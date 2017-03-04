@@ -1,0 +1,41 @@
+/**
+ * main.css - EmptyMyFridge
+ * Primary stylesheet used across the site.
+ */
+
+/**
+ * ======================================================
+ * ====================== Body CSS ======================
+ * ======================================================
+ */
+
+article#app {
+    padding: 4em 5em;
+}
+
+ul#errors {
+    color: red;
+    font-size: 1.75em;
+    list-style: none;
+}
+
+ul#errors li {
+    padding: 0.25em 0em;
+}
+
+/**
+ * ======================================================
+ * ================== General CSS =======================
+ * ======================================================
+ */
+
+body {
+    margin: 0em;
+    font-family: 'Montserrat', sans-serif;
+    min-width: 900px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
