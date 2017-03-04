@@ -29,7 +29,7 @@ export class IngredientList extends React.Component {
         // Display a message if no ingredients have been added
         if (ingredientHTML.length <= 0) {
             componentContent = (
-                <h4 id="empty">Start by adding an ingredient above!</h4>
+                <h4 id="empty">What's in your fridge?</h4>
             );
         } else {
             componentContent = (

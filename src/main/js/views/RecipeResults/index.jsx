@@ -23,8 +23,7 @@ export class RecipeView extends React.Component {
      * Beginning building the recipe list once the component is mounted.
      */
     componentDidMount() {
-        let apiURL = "http://localhost:8080/Ingredient/getRecipesByIngredients";
-        apiURL += this.buildApiParams(this.props.location.query);
+        let apiURL = this.buildApiParams(this.props.location.query);
 
         fetch(apiURL).then((response) => {
             if (response.ok) {
@@ -51,7 +50,7 @@ export class RecipeView extends React.Component {
      * Takes the search parameters and converts to a GET API query string.
      */
     buildApiParams(search) {
-        let paramString = "?ingredients=";
+        let paramString = "/Ingredient/getRecipesByIngredients?ingredients=";
 
         const ingredientArray = search.ingredients.split(",");
         for (let i = 0; i < ingredientArray.length; i++) {
@@ -67,7 +66,7 @@ export class RecipeView extends React.Component {
     }
 
     render() {
-        return(
+        return (
             <div>
                 <Filters/>
                 <h1>Recipe Search Results</h1>

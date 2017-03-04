@@ -13,11 +13,9 @@ export class IngredientListBuilder extends React.Component {
     constructor() {
         super();
 
-        // TODO: Write constructor
-
-        // Initialize state
         this.state = ({
-            ingredientList: []
+            ingredientList: [],
+            textBoxValue: ""
         });
     }
 
@@ -25,7 +23,15 @@ export class IngredientListBuilder extends React.Component {
      * Add an ingredient to the list.
      */
     addToList() {
-        // TODO: Write method
+        // Copy array & add the ingredient to new array
+        const ingredientListNew = this.state.ingredientList.slice();
+        ingredientListNew.push(this.state.textBoxValue);
+
+        // Update state
+        this.setState({
+            ingredientList : ingredientListNew,
+            textBoxValue: ""
+        });
     }
 
     /**
@@ -33,15 +39,50 @@ export class IngredientListBuilder extends React.Component {
      * @param name The name of the ingredient.
      */
     removeFromList(name) {
-        // TODO: Write method
+        // Copy array & remove the ingredient from new array
+        const ingredientListNew = this.state.ingredientList.slice();
+        const index = ingredientListNew.indexOf(name);
+        ingredientListNew.splice(index,1);
+
+
+        // Update state
+        this.setState({
+            ingredientList: ingredientListNew,
+            textBoxValue: this.state.textBoxValue
+        });
     }
 
     /**
-     * Update the state of textBox variable.
+     * Update the state of textBoxValue variable.
      * @param event: HTML input event.
      */
     updateText(event) {
-        // TODO: Write method
+        event.preventDefault();
+
+        this.setState({
+            textBoxValue : event.target.value,
+            ingredientList : this.state.ingredientList
+        });
+    }
+
+    /**
+     * Redirect to the new page with ingredients as the parameters.
+     */
+    doSearch() {
+        let ingredientListURL = "/#/recipeSearch?ingredients=";
+
+        // Build the string from the ingredientList
+        for (let i = 0; i < this.state.ingredientList.length; i++) {
+            ingredientListURL += this.state.ingredientList[i];
+
+            // Add separator between ingredients
+            if (i < this.state.ingredientList.length - 1) {
+                ingredientListURL += ",";
+            }
+        }
+
+        // Set the current window to the new URL
+        window.location.href = ingredientListURL;
     }
 
     render() {
@@ -50,6 +91,7 @@ export class IngredientListBuilder extends React.Component {
                 <TextBox
                     addToList={() => this.addToList()}
                     updateText={(e) => this.updateText(e)}
+                    doSearch={() => this.doSearch()}
                 />
                 <IngredientList
                     ingredientList={this.state.ingredientList}
@@ -59,3 +101,4 @@ export class IngredientListBuilder extends React.Component {
         );
     }
 }
+

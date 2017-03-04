@@ -5,6 +5,74 @@
 
 /**
  * ======================================================
+ * ==================== TextBox CSS =====================
+ * ======================================================
+ */
+
+/* Entire TextBox component. */
+div#textBox {
+    width: 85%;
+    margin: 0 auto;
+    max-width: 700px;
+}
+
+/* TextBox and Add button. */
+div#textBox form {
+    display: inline-block;
+}
+
+/* Text box. */
+div#textBox form label input {
+    border: 1px solid gray;
+    border-radius: 3px;
+
+    font-size: 1em;
+
+    margin: 1em 0.5em;
+    padding: 0.5em;
+
+    width: 400px;
+}
+
+/* Both Add & Go buttons. */
+div#textBox form input#add,
+div#textBox button {
+    color: white;
+
+    border: none;
+    border-radius: 3px;
+
+    font-size: 1em;
+
+    margin: 1em 0em;
+    padding: 0.5em;
+}
+
+/* Add Button. */
+div#textBox form input#add {
+    background-color: #00db19;
+}
+
+div#textBox form input#add:hover {
+    background-color: #00a512;
+    cursor: pointer;
+}
+
+/* Go Button. */
+div#textBox button {
+    background-color: #2476c9;
+    margin: 1em 0.5em;
+    padding: 0.5em 2em;
+    float: right;
+}
+
+div#textBox button:hover {
+    background-color: #1b5999;
+    cursor: pointer;
+}
+
+/**
+ * ======================================================
  * ================== IngredientList CSS ================
  * ======================================================
  */
