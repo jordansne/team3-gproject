@@ -18,6 +18,8 @@ export class RecipeGrid extends React.Component {
                 <RecipeBox
                     name={this.props.recipes[i].name}
                     key={i}
+                    id={i}
+                    currentID={this.props.currentID}
                 />
             );
         }

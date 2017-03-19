@@ -7,9 +7,10 @@ import React from 'react';
 
 export class RecipeBox extends React.Component {
 
+
     render() {
         return (
-            <div className="recipeBox">
+            <div className="recipeBox" onClick={() => this.props.currentID(this.props.id)}>
                 <section className="buttons">
                     <button className="like">Like</button>
                     <button className="save">Save</button>
