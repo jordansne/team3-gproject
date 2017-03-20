@@ -17,23 +17,40 @@ export class UserBox extends React.Component {
             document.cookie = "secure";
         }
 
-        // Determine initial state
-        if (this.isSignedIn()) {
-            this.state = {
-                signedIn: true
-            };
-        } else {
-            this.state = {
-                signedIn: false
-            };
-        }
+        // Initialize blank state
+        this.state = {
+            profileName: null,
+            profilePic: null
+        };
+
+        // Register event for updating user account when signing in/out.
+        this.registerAuthEvent();
+    }
+
+    registerAuthEvent() {
+        // Called whenever a user signs in/out or the page is fully refreshed/loaded.
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // If user is signed in.. update state
+                this.setState({
+                    profileName: user.displayName,
+                    profilePic: user.photoURL
+                });
+            } else {
+                // If user not signed in.. clear state
+                this.setState({
+                    profileName: null,
+                    profilePic: null
+                });
+            }
+        });
     }
 
     /**
      * Called when the sign in button is pressed.
      */
     handleSignButton() {
-        if (!this.state.signedIn) {
+        if (!this.isSignedIn()) {
             this.signIn();
         } else {
             this.signOut();
@@ -47,15 +64,7 @@ export class UserBox extends React.Component {
         const fbProvider = new firebase.auth.GoogleAuthProvider();
 
         firebase.auth().signInWithPopup(fbProvider).then((result) => {
-            const token = result.credential.accessToken;
-            const user = result.user;
-
-            // Save access token in a cookie
-            document.cookie = "access_token=" + token + ";";
-
-            this.setState({
-                signedIn: true
-            });
+            console.log("Signed In");
         }).catch((error) => {
             console.error("Error " + error.code + ": Could not sign in: " + error.message);
         });
@@ -67,38 +76,26 @@ export class UserBox extends React.Component {
     signOut() {
         firebase.auth().signOut().then(() => {
             console.log("Signed Out");
-
-            // Clear the token in the cookie
-            document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-
-            this.setState({
-                signedIn: false
-            });
         }, (error) => {
             console.log("Error " + error.code + ": Could not sign out: " + error.message);
         });
     }
 
     /**
-     * Check if the user is signed in.
+     * Check if there is currently an account signed in.
      */
     isSignedIn() {
-        const cookie = document.cookie;
-        return !(cookie === "" || cookie.indexOf("access_token") == -1);
-    }
-
-    getProfileImage() {
-        return null;
+        return firebase.auth().currentUser != null;
     }
 
     render() {
         return (
             <div id="userBox">
                 <section id="info">
-                    <LoginButton signedIn={this.state.signedIn} handleClick={() => this.handleSignButton()}/>
+                    <LoginButton signedIn={this.isSignedIn()} handleClick={() => this.handleSignButton()}/>
                 </section>
                 <section id="pic">
-                    <img src={this.getProfileImage()}/>
+                    <img src={this.state.profilePic}/>
                 </section>
             </div>
         );

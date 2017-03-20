@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { Link } from 'react-router';
 
 export class LoginButton extends React.Component {
 
@@ -12,7 +13,7 @@ export class LoginButton extends React.Component {
         let profileLink = "";
 
         if (this.props.signedIn) {
-            profileLink = <h5><a href="./profile">Profile</a></h5>;
+            profileLink = <h5><Link to="/profile">Profile</Link></h5>;
         }
 
         return (
