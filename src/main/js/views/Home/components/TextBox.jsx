@@ -29,6 +29,30 @@ export class TextBox extends React.Component {
                     </label>
                     <input id="add" type="submit" value="Add"/>
                 </form>
+
+                <br/>
+                <div id="filters">
+                    <select className="dropdown" id="filter_type">
+                        <option value="none">Select a Meal Type</option>
+                        <option value="main-course">Main Course</option>
+                        <option value="side-dish">Side Dish</option>
+                        <option value="desert">Desert</option>
+                        <option value="appetizer">Appetizer</option>
+                        <option value="breakfast">Breakfast</option>
+                    </select>
+                    <select className="dropdown" id="filter_restriction">
+                        <option value="none">Select a dietary restriction</option>
+                        <option value="lactose-intolerant">Lactose-intolerant</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="pescetarian">Pescetarian</option>
+                        <option value="lacto-vegetarian">Lactose Intolerant Vegetarian</option>
+                        <option value="ovo-vegetarian">Ovo Vegetarian</option>
+                        <option value="paleo">Paleo</option>
+                        <option value="primal">Primal</option>
+                        <option value="vegan">Vegan</option>
+                    </select>
+                </div>
+
                 <button onClick={this.props.doSearch}>
                     Go
                 </button>

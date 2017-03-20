@@ -6,7 +6,6 @@
 import React from 'react';
 
 import { RecipeGrid } from '../../components/RecipeGrid.jsx';
-import { Filters } from './components/Filters.jsx';
 
 export class RecipeView extends React.Component {
 
@@ -68,7 +67,6 @@ export class RecipeView extends React.Component {
     render() {
         return (
             <div>
-                <Filters/>
                 <h1>Recipe Search Results</h1>
                 <RecipeGrid recipes={this.state.recipeList}/>
             </div>
