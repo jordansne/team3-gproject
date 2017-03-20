@@ -5,7 +5,7 @@
 
 import React from 'react';
 
-import { RecipeGrid } from './components/RecipeGrid.jsx';
+import { RecipeGrid } from '../../components/RecipeGrid.jsx';
 import { Filters } from './components/Filters.jsx';
 
 export class RecipeView extends React.Component {

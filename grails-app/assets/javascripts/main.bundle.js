@@ -12105,7 +12105,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = __webpack_require__(42);
 
-var _UserBox = __webpack_require__(116);
+var _UserBox = __webpack_require__(118);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12185,7 +12185,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _IngredientListBuilder = __webpack_require__(119);
+var _IngredientListBuilder = __webpack_require__(121);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12235,9 +12235,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _RecipeGrid = __webpack_require__(123);
+var _RecipeGrid = __webpack_require__(116);
 
-var _Filters = __webpack_require__(121);
+var _Filters = __webpack_require__(123);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12357,6 +12357,146 @@ module.exports = __webpack_require__(159);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.RecipeBox = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeBox.jsx - EmptyMyFridge
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeBox component.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+var RecipeBox = exports.RecipeBox = function (_React$Component) {
+    _inherits(RecipeBox, _React$Component);
+
+    function RecipeBox() {
+        _classCallCheck(this, RecipeBox);
+
+        return _possibleConstructorReturn(this, (RecipeBox.__proto__ || Object.getPrototypeOf(RecipeBox)).apply(this, arguments));
+    }
+
+    _createClass(RecipeBox, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "recipeBox" },
+                _react2.default.createElement(
+                    "section",
+                    { className: "buttons" },
+                    _react2.default.createElement(
+                        "button",
+                        { className: "like" },
+                        "Like"
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        { className: "save" },
+                        "Save"
+                    )
+                ),
+                _react2.default.createElement(
+                    "section",
+                    { className: "pic" },
+                    _react2.default.createElement("img", null)
+                ),
+                _react2.default.createElement(
+                    "section",
+                    { className: "recipeName" },
+                    this.props.name
+                )
+            );
+        }
+    }]);
+
+    return RecipeBox;
+}(_react2.default.Component);
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.RecipeGrid = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _RecipeBox = __webpack_require__(115);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeGrid.jsx - EmptyMyFridge
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeGrid component.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
+    _inherits(RecipeGrid, _React$Component);
+
+    function RecipeGrid() {
+        _classCallCheck(this, RecipeGrid);
+
+        return _possibleConstructorReturn(this, (RecipeGrid.__proto__ || Object.getPrototypeOf(RecipeGrid)).apply(this, arguments));
+    }
+
+    _createClass(RecipeGrid, [{
+        key: 'render',
+        value: function render() {
+            // Array to store the recipe boxes
+            var recipeBoxes = [];
+
+            for (var i = 0; i < this.props.recipes.length; i++) {
+                // Append new recipe box to recipeBox array
+                recipeBoxes.push(_react2.default.createElement(_RecipeBox.RecipeBox, {
+                    name: this.props.recipes[i].name,
+                    key: i
+                }));
+            }
+
+            return _react2.default.createElement(
+                'div',
+                { id: 'recipeGrid' },
+                recipeBoxes
+            );
+        }
+    }]);
+
+    return RecipeGrid;
+}(_react2.default.Component);
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.LoginButton = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -12422,7 +12562,7 @@ var LoginButton = exports.LoginButton = function (_React$Component) {
 }(_react2.default.Component);
 
 /***/ }),
-/* 116 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12439,7 +12579,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _LoginButton = __webpack_require__(115);
+var _LoginButton = __webpack_require__(117);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12580,7 +12720,7 @@ var UserBox = exports.UserBox = function (_React$Component) {
 }(_react2.default.Component);
 
 /***/ }),
-/* 117 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12645,7 +12785,7 @@ var Ingredient = exports.Ingredient = function (_React$Component) {
 }(_react2.default.Component);
 
 /***/ }),
-/* 118 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12662,7 +12802,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Ingredient = __webpack_require__(117);
+var _Ingredient = __webpack_require__(119);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12739,7 +12879,7 @@ var IngredientList = exports.IngredientList = function (_React$Component) {
 }(_react2.default.Component);
 
 /***/ }),
-/* 119 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12756,9 +12896,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _TextBox = __webpack_require__(120);
+var _TextBox = __webpack_require__(122);
 
-var _IngredientList = __webpack_require__(118);
+var _IngredientList = __webpack_require__(120);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12899,7 +13039,7 @@ var IngredientListBuilder = exports.IngredientListBuilder = function (_React$Com
 }(_react2.default.Component);
 
 /***/ }),
-/* 120 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12985,7 +13125,7 @@ var TextBox = exports.TextBox = function (_React$Component) {
 }(_react2.default.Component);
 
 /***/ }),
-/* 121 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13071,146 +13211,6 @@ var Filters = exports.Filters = function (_React$Component) {
     }]);
 
     return Filters;
-}(_react2.default.Component);
-
-/***/ }),
-/* 122 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.RecipeBox = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeBox.jsx - EmptyMyFridge
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeBox component.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-var RecipeBox = exports.RecipeBox = function (_React$Component) {
-    _inherits(RecipeBox, _React$Component);
-
-    function RecipeBox() {
-        _classCallCheck(this, RecipeBox);
-
-        return _possibleConstructorReturn(this, (RecipeBox.__proto__ || Object.getPrototypeOf(RecipeBox)).apply(this, arguments));
-    }
-
-    _createClass(RecipeBox, [{
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "div",
-                { className: "recipeBox" },
-                _react2.default.createElement(
-                    "section",
-                    { className: "buttons" },
-                    _react2.default.createElement(
-                        "button",
-                        { className: "like" },
-                        "Like"
-                    ),
-                    _react2.default.createElement(
-                        "button",
-                        { className: "save" },
-                        "Save"
-                    )
-                ),
-                _react2.default.createElement(
-                    "section",
-                    { className: "pic" },
-                    _react2.default.createElement("img", null)
-                ),
-                _react2.default.createElement(
-                    "section",
-                    { className: "recipeName" },
-                    this.props.name
-                )
-            );
-        }
-    }]);
-
-    return RecipeBox;
-}(_react2.default.Component);
-
-/***/ }),
-/* 123 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.RecipeGrid = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _RecipeBox = __webpack_require__(122);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeGrid.jsx - EmptyMyFridge
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeGrid component.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
-    _inherits(RecipeGrid, _React$Component);
-
-    function RecipeGrid() {
-        _classCallCheck(this, RecipeGrid);
-
-        return _possibleConstructorReturn(this, (RecipeGrid.__proto__ || Object.getPrototypeOf(RecipeGrid)).apply(this, arguments));
-    }
-
-    _createClass(RecipeGrid, [{
-        key: 'render',
-        value: function render() {
-            // Array to store the recipe boxes
-            var recipeBoxes = [];
-
-            for (var i = 0; i < this.props.recipes.length; i++) {
-                // Append new recipe box to recipeBox array
-                recipeBoxes.push(_react2.default.createElement(_RecipeBox.RecipeBox, {
-                    name: this.props.recipes[i].name,
-                    key: i
-                }));
-            }
-
-            return _react2.default.createElement(
-                'div',
-                { id: 'recipeGrid' },
-                recipeBoxes
-            );
-        }
-    }]);
-
-    return RecipeGrid;
 }(_react2.default.Component);
 
 /***/ }),
