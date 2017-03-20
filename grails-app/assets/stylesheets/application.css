@@ -10,6 +10,7 @@
 *= require main
 *= require views/home
 *= require views/results
+*= require views/profile
 *= require header
 *= require_self
 */
