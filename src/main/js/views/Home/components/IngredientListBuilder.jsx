@@ -84,6 +84,18 @@ export class IngredientListBuilder extends React.Component {
             }
         }
 
+        // Add filters to URL if specified
+        const filterType = document.getElementById('filter_type').value;
+        const restrictionType = document.getElementById('filter_restriction').value;
+
+        if (filterType !== "none") {
+            ingredientListURL += "?type=" + document.getElementById('filter_type').value;
+        }
+
+        if (restrictionType !== "none") {
+            ingredientListURL += "?restriction=" + document.getElementById('filter_restriction').value;
+        }
+
         // Set the current window to the new URL
         window.location.href = ingredientListURL;
     }
