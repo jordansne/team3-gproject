@@ -23,15 +23,18 @@ export class IngredientListBuilder extends React.Component {
      * Add an ingredient to the list.
      */
     addToList() {
-        // Copy array & add the ingredient to new array
-        const ingredientListNew = this.state.ingredientList.slice();
-        ingredientListNew.push(this.state.textBoxValue);
+        // If textBox has content..
+        if (this.state.textBoxValue !== "") {
+            // Copy array & add the ingredient to new array
+            const ingredientListNew = this.state.ingredientList.slice();
+            ingredientListNew.push(this.state.textBoxValue);
 
-        // Update state
-        this.setState({
-            ingredientList : ingredientListNew,
-            textBoxValue: ""
-        });
+            // Update state
+            this.setState({
+                ingredientList: ingredientListNew,
+                textBoxValue: ""
+            });
+        }
     }
 
     /**
@@ -79,6 +82,18 @@ export class IngredientListBuilder extends React.Component {
             if (i < this.state.ingredientList.length - 1) {
                 ingredientListURL += ",";
             }
+        }
+
+        // Add filters to URL if specified
+        const filterType = document.getElementById('filter_type').value;
+        const restrictionType = document.getElementById('filter_restriction').value;
+
+        if (filterType !== "none") {
+            ingredientListURL += "?type=" + document.getElementById('filter_type').value;
+        }
+
+        if (restrictionType !== "none") {
+            ingredientListURL += "?restriction=" + document.getElementById('filter_restriction').value;
         }
 
         // Set the current window to the new URL
