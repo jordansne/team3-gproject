@@ -5,9 +5,7 @@
 
 import React from 'react';
 
-import { RecipeGrid } from './components/RecipeGrid.jsx';
-import { Filters } from './components/Filters.jsx';
-import { RecipeDetails } from './components/RecipeDetails.jsx';
+import { RecipeGrid } from '../../components/RecipeGrid.jsx';
 
 export class RecipeView extends React.Component {
 
@@ -85,7 +83,6 @@ export class RecipeView extends React.Component {
 
         return (
             <div>
-                <Filters/>
                 <h1>Recipe Search Results</h1>
                 <RecipeGrid recipes={this.state.recipeList} currentID={(id)=>this.currentID(id)}/>
                 {recipeModal}
@@ -93,4 +90,3 @@ export class RecipeView extends React.Component {
         );
     }
 }
-
