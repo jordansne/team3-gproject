@@ -6,7 +6,6 @@
 import React from 'react';
 
 import { RecipeGrid } from '../../components/RecipeGrid.jsx';
-import { RecipeDetails } from '../../components/RecipeDetails.jsx';
 
 export class RecipeView extends React.Component {
 
@@ -15,8 +14,7 @@ export class RecipeView extends React.Component {
 
         // Initialize state with blank array
         this.state = {
-            recipeList: [],
-            currentDetailsID: 0
+            recipeList: []
         };
     }
 
@@ -32,8 +30,7 @@ export class RecipeView extends React.Component {
                 // Process the JSON and update the component's state
                 response.json().then((recipeObject) => {
                     this.setState({
-                        recipeList: recipeObject,
-                        currentDetailsID: this.state.currentDetailsID
+                        recipeList: recipeObject
                     });
                 })
 
@@ -69,32 +66,11 @@ export class RecipeView extends React.Component {
         return paramString;
     }
 
-    /**
-     * Callback to open details window using the recipe ID.
-     */
-    setDetailsView(recipeID) {
-       this.setState({recipeList: this.state.recipeList, currentDetailsID: recipeID});
-    }
-
-    /**
-     * Callback to close the details window.
-     */
-    closeDetails() {
-        this.setDetailsView(0);
-    }
-
     render() {
-        let recipeModal = "";
-
-        if (this.state.currentDetailsID !== 0) {
-            recipeModal = <RecipeDetails id={this.state.currentDetailsID} close={() => this.closeDetails()}/>;
-        }
-
         return (
             <div>
                 <h1>Recipe Search Results</h1>
-                <RecipeGrid recipes={this.state.recipeList} setDetailsView={(id)=>this.setDetailsView(id)}/>
-                {recipeModal}
+                <RecipeGrid recipes={this.state.recipeList}/>
             </div>
         );
     }

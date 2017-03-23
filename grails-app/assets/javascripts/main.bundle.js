@@ -12455,8 +12455,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _RecipeGrid = __webpack_require__(125);
 
-var _RecipeDetails = __webpack_require__(124);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12478,8 +12476,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (RecipeView.__proto__ || Object.getPrototypeOf(RecipeView)).call(this));
 
         _this.state = {
-            recipeList: [],
-            currentDetailsID: 0
+            recipeList: []
         };
         return _this;
     }
@@ -12502,8 +12499,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
                     // Process the JSON and update the component's state
                     response.json().then(function (recipeObject) {
                         _this2.setState({
-                            recipeList: recipeObject,
-                            currentDetailsID: _this2.state.currentDetailsID
+                            recipeList: recipeObject
                         });
                     });
                 } else {
@@ -12539,39 +12535,9 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
 
             return paramString;
         }
-
-        /**
-         * Callback to open details window using the recipe ID.
-         */
-
-    }, {
-        key: 'setDetailsView',
-        value: function setDetailsView(recipeID) {
-            this.setState({ recipeList: this.state.recipeList, currentDetailsID: recipeID });
-        }
-
-        /**
-         * Callback to close the details window.
-         */
-
-    }, {
-        key: 'closeDetails',
-        value: function closeDetails() {
-            this.setDetailsView(0);
-        }
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
-
-            var recipeModal = "";
-
-            if (this.state.currentDetailsID !== 0) {
-                recipeModal = _react2.default.createElement(_RecipeDetails.RecipeDetails, { id: this.state.currentDetailsID, close: function close() {
-                        return _this3.closeDetails();
-                    } });
-            }
-
             return _react2.default.createElement(
                 'div',
                 null,
@@ -12580,10 +12546,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
                     null,
                     'Recipe Search Results'
                 ),
-                _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList, setDetailsView: function setDetailsView(id) {
-                        return _this3.setDetailsView(id);
-                    } }),
-                recipeModal
+                _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList })
             );
         }
     }]);
@@ -12832,6 +12795,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _RecipeBox = __webpack_require__(123);
 
+var _RecipeDetails = __webpack_require__(124);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12849,12 +12814,42 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
     function RecipeGrid() {
         _classCallCheck(this, RecipeGrid);
 
-        return _possibleConstructorReturn(this, (RecipeGrid.__proto__ || Object.getPrototypeOf(RecipeGrid)).apply(this, arguments));
+        // Initialize state with blank array
+        var _this = _possibleConstructorReturn(this, (RecipeGrid.__proto__ || Object.getPrototypeOf(RecipeGrid)).call(this));
+
+        _this.state = {
+            currentDetailsID: 0
+        };
+        return _this;
     }
 
+    /**
+     * Callback to open details window using the recipe ID.
+     */
+
+
     _createClass(RecipeGrid, [{
+        key: 'setDetailsView',
+        value: function setDetailsView(recipeID) {
+            this.setState({
+                currentDetailsID: recipeID
+            });
+        }
+
+        /**
+         * Callback to close the details window.
+         */
+
+    }, {
+        key: 'closeDetails',
+        value: function closeDetails() {
+            this.setDetailsView(0);
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             // Array to store the recipe boxes
             var recipeBoxes = [];
 
@@ -12865,14 +12860,28 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                     key: i,
                     id: this.props.recipes[i].identity,
                     image: this.props.recipes[i].image,
-                    setDetailsView: this.props.setDetailsView
+                    setDetailsView: function setDetailsView(id) {
+                        return _this2.setDetailsView(id);
+                    }
                 }));
+            }
+
+            var recipeModal = "";
+            if (this.state.currentDetailsID !== 0) {
+                recipeModal = _react2.default.createElement(_RecipeDetails.RecipeDetails, { id: this.state.currentDetailsID, close: function close() {
+                        return _this2.closeDetails();
+                    } });
             }
 
             return _react2.default.createElement(
                 'div',
-                { id: 'recipeGrid' },
-                recipeBoxes
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { id: 'recipeGrid' },
+                    recipeBoxes
+                ),
+                recipeModal
             );
         }
     }]);
