@@ -19,6 +19,33 @@ export class CommentList extends React.Component {
 
     componentDidMount() {
         // TODO: Setup firebase API call to retrieve comments
+        var myFirebaseRef = firebase.database().ref('comments/');
+
+        var pushedRef;
+
+        var sendMessage = function () {
+            pushedRef = myFirebaseRef.push({
+                name: document.getElementById('name').value,
+                //name: firebase.auth().currentUser.displayName,
+                //uid: firebase.auth().currentUser.uid,
+                message: document.getElementById('message').value
+            });
+            document.getElementById('message').value = '';
+        };
+
+
+
+        myFirebaseRef.on('child_added', function(snapshot) {
+            var message = snapshot.val();
+            addMessage(message.name, message.message);
+        });
+
+
+        var addMessage = function(name, message) {
+            var messages = document.getElementById('messages');
+            messages.innerHTML = '<dt class="entry">'+name+'</dt><dd class="entry"> '+message+'</dd>'+messages.innerHTML;
+        };
+
     }
 
     render() {
