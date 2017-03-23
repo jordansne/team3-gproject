@@ -8,8 +8,12 @@ div#recipeGrid {
 }
 
 div.recipeBox {
-    background-color: #e5e5e5;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center;
     border-radius: 3px;
+
+    cursor: pointer;
 
     width: 28%;
     height: 150px;
@@ -32,7 +36,19 @@ div.recipeBox section.recipeName {
     position: relative;
     opacity: 1;
     z-index: 5;
+    font-weight: bold;
+}
 
+div.recipeBox div.titleBackground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 20%;
+    background-color: rgba(0,0,0,0.5);
+    display: table;
+    z-index: 2;
 }
 
 div.recipeBox button {
@@ -81,6 +97,32 @@ div.recipeDetails {
     padding: 20px;
 }
 
+div.recipeDetails button {
+    font-size: 0.85em;
+    border-radius: 3px;
+    background-color: #4f3366;
+    padding: 0.5em;
+    border: none;
+    color: white;
+}
+
+div.recipeDetails div.img {
+    width: 100%;
+    height: 40%;
+    margin-top: 10%;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+div.recipeDetails button.close {
+    float: right;
+}
+
+div.recipeDetails button.like {
+    float: left;
+}
+
 div.recipeSummary {
     font-size: 10pt;
 }
@@ -94,21 +136,4 @@ div.backdrop {
     z-index: auto;
     background-color: #000;
     opacity: 0.5;
-}
-
-div.recipeDetails button {
-    font-size: 0.85em;
-    border-radius: 3px;
-    background-color: #4f3366;
-    padding: 0.5em;
-    border: none;
-    color: white;
-}
-
-div.recipeDetails button.close {
-    float: right;
-}
-
-div.recipeDetails button.like {
-    float: left;
 }
