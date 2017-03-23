@@ -6,6 +6,8 @@
 import React from 'react';
 import Modal from 'react-overlays/lib/Modal';
 
+import { CommentList } from './CommentList.jsx';
+
 export class RecipeDetails extends React.Component {
 
     constructor() {
@@ -80,6 +82,8 @@ export class RecipeDetails extends React.Component {
                         </a>
 
                         <div className="recipeSummary" dangerouslySetInnerHTML={{__html: this.state.summary}}/>
+
+                        <CommentList id={this.props.id}/>
                     </div>
 
                 </Modal>
