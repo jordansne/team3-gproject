@@ -12613,10 +12613,9 @@ var boxStyle = {
     bottom: 0,
     left: 0,
     right: 0,
-    opacity: 0.5,
     width: '100%',
     height: '20%',
-    backgroundColor: '#000000',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     display: 'table',
     zIndex: '2'
 };
@@ -12669,7 +12668,11 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
                         _react2.default.createElement(
                             'section',
                             { className: 'recipeName' },
-                            this.props.name
+                            _react2.default.createElement(
+                                'b',
+                                null,
+                                this.props.name
+                            )
                         )
                     )
                 )
@@ -12776,7 +12779,8 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                 backgroundImage: 'url(' + this.state.image + ')',
                 backgroundSize: '100% auto',
                 backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center'
+                backgroundPosition: 'center',
+                marginTop: '10%'
 
             };
         }
@@ -12802,7 +12806,12 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                         { className: 'recipeDetails' },
                         _react2.default.createElement(
                             'button',
-                            { onClick: this.props.close },
+                            { className: 'like' },
+                            'Like'
+                        ),
+                        _react2.default.createElement(
+                            'button',
+                            { className: 'close', onClick: this.props.close },
                             'Close'
                         ),
                         _react2.default.createElement(
@@ -12810,11 +12819,7 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                             { href: this.state.url },
                             _react2.default.createElement('div', { style: this.getDivCSS() })
                         ),
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            this.state.summary
-                        )
+                        _react2.default.createElement('div', { className: 'recipeSummary', dangerouslySetInnerHTML: { __html: this.state.summary } })
                     )
                 )
             );

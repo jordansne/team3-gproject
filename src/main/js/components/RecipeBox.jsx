@@ -10,10 +10,9 @@ const boxStyle = {
     bottom: 0,
     left: 0,
     right: 0,
-    opacity: 0.5,
     width: '100%',
     height: '20%',
-    backgroundColor: '#000000',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     display: 'table',
     zIndex: '2'
 };
@@ -36,7 +35,7 @@ export class RecipeBox extends React.Component {
                     <button className="like">Like</button>
                     <button className="save">Save</button>
                     <div style = {boxStyle}>
-                        <section className="recipeName">{this.props.name}</section>
+                        <section className="recipeName"><b>{this.props.name}</b></section>
                     </div>
                 </section>
 

@@ -67,7 +67,8 @@ export class RecipeDetails extends React.Component {
             backgroundImage: 'url('+this.state.image+')',
             backgroundSize: '100% auto',
             backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center'
+            backgroundPosition: 'center',
+            marginTop: '10%'
 
         };
     }
@@ -86,11 +87,12 @@ export class RecipeDetails extends React.Component {
                 >
 
                     <div className="recipeDetails">
-                        <button onClick={this.props.close}>Close</button>
+                        <button className="like">Like</button>
+                        <button className="close" onClick={this.props.close}>Close</button>
                         <a href = {this.state.url}>
                             <div style ={this.getDivCSS()}></div>
                         </a>
-                        <div>{this.state.summary}</div>
+                        <div className="recipeSummary" dangerouslySetInnerHTML={{__html: this.state.summary}}></div>
 
 
                     </div>
