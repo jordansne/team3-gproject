@@ -60,6 +60,17 @@ export class RecipeDetails extends React.Component {
 
 
     }
+    getDivCSS() {
+        return {
+            width: "100%",
+            height: "40%",
+            backgroundImage: 'url('+this.state.image+')',
+            backgroundSize: '100% auto',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center'
+
+        };
+    }
 
     render() {
 
@@ -77,8 +88,9 @@ export class RecipeDetails extends React.Component {
                     <div className="recipeDetails">
                         <button onClick={this.props.close}>Close</button>
                         <a href = {this.state.url}>
-                            <img src = {this.state.image}/>
+                            <div style ={this.getDivCSS()}></div>
                         </a>
+                        <div>{this.state.summary}</div>
 
 
                     </div>

@@ -12608,6 +12608,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * RecipeBox component.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
 
+var boxStyle = {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    opacity: 0.5,
+    width: '100%',
+    height: '20%',
+    backgroundColor: '#000000',
+    display: 'table',
+    zIndex: '2'
+};
+
 var RecipeBox = exports.RecipeBox = function (_React$Component) {
     _inherits(RecipeBox, _React$Component);
 
@@ -12621,7 +12634,10 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
         key: 'getDivCSS',
         value: function getDivCSS() {
             return {
-                backgroundImage: 'url(' + this.props.image + ')'
+                backgroundImage: 'url(' + this.props.image + ')',
+                backgroundSize: '100% auto',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center'
             };
         }
     }, {
@@ -12646,12 +12662,16 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
                         'button',
                         { className: 'save' },
                         'Save'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { style: boxStyle },
+                        _react2.default.createElement(
+                            'section',
+                            { className: 'recipeName' },
+                            this.props.name
+                        )
                     )
-                ),
-                _react2.default.createElement(
-                    'section',
-                    { className: 'recipeName' },
-                    this.props.name
                 )
             );
         }
@@ -12748,6 +12768,19 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
             });
         }
     }, {
+        key: 'getDivCSS',
+        value: function getDivCSS() {
+            return {
+                width: "100%",
+                height: "40%",
+                backgroundImage: 'url(' + this.state.image + ')',
+                backgroundSize: '100% auto',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center'
+
+            };
+        }
+    }, {
         key: 'render',
         value: function render() {
 
@@ -12775,7 +12808,12 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                         _react2.default.createElement(
                             'a',
                             { href: this.state.url },
-                            _react2.default.createElement('img', { src: this.state.image })
+                            _react2.default.createElement('div', { style: this.getDivCSS() })
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            this.state.summary
                         )
                     )
                 )
