@@ -6,15 +6,17 @@
 import React from 'react';
 
 import { RecipeGrid } from '../../components/RecipeGrid.jsx';
+import { RecipeDetails } from '../../components/RecipeDetails.jsx';
+
 
 export class RecipeView extends React.Component {
 
     constructor() {
         super();
-
         // Initialize state with blank array
         this.state = {
-            recipeList: []
+            recipeList: [],
+            currentRecipeID: 0
         };
     }
 
@@ -30,7 +32,8 @@ export class RecipeView extends React.Component {
                 // Process the JSON and update the component's state
                 response.json().then((recipeObject) => {
                     this.setState({
-                        recipeList: recipeObject
+                        recipeList: recipeObject,
+                        currentRecipeID: this.state.currentRecipeID
                     });
                 })
 
@@ -49,7 +52,7 @@ export class RecipeView extends React.Component {
      * Takes the search parameters and converts to a GET API query string.
      */
     buildApiParams(search) {
-        let paramString = "/Ingredient/getRecipesByIngredients?ingredients=";
+        let paramString = "/Ingredient/getRecipesByComplex?foodtype=&diet=&cuisine=&ingredients=";
 
         const ingredientArray = search.ingredients.split(",");
         for (let i = 0; i < ingredientArray.length; i++) {
@@ -64,11 +67,27 @@ export class RecipeView extends React.Component {
         return paramString;
     }
 
+
+    currentID(id) {
+       this.setState({recipeList: this.state.recipeList, currentRecipeID: id});
+    }
+
+    close() {
+        this.setState({recipeList: this.state.recipeList, currentRecipeID: 0});
+    }
+
     render() {
+        let recipeModal = "";
+
+        if (this.state.currentRecipeID !== 0) {
+            recipeModal = <RecipeDetails id={this.state.currentRecipeID} close={() => this.close()}/>;
+        }
+
         return (
             <div>
                 <h1>Recipe Search Results</h1>
-                <RecipeGrid recipes={this.state.recipeList}/>
+                <RecipeGrid recipes={this.state.recipeList} currentID={(id)=>this.currentID(id)}/>
+                {recipeModal}
             </div>
         );
     }
