@@ -5,8 +5,34 @@
 
 import React from 'react';
 import { RecipeBox } from './RecipeBox.jsx';
+import { RecipeDetails } from './RecipeDetails.jsx';
 
 export class RecipeGrid extends React.Component {
+
+    constructor() {
+        super();
+
+        // Initialize state with blank array
+        this.state = {
+            currentDetailsID: 0
+        };
+    }
+
+    /**
+     * Callback to open details window using the recipe ID.
+     */
+    setDetailsView(recipeID) {
+        this.setState({
+            currentDetailsID: recipeID
+        });
+    }
+
+    /**
+     * Callback to close the details window.
+     */
+    closeDetails() {
+        this.setDetailsView(0);
+    }
 
     render() {
         // Array to store the recipe boxes
@@ -20,14 +46,22 @@ export class RecipeGrid extends React.Component {
                     key={i}
                     id={this.props.recipes[i].identity}
                     image={this.props.recipes[i].image}
-                    currentID={this.props.currentID}
+                    setDetailsView={(id) => this.setDetailsView(id)}
                 />
             );
         }
 
+        let recipeModal = "";
+        if (this.state.currentDetailsID !== 0) {
+            recipeModal = <RecipeDetails id={this.state.currentDetailsID} close={() => this.closeDetails()}/>;
+        }
+
         return(
-            <div id="recipeGrid">
-                {recipeBoxes}
+            <div>
+                <div id="recipeGrid">
+                    {recipeBoxes}
+                </div>
+                {recipeModal}
             </div>
         );
     }

@@ -12,7 +12,7 @@
 /* Full width Header Bar */
 header {
     font-size: 1em;
-    background-color: #f4f4f4;
+    background-color: #4f3366;
 
     position: relative;
     width: auto;
@@ -23,7 +23,7 @@ header {
 /* Header Bar Title (Replace with logo?) */
 header h1 {
     display: inline-block;
-
+    color: white;
     margin: 0em;
     padding: 1em 0em;
 }
@@ -58,7 +58,7 @@ header ul {
 /* Header bar link containers */
 header ul li {
     color: white;
-    background-color: rgba(110, 110, 110, 0.6);
+    background-color: rgba(108, 95, 110, 0.6);
 
     display: block;
     float: left;

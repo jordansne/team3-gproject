@@ -7,22 +7,25 @@ import React from 'react';
 
 export class RecipeBox extends React.Component {
 
-    getDivCSS() {
-        return {
-            backgroundImage: 'url('+this.props.image+')'
-        };
-    }
-
     render() {
         return (
-            <div className="recipeBox" onClick={() => this.props.currentID(this.props.id)} style={this.getDivCSS()}>
+            <div
+                className="recipeBox"
+                onClick={() => this.props.setDetailsView(this.props.id)}
+                style={{
+                    backgroundImage: 'url(' + this.props.image + ')'
+                }}
+            >
                 <section className="buttons">
                     <button className="like">Like</button>
                     <button className="save">Save</button>
+                    <div className="titleBackground">
+                        <section className="recipeName">
+                            {this.props.name}
+                        </section>
+                    </div>
                 </section>
-                <section className="recipeName">
-                    {this.props.name}
-                </section>
+
             </div>
         );
     }

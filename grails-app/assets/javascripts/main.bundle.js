@@ -8423,44 +8423,40 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * Recipe details component.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
 
-var modalStyle = {
-    position: 'fixed',
-    zIndex: 1040,
-    top: 0, bottom: 0, left: 0, right: 0
-};
-
-var backdropStyle = {
-    modalStyle: modalStyle,
-    zIndex: 'auto',
-    backgroundColor: '#000',
-    opacity: 0.5
-};
-
 var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
     _inherits(RecipeDetails, _React$Component);
 
     function RecipeDetails() {
         _classCallCheck(this, RecipeDetails);
 
+        // Initialize blank state
         var _this = _possibleConstructorReturn(this, (RecipeDetails.__proto__ || Object.getPrototypeOf(RecipeDetails)).call(this));
 
-        _this.state = { name: "", image: "", url: "", summary: "" };
+        _this.state = {
+            name: "",
+            image: "",
+            url: "",
+            summary: ""
+        };
         return _this;
     }
+
+    /**
+     * Beginning retrieving recipe data once mounted.
+     */
+
 
     _createClass(RecipeDetails, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
             var _this2 = this;
 
-            var apiURL = "/Ingredient/getRecipeInfo?recipeID=";
-            apiURL += this.props.id;
+            var apiURL = "/Ingredient/getRecipeInfo?recipeID=" + this.props.id;
 
             fetch(apiURL).then(function (response) {
                 if (response.ok) {
 
                     response.json().then(function (recipeObject) {
-
                         _this2.setState({
                             name: recipeObject["name"],
                             image: recipeObject["image"],
@@ -8480,6 +8476,15 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            // CSS for the Modal (pop-up window)
+            var modalStyle = {
+                position: 'fixed',
+                zIndex: 1040,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0
+            };
 
             return _react2.default.createElement(
                 'div',
@@ -8499,14 +8504,20 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                         { className: 'recipeDetails' },
                         _react2.default.createElement(
                             'button',
-                            { onClick: this.props.close },
+                            { className: 'like' },
+                            'Like'
+                        ),
+                        _react2.default.createElement(
+                            'button',
+                            { className: 'close', onClick: this.props.close },
                             'Close'
                         ),
                         _react2.default.createElement(
                             'a',
                             { href: this.state.url },
-                            _react2.default.createElement('img', { src: this.state.image })
-                        )
+                            _react2.default.createElement('div', { style: { backgroundImage: 'url(' + this.state.image + ')' }, className: 'img' })
+                        ),
+                        _react2.default.createElement('div', { className: 'recipeSummary', dangerouslySetInnerHTML: { __html: this.state.summary } })
                     )
                 )
             );
@@ -8536,6 +8547,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _RecipeBox = __webpack_require__(126);
 
+var _RecipeDetails = __webpack_require__(75);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -8553,12 +8566,42 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
     function RecipeGrid() {
         _classCallCheck(this, RecipeGrid);
 
-        return _possibleConstructorReturn(this, (RecipeGrid.__proto__ || Object.getPrototypeOf(RecipeGrid)).apply(this, arguments));
+        // Initialize state with blank array
+        var _this = _possibleConstructorReturn(this, (RecipeGrid.__proto__ || Object.getPrototypeOf(RecipeGrid)).call(this));
+
+        _this.state = {
+            currentDetailsID: 0
+        };
+        return _this;
     }
 
+    /**
+     * Callback to open details window using the recipe ID.
+     */
+
+
     _createClass(RecipeGrid, [{
+        key: 'setDetailsView',
+        value: function setDetailsView(recipeID) {
+            this.setState({
+                currentDetailsID: recipeID
+            });
+        }
+
+        /**
+         * Callback to close the details window.
+         */
+
+    }, {
+        key: 'closeDetails',
+        value: function closeDetails() {
+            this.setDetailsView(0);
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             // Array to store the recipe boxes
             var recipeBoxes = [];
 
@@ -8569,14 +8612,28 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                     key: i,
                     id: this.props.recipes[i].identity,
                     image: this.props.recipes[i].image,
-                    currentID: this.props.currentID
+                    setDetailsView: function setDetailsView(id) {
+                        return _this2.setDetailsView(id);
+                    }
                 }));
+            }
+
+            var recipeModal = "";
+            if (this.state.currentDetailsID !== 0) {
+                recipeModal = _react2.default.createElement(_RecipeDetails.RecipeDetails, { id: this.state.currentDetailsID, close: function close() {
+                        return _this2.closeDetails();
+                    } });
             }
 
             return _react2.default.createElement(
                 'div',
-                { id: 'recipeGrid' },
-                recipeBoxes
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { id: 'recipeGrid' },
+                    recipeBoxes
+                ),
+                recipeModal
             );
         }
     }]);
@@ -12771,8 +12828,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _RecipeGrid = __webpack_require__(76);
 
-var _RecipeDetails = __webpack_require__(75);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12794,8 +12849,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (RecipeView.__proto__ || Object.getPrototypeOf(RecipeView)).call(this));
 
         _this.state = {
-            recipeList: [],
-            currentRecipeID: 0
+            recipeList: []
         };
         return _this;
     }
@@ -12818,8 +12872,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
                     // Process the JSON and update the component's state
                     response.json().then(function (recipeObject) {
                         _this2.setState({
-                            recipeList: recipeObject,
-                            currentRecipeID: _this2.state.currentRecipeID
+                            recipeList: recipeObject
                         });
                     });
                 } else {
@@ -12841,6 +12894,8 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
         value: function buildApiParams(search) {
             var paramString = "/Ingredient/getRecipesByComplex?foodtype=&diet=&cuisine=&ingredients=";
 
+            // TODO: Enable filter search in query
+
             var ingredientArray = search.ingredients.split(",");
             for (var i = 0; i < ingredientArray.length; i++) {
                 paramString += ingredientArray[i];
@@ -12854,28 +12909,8 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
             return paramString;
         }
     }, {
-        key: 'currentID',
-        value: function currentID(id) {
-            this.setState({ recipeList: this.state.recipeList, currentRecipeID: id });
-        }
-    }, {
-        key: 'close',
-        value: function close() {
-            this.setState({ recipeList: this.state.recipeList, currentRecipeID: 0 });
-        }
-    }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
-
-            var recipeModal = "";
-
-            if (this.state.currentRecipeID !== 0) {
-                recipeModal = _react2.default.createElement(_RecipeDetails.RecipeDetails, { id: this.state.currentRecipeID, close: function close() {
-                        return _this3.close();
-                    } });
-            }
-
             return _react2.default.createElement(
                 'div',
                 null,
@@ -12884,10 +12919,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
                     null,
                     'Recipe Search Results'
                 ),
-                _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList, currentID: function currentID(id) {
-                        return _this3.currentID(id);
-                    } }),
-                recipeModal
+                _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList })
             );
         }
     }]);
@@ -12934,22 +12966,21 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
     }
 
     _createClass(RecipeBox, [{
-        key: 'getDivCSS',
-        value: function getDivCSS() {
-            return {
-                backgroundImage: 'url(' + this.props.image + ')'
-            };
-        }
-    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
 
             return _react2.default.createElement(
                 'div',
-                { className: 'recipeBox', onClick: function onClick() {
-                        return _this2.props.currentID(_this2.props.id);
-                    }, style: this.getDivCSS() },
+                {
+                    className: 'recipeBox',
+                    onClick: function onClick() {
+                        return _this2.props.setDetailsView(_this2.props.id);
+                    },
+                    style: {
+                        backgroundImage: 'url(' + this.props.image + ')'
+                    }
+                },
                 _react2.default.createElement(
                     'section',
                     { className: 'buttons' },
@@ -12962,12 +12993,16 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
                         'button',
                         { className: 'save' },
                         'Save'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'titleBackground' },
+                        _react2.default.createElement(
+                            'section',
+                            { className: 'recipeName' },
+                            this.props.name
+                        )
                     )
-                ),
-                _react2.default.createElement(
-                    'section',
-                    { className: 'recipeName' },
-                    this.props.name
                 )
             );
         }

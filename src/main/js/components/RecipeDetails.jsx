@@ -6,40 +6,30 @@
 import React from 'react';
 import Modal from 'react-overlays/lib/Modal';
 
-
-const modalStyle = {
-    position: 'fixed',
-    zIndex: 1040,
-    top: 0, bottom: 0, left: 0, right: 0
-};
-
-
-
-const backdropStyle = {
-    modalStyle,
-    zIndex: 'auto',
-    backgroundColor: '#000',
-    opacity: 0.5
-};
-
 export class RecipeDetails extends React.Component {
 
-    constructor(){
+    constructor() {
         super();
-        this.state={name: "", image: "", url: "", summary: "" };
+
+        // Initialize blank state
+        this.state = {
+            name: "",
+            image: "",
+            url: "",
+            summary: ""
+        };
     }
 
+    /**
+     * Beginning retrieving recipe data once mounted.
+     */
     componentDidMount() {
-
-
-        let apiURL = "/Ingredient/getRecipeInfo?recipeID=";
-        apiURL += this.props.id;
+        let apiURL = "/Ingredient/getRecipeInfo?recipeID=" + this.props.id;
 
         fetch(apiURL).then((response) => {
             if (response.ok) {
 
                 response.json().then((recipeObject) => {
-
                     this.setState({
                         name: recipeObject["name"],
                         image: recipeObject["image"],
@@ -57,11 +47,18 @@ export class RecipeDetails extends React.Component {
             // TODO: Handle connection error
             console.error("Server response error: " + error.message);
         });
-
-
     }
 
     render() {
+        // CSS for the Modal (pop-up window)
+        const modalStyle = {
+            position: 'fixed',
+            zIndex: 1040,
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0
+        };
 
         return (
             <div>
@@ -75,12 +72,14 @@ export class RecipeDetails extends React.Component {
                 >
 
                     <div className="recipeDetails">
-                        <button onClick={this.props.close}>Close</button>
-                        <a href = {this.state.url}>
-                            <img src = {this.state.image}/>
+                        <button className="like">Like</button>
+                        <button className="close" onClick={this.props.close}>Close</button>
+
+                        <a href={this.state.url}>
+                            <div style={{backgroundImage: 'url(' + this.state.image + ')'}} className="img"/>
                         </a>
 
-
+                        <div className="recipeSummary" dangerouslySetInnerHTML={{__html: this.state.summary}}/>
                     </div>
 
                 </Modal>
