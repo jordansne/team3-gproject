@@ -12323,7 +12323,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = __webpack_require__(44);
 
-var _UserBox = __webpack_require__(126);
+var _UserBox = __webpack_require__(127);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12403,7 +12403,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _IngredientListBuilder = __webpack_require__(129);
+var _IngredientListBuilder = __webpack_require__(130);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12453,9 +12453,9 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _RecipeGrid = __webpack_require__(124);
+var _RecipeGrid = __webpack_require__(125);
 
-var _RecipeDetails = __webpack_require__(131);
+var _RecipeDetails = __webpack_require__(124);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12670,6 +12670,132 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.RecipeDetails = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(3);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Modal = __webpack_require__(242);
+
+var _Modal2 = _interopRequireDefault(_Modal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeDetails.jsx - EmptyMyFridge
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Recipe details component.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+var modalStyle = {
+    position: 'fixed',
+    zIndex: 1040,
+    top: 0, bottom: 0, left: 0, right: 0
+};
+
+var backdropStyle = {
+    modalStyle: modalStyle,
+    zIndex: 'auto',
+    backgroundColor: '#000',
+    opacity: 0.5
+};
+
+var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
+    _inherits(RecipeDetails, _React$Component);
+
+    function RecipeDetails() {
+        _classCallCheck(this, RecipeDetails);
+
+        var _this = _possibleConstructorReturn(this, (RecipeDetails.__proto__ || Object.getPrototypeOf(RecipeDetails)).call(this));
+
+        _this.state = { name: "", image: "", url: "", summary: "" };
+        return _this;
+    }
+
+    _createClass(RecipeDetails, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            var apiURL = "/Ingredient/getRecipeInfo?recipeID=";
+            apiURL += this.props.id;
+
+            fetch(apiURL).then(function (response) {
+                if (response.ok) {
+
+                    response.json().then(function (recipeObject) {
+
+                        _this2.setState({
+                            name: recipeObject["name"],
+                            image: recipeObject["image"],
+                            url: recipeObject["url"],
+                            summary: recipeObject["summary"]
+                        });
+                    });
+                } else {
+                    // TODO: Handle server response error
+                    console.error("Server response error: " + response.message);
+                }
+            }).catch(function (error) {
+                // TODO: Handle connection error
+                console.error("Server response error: " + error.message);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    _Modal2.default,
+                    {
+                        'aria-labelledby': 'modal-label',
+                        style: modalStyle,
+                        backdrop: true,
+                        backdropClassName: 'backdrop',
+                        onHide: this.props.close,
+                        show: true
+                    },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'recipeDetails' },
+                        _react2.default.createElement(
+                            'button',
+                            { onClick: this.props.close },
+                            'Close'
+                        ),
+                        _react2.default.createElement(
+                            'a',
+                            { href: this.state.url },
+                            _react2.default.createElement('img', { src: this.state.image })
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return RecipeDetails;
+}(_react2.default.Component);
+
+/***/ }),
+/* 125 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.RecipeGrid = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -12729,7 +12855,7 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
 }(_react2.default.Component);
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12803,7 +12929,7 @@ var LoginButton = exports.LoginButton = function (_React$Component) {
 }(_react2.default.Component);
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12820,7 +12946,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _LoginButton = __webpack_require__(125);
+var _LoginButton = __webpack_require__(126);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12961,7 +13087,7 @@ var UserBox = exports.UserBox = function (_React$Component) {
 }(_react2.default.Component);
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13026,7 +13152,7 @@ var Ingredient = exports.Ingredient = function (_React$Component) {
 }(_react2.default.Component);
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13043,7 +13169,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Ingredient = __webpack_require__(127);
+var _Ingredient = __webpack_require__(128);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13120,7 +13246,7 @@ var IngredientList = exports.IngredientList = function (_React$Component) {
 }(_react2.default.Component);
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13137,9 +13263,9 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _TextBox = __webpack_require__(130);
+var _TextBox = __webpack_require__(131);
 
-var _IngredientList = __webpack_require__(128);
+var _IngredientList = __webpack_require__(129);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13292,7 +13418,7 @@ var IngredientListBuilder = exports.IngredientListBuilder = function (_React$Com
 }(_react2.default.Component);
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13463,132 +13589,6 @@ var TextBox = exports.TextBox = function (_React$Component) {
     }]);
 
     return TextBox;
-}(_react2.default.Component);
-
-/***/ }),
-/* 131 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.RecipeDetails = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(3);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _Modal = __webpack_require__(242);
-
-var _Modal2 = _interopRequireDefault(_Modal);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * RecipeDetails.jsx - EmptyMyFridge
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Recipe details component.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-var modalStyle = {
-    position: 'fixed',
-    zIndex: 1040,
-    top: 0, bottom: 0, left: 0, right: 0
-};
-
-var backdropStyle = {
-    modalStyle: modalStyle,
-    zIndex: 'auto',
-    backgroundColor: '#000',
-    opacity: 0.5
-};
-
-var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
-    _inherits(RecipeDetails, _React$Component);
-
-    function RecipeDetails() {
-        _classCallCheck(this, RecipeDetails);
-
-        var _this = _possibleConstructorReturn(this, (RecipeDetails.__proto__ || Object.getPrototypeOf(RecipeDetails)).call(this));
-
-        _this.state = { name: "", image: "", url: "", summary: "" };
-        return _this;
-    }
-
-    _createClass(RecipeDetails, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            var apiURL = "/Ingredient/getRecipeInfo?recipeID=";
-            apiURL += this.props.id;
-
-            fetch(apiURL).then(function (response) {
-                if (response.ok) {
-
-                    response.json().then(function (recipeObject) {
-
-                        _this2.setState({
-                            name: recipeObject["name"],
-                            image: recipeObject["image"],
-                            url: recipeObject["url"],
-                            summary: recipeObject["summary"]
-                        });
-                    });
-                } else {
-                    // TODO: Handle server response error
-                    console.error("Server response error: " + response.message);
-                }
-            }).catch(function (error) {
-                // TODO: Handle connection error
-                console.error("Server response error: " + error.message);
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    _Modal2.default,
-                    {
-                        'aria-labelledby': 'modal-label',
-                        style: modalStyle,
-                        backdrop: true,
-                        backdropClassName: 'backdrop',
-                        onHide: this.props.close,
-                        show: true
-                    },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'recipeDetails' },
-                        _react2.default.createElement(
-                            'button',
-                            { onClick: this.props.close },
-                            'Close'
-                        ),
-                        _react2.default.createElement(
-                            'a',
-                            { href: this.state.url },
-                            _react2.default.createElement('img', { src: this.state.image, width: '50%', height: '50%' })
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return RecipeDetails;
 }(_react2.default.Component);
 
 /***/ }),

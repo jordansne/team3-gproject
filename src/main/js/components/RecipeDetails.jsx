@@ -77,7 +77,7 @@ export class RecipeDetails extends React.Component {
                     <div className="recipeDetails">
                         <button onClick={this.props.close}>Close</button>
                         <a href = {this.state.url}>
-                            <img src = {this.state.image} style = {imgStyle}/>
+                            <img src = {this.state.image}/>
                         </a>
 
 
