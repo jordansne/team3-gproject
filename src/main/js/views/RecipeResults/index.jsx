@@ -6,6 +6,8 @@
 import React from 'react';
 
 import { RecipeGrid } from '../../components/RecipeGrid.jsx';
+import { RecipeDetails } from './components/RecipeDetails.jsx';
+
 
 export class RecipeView extends React.Component {
 
@@ -50,7 +52,7 @@ export class RecipeView extends React.Component {
      * Takes the search parameters and converts to a GET API query string.
      */
     buildApiParams(search) {
-        let paramString = "/Ingredient/getRecipesByIngredients?ingredients=";
+        let paramString = "/Ingredient/getRecipesByComplex?foodtype=&diet=&cuisine=&ingredients=";
 
         const ingredientArray = search.ingredients.split(",");
         for (let i = 0; i < ingredientArray.length; i++) {
