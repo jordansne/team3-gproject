@@ -9,6 +9,23 @@
  * ======================================================
  */
 
+/* Entire profile component. */
+div#profile {
+    position: relative;
+}
+
+/* User preference area. */
+div#profile aside#pref {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1em;
+}
+
+div#profile aside#pref h2 {
+    margin-top: 0;
+}
+
 /* Filter dropdown themselves. */
 div#profile select#filterSetting {
     box-sizing: content-box;

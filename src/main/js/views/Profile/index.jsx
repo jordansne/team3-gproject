@@ -90,11 +90,15 @@ export class Profile extends React.Component {
                     <h1>User Profile</h1>
                     <p>Currently Signed in as: {firebase.auth().currentUser.displayName}</p>
 
+                    <aside id="pref">
+                        <h2>Preferences</h2>
+                        <FilterSpecifier/>
+                    </aside>
+
                     <h2>Liked Recipes</h2>
                     <RecipeGrid recipes={this.state.likedRecipes}/>
 
                     <h2>User Settings</h2>
-                    <FilterSpecifier/>
                     <button id="deleteAccount">
                         Delete Account
                     </button>
