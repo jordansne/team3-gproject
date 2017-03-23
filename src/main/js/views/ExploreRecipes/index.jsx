@@ -15,8 +15,7 @@ export class ExploreRecipe extends React.Component {
         super();
         // Initialize state with blank array
         this.state = {
-            recipeList: [],
-            currentRecipeID: 0
+            recipeList: []
         };
     }
 
@@ -32,8 +31,7 @@ export class ExploreRecipe extends React.Component {
                 // Process the JSON and update the component's state
                 response.json().then((recipeObject) => {
                     this.setState({
-                        recipeList: recipeObject,
-                        currentRecipeID: this.state.currentRecipeID
+                        recipeList: recipeObject
                     });
                 })
 
@@ -48,26 +46,11 @@ export class ExploreRecipe extends React.Component {
         });
     }
 
-    currentID(id) {
-        this.setState({recipeList: this.state.recipeList, currentRecipeID: id});
-    }
-
-    close() {
-        this.setState({recipeList: this.state.recipeList, currentRecipeID: 0});
-    }
-
     render() {
-        let recipeModal = "";
-
-        if (this.state.currentRecipeID !== 0) {
-            recipeModal = <RecipeDetails id={this.state.currentRecipeID} close={() => this.close()}/>;
-        }
-
         return (
             <div>
                 <h1>Explore Recipes</h1>
-                <RecipeGrid recipes={this.state.recipeList} currentID={(id)=>this.currentID(id)}/>
-                {recipeModal}
+                <RecipeGrid recipes={this.state.recipeList}/>
             </div>
         );
     }

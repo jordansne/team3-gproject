@@ -12597,8 +12597,7 @@ var ExploreRecipe = exports.ExploreRecipe = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (ExploreRecipe.__proto__ || Object.getPrototypeOf(ExploreRecipe)).call(this));
 
         _this.state = {
-            recipeList: [],
-            currentRecipeID: 0
+            recipeList: []
         };
         return _this;
     }
@@ -12621,8 +12620,7 @@ var ExploreRecipe = exports.ExploreRecipe = function (_React$Component) {
                     // Process the JSON and update the component's state
                     response.json().then(function (recipeObject) {
                         _this2.setState({
-                            recipeList: recipeObject,
-                            currentRecipeID: _this2.state.currentRecipeID
+                            recipeList: recipeObject
                         });
                     });
                 } else {
@@ -12635,28 +12633,8 @@ var ExploreRecipe = exports.ExploreRecipe = function (_React$Component) {
             });
         }
     }, {
-        key: 'currentID',
-        value: function currentID(id) {
-            this.setState({ recipeList: this.state.recipeList, currentRecipeID: id });
-        }
-    }, {
-        key: 'close',
-        value: function close() {
-            this.setState({ recipeList: this.state.recipeList, currentRecipeID: 0 });
-        }
-    }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
-
-            var recipeModal = "";
-
-            if (this.state.currentRecipeID !== 0) {
-                recipeModal = _react2.default.createElement(_RecipeDetails.RecipeDetails, { id: this.state.currentRecipeID, close: function close() {
-                        return _this3.close();
-                    } });
-            }
-
             return _react2.default.createElement(
                 'div',
                 null,
@@ -12665,10 +12643,7 @@ var ExploreRecipe = exports.ExploreRecipe = function (_React$Component) {
                     null,
                     'Explore Recipes'
                 ),
-                _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList, currentID: function currentID(id) {
-                        return _this3.currentID(id);
-                    } }),
-                recipeModal
+                _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList })
             );
         }
     }]);
