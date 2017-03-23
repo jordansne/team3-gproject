@@ -5,13 +5,17 @@
 
 import React from 'react';
 
+import { FilterSpecifier } from './components/FilterSpecifier.jsx';
+import { RecipeGrid } from '../../components/RecipeGrid.jsx';
+
 export class Profile extends React.Component {
 
     constructor() {
         super();
 
         this.state = {
-            signedIn: false
+            signedIn: false,
+            likedRecipes: []
         };
     }
 
@@ -24,11 +28,13 @@ export class Profile extends React.Component {
         this.unregisterAuthEvent = firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 this.setState({
-                    signedIn: true
+                    signedIn: true,
+                    likedRecipes: this.retrieveLikedRecipes()
                 });
             } else {
                 this.setState({
-                    signedIn: false
+                    signedIn: false,
+                    likedRecipes: []
                 });
             }
         });
@@ -42,6 +48,38 @@ export class Profile extends React.Component {
         this.unregisterAuthEvent();
     }
 
+    /**
+     * Retrieve a list of liked recipes from backend.
+     */
+    retrieveLikedRecipes() {
+        // Test data
+        return [
+            { name: "Food Item #1" },
+            { name: "Food Item #2" },
+            { name: "Food Item #3" },
+            { name: "Food Item #4" },
+            { name: "Food Item #5" }
+        ];
+    }
+
+    /**
+     * Called when the delete account button is pressed.
+     */
+    handleDelete() {
+        // Show confirmation window to verify they actually want to delete their account.
+        const confirmDelete = confirm(
+            "****WARNING****: \n\nAre you sure you want to delete your account? This will erase all user data!!"
+        );
+
+        if (confirmDelete) {
+            firebase.auth().currentUser.delete().then(() => {
+                console.log("Account deleted");
+            }, (error) => {
+                console.error("Error: Could not delete account: " + error.message);
+            })
+        }
+    }
+
     render() {
         let profilePage;
 
@@ -52,6 +90,11 @@ export class Profile extends React.Component {
                     <h1>User Profile</h1>
                     <p>Currently Signed in as: {firebase.auth().currentUser.displayName}</p>
 
+                    <h2>Liked Recipes</h2>
+                    <RecipeGrid recipes={this.state.likedRecipes}/>
+
+                    <h2>User Settings</h2>
+                    <FilterSpecifier/>
                     <button id="deleteAccount">
                         Delete Account
                     </button>

@@ -9,6 +9,13 @@
  * ======================================================
  */
 
+/* Filter dropdown themselves. */
+div#profile select#filterSetting {
+    box-sizing: content-box;
+    padding: 0.5em;
+    margin-right: 1em;
+}
+
 /* Delete account button */
 div#profile button#deleteAccount {
     color: white;
