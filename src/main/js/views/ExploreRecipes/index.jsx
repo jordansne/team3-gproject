@@ -6,12 +6,13 @@
 import React from 'react';
 
 import { RecipeGrid } from '../../components/RecipeGrid.jsx';
+import { RecipeDetails } from '../../components/RecipeDetails.jsx';
 
-export class RecipeView extends React.Component {
+
+export class ExploreRecipe extends React.Component {
 
     constructor() {
         super();
-
         // Initialize state with blank array
         this.state = {
             recipeList: []
@@ -22,7 +23,7 @@ export class RecipeView extends React.Component {
      * Beginning building the recipe list once the component is mounted.
      */
     componentDidMount() {
-        let apiURL = this.buildApiParams(this.props.location.query);
+        let apiURL = "Ingredient/getRecipesByRandom";
 
         fetch(apiURL).then((response) => {
             if (response.ok) {
@@ -45,31 +46,10 @@ export class RecipeView extends React.Component {
         });
     }
 
-    /**
-     * Takes the search parameters and converts to a GET API query string.
-     */
-    buildApiParams(search) {
-        let paramString = "/Ingredient/getRecipesByComplex?foodtype=&diet=&cuisine=&ingredients=";
-
-        // TODO: Enable filter search in query
-
-        const ingredientArray = search.ingredients.split(",");
-        for (let i = 0; i < ingredientArray.length; i++) {
-            paramString += ingredientArray[i];
-
-            // Add separator between ingredients
-            if (i < ingredientArray.length - 1) {
-                paramString += "%2C";
-            }
-        }
-
-        return paramString;
-    }
-
     render() {
         return (
             <div>
-                <h1>Recipe Search Results</h1>
+                <h1>Explore Recipes</h1>
                 <RecipeGrid recipes={this.state.recipeList}/>
             </div>
         );

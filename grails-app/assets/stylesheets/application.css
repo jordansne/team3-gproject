@@ -9,8 +9,8 @@
 *
 *= require main
 *= require views/home
-*= require views/results
 *= require views/profile
+*= require views/recipeGrid
 *= require header
 *= require_self
 */
