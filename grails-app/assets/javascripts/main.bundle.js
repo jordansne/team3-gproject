@@ -12479,7 +12479,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
 
         _this.state = {
             recipeList: [],
-            currentRecipeID: 0
+            currentDetailsID: 0
         };
         return _this;
     }
@@ -12503,7 +12503,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
                     response.json().then(function (recipeObject) {
                         _this2.setState({
                             recipeList: recipeObject,
-                            currentRecipeID: _this2.state.currentRecipeID
+                            currentDetailsID: _this2.state.currentDetailsID
                         });
                     });
                 } else {
@@ -12525,6 +12525,8 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
         value: function buildApiParams(search) {
             var paramString = "/Ingredient/getRecipesByComplex?foodtype=&diet=&cuisine=&ingredients=";
 
+            // TODO: Enable filter search in query
+
             var ingredientArray = search.ingredients.split(",");
             for (var i = 0; i < ingredientArray.length; i++) {
                 paramString += ingredientArray[i];
@@ -12537,15 +12539,25 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
 
             return paramString;
         }
+
+        /**
+         * Callback to open details window using the recipe ID.
+         */
+
     }, {
-        key: 'currentID',
-        value: function currentID(id) {
-            this.setState({ recipeList: this.state.recipeList, currentRecipeID: id });
+        key: 'setDetailsView',
+        value: function setDetailsView(recipeID) {
+            this.setState({ recipeList: this.state.recipeList, currentDetailsID: recipeID });
         }
+
+        /**
+         * Callback to close the details window.
+         */
+
     }, {
-        key: 'close',
-        value: function close() {
-            this.setState({ recipeList: this.state.recipeList, currentRecipeID: 0 });
+        key: 'closeDetails',
+        value: function closeDetails() {
+            this.setDetailsView(0);
         }
     }, {
         key: 'render',
@@ -12554,9 +12566,9 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
 
             var recipeModal = "";
 
-            if (this.state.currentRecipeID !== 0) {
-                recipeModal = _react2.default.createElement(_RecipeDetails.RecipeDetails, { id: this.state.currentRecipeID, close: function close() {
-                        return _this3.close();
+            if (this.state.currentDetailsID !== 0) {
+                recipeModal = _react2.default.createElement(_RecipeDetails.RecipeDetails, { id: this.state.currentDetailsID, close: function close() {
+                        return _this3.closeDetails();
                     } });
             }
 
@@ -12568,8 +12580,8 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
                     null,
                     'Recipe Search Results'
                 ),
-                _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList, currentID: function currentID(id) {
-                        return _this3.currentID(id);
+                _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList, setDetailsView: function setDetailsView(id) {
+                        return _this3.setDetailsView(id);
                     } }),
                 recipeModal
             );
@@ -12608,18 +12620,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * RecipeBox component.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
 
-var boxStyle = {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    height: '20%',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    display: 'table',
-    zIndex: '2'
-};
-
 var RecipeBox = exports.RecipeBox = function (_React$Component) {
     _inherits(RecipeBox, _React$Component);
 
@@ -12630,25 +12630,21 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
     }
 
     _createClass(RecipeBox, [{
-        key: 'getDivCSS',
-        value: function getDivCSS() {
-            return {
-                backgroundImage: 'url(' + this.props.image + ')',
-                backgroundSize: '100% auto',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center'
-            };
-        }
-    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
 
             return _react2.default.createElement(
                 'div',
-                { className: 'recipeBox', onClick: function onClick() {
-                        return _this2.props.currentID(_this2.props.id);
-                    }, style: this.getDivCSS() },
+                {
+                    className: 'recipeBox',
+                    onClick: function onClick() {
+                        return _this2.props.setDetailsView(_this2.props.id);
+                    },
+                    style: {
+                        backgroundImage: 'url(' + this.props.image + ')'
+                    }
+                },
                 _react2.default.createElement(
                     'section',
                     { className: 'buttons' },
@@ -12664,15 +12660,11 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
                     ),
                     _react2.default.createElement(
                         'div',
-                        { style: boxStyle },
+                        { className: 'titleBackground' },
                         _react2.default.createElement(
                             'section',
                             { className: 'recipeName' },
-                            _react2.default.createElement(
-                                'b',
-                                null,
-                                this.props.name
-                            )
+                            this.props.name
                         )
                     )
                 )
@@ -12716,44 +12708,40 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * Recipe details component.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
 
-var modalStyle = {
-    position: 'fixed',
-    zIndex: 1040,
-    top: 0, bottom: 0, left: 0, right: 0
-};
-
-var backdropStyle = {
-    modalStyle: modalStyle,
-    zIndex: 'auto',
-    backgroundColor: '#000',
-    opacity: 0.5
-};
-
 var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
     _inherits(RecipeDetails, _React$Component);
 
     function RecipeDetails() {
         _classCallCheck(this, RecipeDetails);
 
+        // Initialize blank state
         var _this = _possibleConstructorReturn(this, (RecipeDetails.__proto__ || Object.getPrototypeOf(RecipeDetails)).call(this));
 
-        _this.state = { name: "", image: "", url: "", summary: "" };
+        _this.state = {
+            name: "",
+            image: "",
+            url: "",
+            summary: ""
+        };
         return _this;
     }
+
+    /**
+     * Beginning retrieving recipe data once mounted.
+     */
+
 
     _createClass(RecipeDetails, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
             var _this2 = this;
 
-            var apiURL = "/Ingredient/getRecipeInfo?recipeID=";
-            apiURL += this.props.id;
+            var apiURL = "/Ingredient/getRecipeInfo?recipeID=" + this.props.id;
 
             fetch(apiURL).then(function (response) {
                 if (response.ok) {
 
                     response.json().then(function (recipeObject) {
-
                         _this2.setState({
                             name: recipeObject["name"],
                             image: recipeObject["image"],
@@ -12771,22 +12759,17 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
             });
         }
     }, {
-        key: 'getDivCSS',
-        value: function getDivCSS() {
-            return {
-                width: "100%",
-                height: "40%",
-                backgroundImage: 'url(' + this.state.image + ')',
-                backgroundSize: '100% auto',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                marginTop: '10%'
-
-            };
-        }
-    }, {
         key: 'render',
         value: function render() {
+            // CSS for the Modal (pop-up window)
+            var modalStyle = {
+                position: 'fixed',
+                zIndex: 1040,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0
+            };
 
             return _react2.default.createElement(
                 'div',
@@ -12817,7 +12800,7 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                         _react2.default.createElement(
                             'a',
                             { href: this.state.url },
-                            _react2.default.createElement('div', { style: this.getDivCSS() })
+                            _react2.default.createElement('div', { style: { backgroundImage: 'url(' + this.state.image + ')' }, className: 'img' })
                         ),
                         _react2.default.createElement('div', { className: 'recipeSummary', dangerouslySetInnerHTML: { __html: this.state.summary } })
                     )
@@ -12882,7 +12865,7 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                     key: i,
                     id: this.props.recipes[i].identity,
                     image: this.props.recipes[i].image,
-                    currentID: this.props.currentID
+                    setDetailsView: this.props.setDetailsView
                 }));
             }
 

@@ -8,15 +8,15 @@ import React from 'react';
 import { RecipeGrid } from '../../components/RecipeGrid.jsx';
 import { RecipeDetails } from '../../components/RecipeDetails.jsx';
 
-
 export class RecipeView extends React.Component {
 
     constructor() {
         super();
+
         // Initialize state with blank array
         this.state = {
             recipeList: [],
-            currentRecipeID: 0
+            currentDetailsID: 0
         };
     }
 
@@ -33,7 +33,7 @@ export class RecipeView extends React.Component {
                 response.json().then((recipeObject) => {
                     this.setState({
                         recipeList: recipeObject,
-                        currentRecipeID: this.state.currentRecipeID
+                        currentDetailsID: this.state.currentDetailsID
                     });
                 })
 
@@ -54,6 +54,8 @@ export class RecipeView extends React.Component {
     buildApiParams(search) {
         let paramString = "/Ingredient/getRecipesByComplex?foodtype=&diet=&cuisine=&ingredients=";
 
+        // TODO: Enable filter search in query
+
         const ingredientArray = search.ingredients.split(",");
         for (let i = 0; i < ingredientArray.length; i++) {
             paramString += ingredientArray[i];
@@ -67,26 +69,31 @@ export class RecipeView extends React.Component {
         return paramString;
     }
 
-
-    currentID(id) {
-       this.setState({recipeList: this.state.recipeList, currentRecipeID: id});
+    /**
+     * Callback to open details window using the recipe ID.
+     */
+    setDetailsView(recipeID) {
+       this.setState({recipeList: this.state.recipeList, currentDetailsID: recipeID});
     }
 
-    close() {
-        this.setState({recipeList: this.state.recipeList, currentRecipeID: 0});
+    /**
+     * Callback to close the details window.
+     */
+    closeDetails() {
+        this.setDetailsView(0);
     }
 
     render() {
         let recipeModal = "";
 
-        if (this.state.currentRecipeID !== 0) {
-            recipeModal = <RecipeDetails id={this.state.currentRecipeID} close={() => this.close()}/>;
+        if (this.state.currentDetailsID !== 0) {
+            recipeModal = <RecipeDetails id={this.state.currentDetailsID} close={() => this.closeDetails()}/>;
         }
 
         return (
             <div>
                 <h1>Recipe Search Results</h1>
-                <RecipeGrid recipes={this.state.recipeList} currentID={(id)=>this.currentID(id)}/>
+                <RecipeGrid recipes={this.state.recipeList} setDetailsView={(id)=>this.setDetailsView(id)}/>
                 {recipeModal}
             </div>
         );

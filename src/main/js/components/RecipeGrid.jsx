@@ -20,7 +20,7 @@ export class RecipeGrid extends React.Component {
                     key={i}
                     id={this.props.recipes[i].identity}
                     image={this.props.recipes[i].image}
-                    currentID={this.props.currentID}
+                    setDetailsView={this.props.setDetailsView}
                 />
             );
         }
