@@ -4,7 +4,7 @@ const webpack = require('webpack');
 module.exports = {
     entry: './src/main/js/index.jsx',
     output: {
-        path: './grails-app/assets/javascripts',
+        path: __dirname + '/grails-app/assets/javascripts',
         publicPath: '/assets/',
         filename: '[name].bundle.js'
     },
