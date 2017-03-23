@@ -52,6 +52,8 @@ export class Profile extends React.Component {
      * Retrieve a list of liked recipes from backend.
      */
     retrieveLikedRecipes() {
+        // TODO: Set up with proper firebase backend API
+
         // Test data
         return [
             { name: "Food Item #1" },
@@ -65,7 +67,7 @@ export class Profile extends React.Component {
     /**
      * Called when the delete account button is pressed.
      */
-    handleDelete() {
+    handleDeleteAccount() {
         // Show confirmation window to verify they actually want to delete their account.
         const confirmDelete = confirm(
             "****WARNING****: \n\nAre you sure you want to delete your account? This will erase all user data!!"
@@ -87,7 +89,7 @@ export class Profile extends React.Component {
             // If the user is signed in..
             profilePage = (
                 <div id="profile">
-                    <h1>User Profile</h1>
+                    <h1>Profile</h1>
                     <p>Currently Signed in as: {firebase.auth().currentUser.displayName}</p>
 
                     <aside id="pref">
@@ -98,8 +100,8 @@ export class Profile extends React.Component {
                     <h2>Liked Recipes</h2>
                     <RecipeGrid recipes={this.state.likedRecipes}/>
 
-                    <h2>User Settings</h2>
-                    <button id="deleteAccount">
+                    <h2>Settings</h2>
+                    <button id="deleteAccount" onClick={() => this.handleDeleteAccount()}>
                         Delete Account
                     </button>
                 </div>
