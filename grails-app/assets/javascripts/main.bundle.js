@@ -8586,10 +8586,9 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
         };
 
         //creates a path??
-
-
         return _this;
     }
+
     /**
      * Callback to open details window using the recipe ID.
      */
@@ -8603,39 +8602,77 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
     }, {
         key: 'likeRecipe',
         value: function likeRecipe(recipeID) {
-
-            if (this.myFirebaseRefsaved.equalTo(recipeID.toString()).ref === null) {
-                this.myFirebaseRefsaved.push(recipeID);
-            }
-
-            this.incrementLikeCount(recipeID);
-        }
-    }, {
-        key: 'incrementLikeCount',
-        value: function incrementLikeCount(recipeID) {
             var _this2 = this;
 
             this.myFirebaseReflikes = firebase.database().ref('likes/' + recipeID + '/');
 
+            this.myFirebaseRefsaved.once('value').then(function (snapshot) {
+                var likedRecipes = snapshot.val();
+
+                // If no likes are in a user saved recipe
+                if (likedRecipes === null) {
+                    _this2.handleLike(recipeID, likedRecipes);
+                    return;
+                }
+
+                // Check if already liked
+                for (var i = 0; i < likedRecipes.length; i++) {
+                    if (likedRecipes[i] === recipeID) {
+                        _this2.handleUnlike(recipeID, likedRecipes);
+                        return;
+                    }
+                }
+
+                // Like if not already liked
+                _this2.handleLike(recipeID, likedRecipes);
+            });
+        }
+    }, {
+        key: 'handleLike',
+        value: function handleLike(recipeID, currentList) {
+            var _this3 = this;
+
+            // Add to user recipe list
+            if (currentList === null) {
+                currentList = [];
+            }
+
+            currentList.push(recipeID);
+            this.myFirebaseRefsaved.set(currentList);
+
+            // Update recipe like count
             this.myFirebaseReflikes.once('value').then(function (snapshot) {
                 var likes = snapshot.val();
+
                 if (likes === null) {
                     likes = 1;
-                    _this2.myFirebaseReflikes.set(likes);
                 } else {
-                    if (_this2.myFirebaseRefsaved.equalTo(recipeID.toString()).ref === null) {
-                        likes += 1;
-                        _this2.myFirebaseReflikes.set(likes);
-                    } else {
-                        _this2.myFirebaseRefsaved.equalTo(recipeID.toString()).ref.remove();
-                        likes -= 1;
+                    likes += 1;
+                }
 
-                        if (likes === 0) {
-                            _this2.myFirebaseReflikes.remove();
-                        } else {
-                            _this2.myFirebaseReflikes.set(likes);
-                        }
-                    }
+                _this3.myFirebaseReflikes.set(likes);
+            });
+        }
+    }, {
+        key: 'handleUnlike',
+        value: function handleUnlike(recipeID, currentList) {
+            var _this4 = this;
+
+            // Remove from user recipe list
+            var index = currentList.indexOf(recipeID);
+            currentList.splice(index, 1);
+            this.myFirebaseRefsaved.set(currentList);
+
+            // Update recipe like count
+            this.myFirebaseReflikes.once('value').then(function (snapshot) {
+                var likes = snapshot.val();
+
+                likes -= 1;
+
+                if (likes <= 0) {
+                    _this4.myFirebaseReflikes.remove();
+                } else {
+                    _this4.myFirebaseReflikes.set(likes);
                 }
             });
         }
@@ -8659,7 +8696,7 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this5 = this;
 
             // Array to store the recipe boxes
             var recipeBoxes = [];
@@ -8672,10 +8709,10 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                     id: this.props.recipes[i].identity,
                     image: this.props.recipes[i].image,
                     setDetailsView: function setDetailsView(id) {
-                        return _this3.setDetailsView(id);
+                        return _this5.setDetailsView(id);
                     },
                     liked: function liked(id) {
-                        return _this3.likeRecipe(id);
+                        return _this5.likeRecipe(id);
                     }
                 }));
             }
@@ -8685,10 +8722,10 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                 recipeModal = _react2.default.createElement(_RecipeDetails.RecipeDetails, {
                     id: this.state.currentDetailsID,
                     liked: function liked(id) {
-                        return _this3.likeRecipe(id);
+                        return _this5.likeRecipe(id);
                     },
                     close: function close() {
-                        return _this3.closeDetails();
+                        return _this5.closeDetails();
                     }
                 });
             }

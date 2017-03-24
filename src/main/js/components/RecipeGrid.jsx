@@ -19,10 +19,8 @@ export class RecipeGrid extends React.Component {
         };
 
         //creates a path??
-
-
-
     }
+
     /**
      * Callback to open details window using the recipe ID.
      */
@@ -31,45 +29,73 @@ export class RecipeGrid extends React.Component {
     }
 
     likeRecipe(recipeID){
-
-        this.myFirebaseRefsaved.push(recipeID);
-        this.incrementLikeCount(recipeID);
-
-
-
-    }
-
-    incrementLikeCount(recipeID){
-
-
-
         this.myFirebaseReflikes = firebase.database().ref('likes/' + recipeID + '/');
 
-        this.myFirebaseReflikes.once('value').then((snapshot) => {
-            let likes = snapshot.val();
-            if (likes === null){
-                likes = 1;
-                this.myFirebaseReflikes.set(likes);
-            }
-            else {
-                if (this.myFirebaseRefsaved.equalTo(recipeID.toString()).ref === null) {
-                    likes += 1;
-                    this.myFirebaseReflikes.set(likes);
-                } else {
-                    this.myFirebaseRefsaved.equalTo(recipeID.toString()).ref.remove();
-                    likes -= 1;
+        this.myFirebaseRefsaved.once('value').then((snapshot) => {
+            let likedRecipes = snapshot.val();
 
-                    if (likes === 0) {
-                        this.myFirebaseReflikes.remove();
-                    } else {
-                        this.myFirebaseReflikes.set(likes);
-                    }
+            // If no likes are in a user saved recipe
+            if (likedRecipes === null) {
+                this.handleLike(recipeID, likedRecipes);
+                return;
+            }
+
+            // Check if already liked
+            for (let i = 0; i < likedRecipes.length; i++) {
+                if (likedRecipes[i] === recipeID) {
+                    this.handleUnlike(recipeID, likedRecipes);
+                    return;
                 }
             }
-        })
 
-
+            // Like if not already liked
+            this.handleLike(recipeID, likedRecipes);
+        });
     }
+
+    handleLike(recipeID, currentList) {
+        // Add to user recipe list
+        if (currentList === null) {
+            currentList = [];
+        }
+
+        currentList.push(recipeID);
+        this.myFirebaseRefsaved.set(currentList);
+
+        // Update recipe like count
+        this.myFirebaseReflikes.once('value').then((snapshot) => {
+            let likes = snapshot.val();
+
+            if (likes === null) {
+                likes = 1;
+            } else {
+                likes += 1;
+            }
+
+            this.myFirebaseReflikes.set(likes);
+        });
+    }
+
+    handleUnlike(recipeID, currentList) {
+        // Remove from user recipe list
+        const index = currentList.indexOf(recipeID);
+        currentList.splice (index, 1);
+        this.myFirebaseRefsaved.set(currentList);
+
+        // Update recipe like count
+        this.myFirebaseReflikes.once('value').then((snapshot) => {
+            let likes = snapshot.val();
+
+            likes -= 1;
+
+            if (likes <= 0) {
+                this.myFirebaseReflikes.remove();
+            } else {
+                this.myFirebaseReflikes.set(likes);
+            }
+        });
+    }
+
     setDetailsView(recipeID) {
         this.setState({
             currentDetailsID: recipeID
