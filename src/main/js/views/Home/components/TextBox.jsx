@@ -36,7 +36,7 @@ export class TextBox extends React.Component {
                         <option value="none">Select a Meal Type</option>
                         <option value="main-course">Main Course</option>
                         <option value="side-dish">Side Dish</option>
-                        <option value="desert">Desert</option>
+                        <option value="dessert">Dessert</option>
                         <option value="appetizer">Appetizer</option>
                         <option value="breakfast">Breakfast</option>
                     </select>
