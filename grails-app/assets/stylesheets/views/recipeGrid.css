@@ -75,7 +75,16 @@ div.recipeBox button.like {
     background-position: center;
     background-color: rgba(0,0,0,0);
 }
-
+div.recipeDetails button.like{
+    height: 40px;
+    width: 40px;
+    float: right;
+    background-image: url('../../images/favourite.png');
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(0,0,0,0);
+}
 /* Enlarge elements when the screen size increases. */
 @media screen and (min-width: 1100px) {
     div.recipeBox {

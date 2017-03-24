@@ -14,13 +14,62 @@ export class RecipeGrid extends React.Component {
 
         // Initialize state with blank array
         this.state = {
-            currentDetailsID: 0
+            currentDetailsID: 0,
+            signedIn: false
         };
-    }
 
+        //creates a path??
+
+
+
+    }
     /**
      * Callback to open details window using the recipe ID.
      */
+    componentDidMount(){
+        this.myFirebaseRefsaved = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
+    }
+
+    likeRecipe(recipeID){
+
+        this.myFirebaseRefsaved.push(recipeID);
+        this.incrementLikeCount(recipeID);
+
+
+
+    }
+
+    incrementLikeCount(recipeID){
+
+
+
+        this.myFirebaseReflikes = firebase.database().ref('likes/' + recipeID + '/');
+
+        this.myFirebaseReflikes.once('value').then((snapshot) => {
+            let likes = snapshot.val();
+            if (likes === null){
+                likes = 1;
+                this.myFirebaseReflikes.set(likes);
+            }
+            else {
+                if (this.myFirebaseRefsaved.equalTo(recipeID.toString()).ref === null) {
+                    likes += 1;
+                    this.myFirebaseReflikes.set(likes);
+                } else {
+                    this.myFirebaseRefsaved.equalTo(recipeID.toString()).ref.remove();
+                    likes -= 1;
+
+                    if (likes === 0) {
+                        this.myFirebaseReflikes.remove();
+                    } else {
+                        this.myFirebaseReflikes.set(likes);
+                    }
+                }
+            }
+        })
+
+
+    }
     setDetailsView(recipeID) {
         this.setState({
             currentDetailsID: recipeID
@@ -47,13 +96,19 @@ export class RecipeGrid extends React.Component {
                     id={this.props.recipes[i].identity}
                     image={this.props.recipes[i].image}
                     setDetailsView={(id) => this.setDetailsView(id)}
+                    liked = {(id) => this.likeRecipe(id) }
                 />
             );
+
         }
 
         let recipeModal = "";
         if (this.state.currentDetailsID !== 0) {
-            recipeModal = <RecipeDetails id={this.state.currentDetailsID} close={() => this.closeDetails()}/>;
+            recipeModal = <RecipeDetails
+                id={this.state.currentDetailsID}
+                liked={(id) => this.likeRecipe(id)}
+                close={() => this.closeDetails()}
+            />;
         }
 
         return(

@@ -74,7 +74,7 @@ export class RecipeDetails extends React.Component {
                 >
 
                     <div className="recipeDetails">
-                        <button className="like">Like</button>
+                        <button className="like" onClick ={() => this.props.liked(this.props.id)}/>
                         <button className="close" onClick={this.props.close}>Close</button>
 
                         <section className="mainCol">

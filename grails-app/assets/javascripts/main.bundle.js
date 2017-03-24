@@ -8478,6 +8478,8 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this3 = this;
+
             // CSS for the Modal (pop-up window)
             var modalStyle = {
                 position: 'fixed',
@@ -8504,11 +8506,9 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'recipeDetails' },
-                        _react2.default.createElement(
-                            'button',
-                            { className: 'like' },
-                            'Like'
-                        ),
+                        _react2.default.createElement('button', { className: 'like', onClick: function onClick() {
+                                return _this3.props.liked(_this3.props.id);
+                            } }),
                         _react2.default.createElement(
                             'button',
                             { className: 'close', onClick: this.props.close },
@@ -8581,17 +8581,65 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (RecipeGrid.__proto__ || Object.getPrototypeOf(RecipeGrid)).call(this));
 
         _this.state = {
-            currentDetailsID: 0
+            currentDetailsID: 0,
+            signedIn: false
         };
+
+        //creates a path??
+
+
         return _this;
     }
-
     /**
      * Callback to open details window using the recipe ID.
      */
 
 
     _createClass(RecipeGrid, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.myFirebaseRefsaved = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
+        }
+    }, {
+        key: 'likeRecipe',
+        value: function likeRecipe(recipeID) {
+
+            if (this.myFirebaseRefsaved.equalTo(recipeID.toString()).ref === null) {
+                this.myFirebaseRefsaved.push(recipeID);
+            }
+
+            this.incrementLikeCount(recipeID);
+        }
+    }, {
+        key: 'incrementLikeCount',
+        value: function incrementLikeCount(recipeID) {
+            var _this2 = this;
+
+            this.myFirebaseReflikes = firebase.database().ref('likes/' + recipeID + '/');
+
+            this.myFirebaseReflikes.once('value').then(function (snapshot) {
+                var likes = snapshot.val();
+                if (likes === null) {
+                    likes = 1;
+                    _this2.myFirebaseReflikes.set(likes);
+                } else {
+                    if (_this2.myFirebaseRefsaved.equalTo(recipeID.toString()).ref === null) {
+                        likes += 1;
+                        _this2.myFirebaseReflikes.set(likes);
+                    } else {
+                        _this2.myFirebaseRefsaved.equalTo(recipeID.toString()).ref.remove();
+                        likes -= 1;
+
+                        if (likes === 0) {
+                            _this2.myFirebaseReflikes.remove();
+                        } else {
+                            _this2.myFirebaseReflikes.set(likes);
+                        }
+                    }
+                }
+            });
+        }
+    }, {
         key: 'setDetailsView',
         value: function setDetailsView(recipeID) {
             this.setState({
@@ -8611,7 +8659,7 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             // Array to store the recipe boxes
             var recipeBoxes = [];
@@ -8624,16 +8672,25 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                     id: this.props.recipes[i].identity,
                     image: this.props.recipes[i].image,
                     setDetailsView: function setDetailsView(id) {
-                        return _this2.setDetailsView(id);
+                        return _this3.setDetailsView(id);
+                    },
+                    liked: function liked(id) {
+                        return _this3.likeRecipe(id);
                     }
                 }));
             }
 
             var recipeModal = "";
             if (this.state.currentDetailsID !== 0) {
-                recipeModal = _react2.default.createElement(_RecipeDetails.RecipeDetails, { id: this.state.currentDetailsID, close: function close() {
-                        return _this2.closeDetails();
-                    } });
+                recipeModal = _react2.default.createElement(_RecipeDetails.RecipeDetails, {
+                    id: this.state.currentDetailsID,
+                    liked: function liked(id) {
+                        return _this3.likeRecipe(id);
+                    },
+                    close: function close() {
+                        return _this3.closeDetails();
+                    }
+                });
             }
 
             return _react2.default.createElement(
@@ -12883,7 +12940,8 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
             var paramString = "/Ingredient/getRecipesByComplex?foodtype=";
 
             if (search.type) {
-                var foodtype = search.type;
+                var foodparam = search.type;
+                var foodtype = foodparam.replace("-", "%2B");
                 paramString += foodtype + "&diet=";
             } else {
                 paramString += "&diet=";
@@ -13268,7 +13326,9 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
                 _react2.default.createElement(
                     'section',
                     { className: 'buttons' },
-                    _react2.default.createElement('button', { className: 'like' }),
+                    _react2.default.createElement('button', { className: 'like', onClick: function onClick() {
+                            return _this2.props.liked(_this2.props.id);
+                        } }),
                     _react2.default.createElement(
                         'div',
                         { className: 'titleBackground' },

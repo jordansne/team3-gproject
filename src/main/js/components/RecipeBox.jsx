@@ -17,7 +17,7 @@ export class RecipeBox extends React.Component {
                 }}
             >
                 <section className="buttons">
-                    <button className="like"></button>
+                    <button className="like" onClick = {() => this.props.liked(this.props.id)}/>
                     <div className="titleBackground">
                         <section className="recipeName">
                             {this.props.name}
