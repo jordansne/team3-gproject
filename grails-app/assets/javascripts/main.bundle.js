@@ -12824,7 +12824,8 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (RecipeView.__proto__ || Object.getPrototypeOf(RecipeView)).call(this));
 
         _this.state = {
-            recipeList: []
+            recipeList: [],
+            apiCallFinished: false
         };
         return _this;
     }
@@ -12847,7 +12848,8 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
                     // Process the JSON and update the component's state
                     response.json().then(function (recipeObject) {
                         _this2.setState({
-                            recipeList: recipeObject
+                            recipeList: recipeObject,
+                            apiCallFinished: true
                         });
                     });
                 } else {
@@ -12867,9 +12869,21 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
     }, {
         key: 'buildApiParams',
         value: function buildApiParams(search) {
-            var paramString = "/Ingredient/getRecipesByComplex?foodtype=&diet=&cuisine=&ingredients=";
+            var paramString = "/Ingredient/getRecipesByComplex?foodtype=";
 
-            // TODO: Enable filter search in query
+            if (search.type) {
+                var foodtype = search.type;
+                paramString += foodtype + "&diet=";
+            } else {
+                paramString += "&diet=";
+            }
+
+            if (search.restriction) {
+                var diet = search.restriction;
+                paramString += diet + "&cuisine=&ingredients=";
+            } else {
+                paramString += "&cuisine=&ingredients=";
+            }
 
             var ingredientArray = search.ingredients.split(",");
             for (var i = 0; i < ingredientArray.length; i++) {
@@ -12886,16 +12900,28 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'h1',
+            if (this.state.apiCallFinished == true && this.state.recipeList.length == 0) {
+                return _react2.default.createElement(
+                    'div',
                     null,
-                    'Recipe Search Results'
-                ),
-                _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList })
-            );
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        'No Results Found'
+                    )
+                );
+            } else {
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        'Recipe Search Results'
+                    ),
+                    _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.recipeList })
+                );
+            }
         }
     }]);
 
@@ -12959,16 +12985,7 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
                 _react2.default.createElement(
                     'section',
                     { className: 'buttons' },
-                    _react2.default.createElement(
-                        'button',
-                        { className: 'like' },
-                        'Like'
-                    ),
-                    _react2.default.createElement(
-                        'button',
-                        { className: 'save' },
-                        'Save'
-                    ),
+                    _react2.default.createElement('button', { className: 'like' }),
                     _react2.default.createElement(
                         'div',
                         { className: 'titleBackground' },
@@ -13507,11 +13524,11 @@ var IngredientListBuilder = exports.IngredientListBuilder = function (_React$Com
             var restrictionType = document.getElementById('filter_restriction').value;
 
             if (filterType !== "none") {
-                ingredientListURL += "?type=" + document.getElementById('filter_type').value;
+                ingredientListURL += "&type=" + document.getElementById('filter_type').value;
             }
 
             if (restrictionType !== "none") {
-                ingredientListURL += "?restriction=" + document.getElementById('filter_restriction').value;
+                ingredientListURL += "&restriction=" + document.getElementById('filter_restriction').value;
             }
 
             // Set the current window to the new URL
@@ -13647,8 +13664,8 @@ var TextBox = exports.TextBox = function (_React$Component) {
                         ),
                         _react2.default.createElement(
                             "option",
-                            { value: "desert" },
-                            "Desert"
+                            { value: "dessert" },
+                            "Dessert"
                         ),
                         _react2.default.createElement(
                             "option",
