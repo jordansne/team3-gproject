@@ -60,6 +60,7 @@ export class CommentList extends React.Component {
                 });
             }
         });
+
     }
 
     /**
@@ -120,13 +121,19 @@ export class CommentList extends React.Component {
                 <Comment
                     user={this.state.commentList[i].user}
                     commentMsg={this.state.commentList[i].message}
+                    key={i}
                 />
             );
         }
 
         return (
-            <div id="comment">
-                <form onSubmit={(event) => this.sendComment(event)}>
+            <div id="commentList">
+                <h3>Comments</h3>
+                <section id="comments">
+                    {comments}
+                </section>
+
+                <form id="commentInput" onSubmit={(event) => this.sendComment(event)}>
                     <input
                         type="text"
                         value={this.state.currentComment}

@@ -11,9 +11,9 @@ export class Comment extends React.Component {
 
     render() {
         return (
-            <div id="comment">
-                User: {this.props.user}
-                Comment: {this.props.commentMsg}
+            <div className="comment">
+                <h4>{this.props.user}</h4>
+                <p>{this.props.commentMsg}</p>
             </div>
         );
     }

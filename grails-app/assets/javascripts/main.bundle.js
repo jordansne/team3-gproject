@@ -8515,12 +8515,20 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                             'Close'
                         ),
                         _react2.default.createElement(
-                            'a',
-                            { href: this.state.url },
-                            _react2.default.createElement('div', { style: { backgroundImage: 'url(' + this.state.image + ')' }, className: 'img' })
+                            'section',
+                            { className: 'mainCol' },
+                            _react2.default.createElement(
+                                'a',
+                                { href: this.state.url },
+                                _react2.default.createElement('div', { style: { backgroundImage: 'url(' + this.state.image + ')' }, className: 'img' })
+                            ),
+                            _react2.default.createElement('div', { className: 'recipeSummary', dangerouslySetInnerHTML: { __html: this.state.summary } })
                         ),
-                        _react2.default.createElement('div', { className: 'recipeSummary', dangerouslySetInnerHTML: { __html: this.state.summary } }),
-                        _react2.default.createElement(_CommentList.CommentList, { id: this.props.id })
+                        _react2.default.createElement(
+                            'aside',
+                            { className: 'commentCol' },
+                            _react2.default.createElement(_CommentList.CommentList, { id: this.props.id })
+                        )
                     )
                 )
             );
@@ -12952,11 +12960,17 @@ var Comment = exports.Comment = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 "div",
-                { id: "comment" },
-                "User: ",
-                this.props.user,
-                "Comment: ",
-                this.props.commentMsg
+                { className: "comment" },
+                _react2.default.createElement(
+                    "h4",
+                    null,
+                    this.props.user
+                ),
+                _react2.default.createElement(
+                    "p",
+                    null,
+                    this.props.commentMsg
+                )
             );
         }
     }]);
@@ -13127,16 +13141,27 @@ var CommentList = exports.CommentList = function (_React$Component) {
                 // Append new comment components
                 comments.push(_react2.default.createElement(_Comment.Comment, {
                     user: this.state.commentList[i].user,
-                    commentMsg: this.state.commentList[i].message
+                    commentMsg: this.state.commentList[i].message,
+                    key: i
                 }));
             }
 
             return _react2.default.createElement(
                 'div',
-                { id: 'comment' },
+                { id: 'commentList' },
+                _react2.default.createElement(
+                    'h3',
+                    null,
+                    'Comments'
+                ),
+                _react2.default.createElement(
+                    'section',
+                    { id: 'comments' },
+                    comments
+                ),
                 _react2.default.createElement(
                     'form',
-                    { onSubmit: function onSubmit(event) {
+                    { id: 'commentInput', onSubmit: function onSubmit(event) {
                             return _this3.sendComment(event);
                         } },
                     _react2.default.createElement('input', {

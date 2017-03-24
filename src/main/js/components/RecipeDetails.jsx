@@ -77,13 +77,17 @@ export class RecipeDetails extends React.Component {
                         <button className="like">Like</button>
                         <button className="close" onClick={this.props.close}>Close</button>
 
-                        <a href={this.state.url}>
-                            <div style={{backgroundImage: 'url(' + this.state.image + ')'}} className="img"/>
-                        </a>
+                        <section className="mainCol">
+                            <a href={this.state.url}>
+                                <div style={{backgroundImage: 'url(' + this.state.image + ')'}} className="img"/>
+                            </a>
 
-                        <div className="recipeSummary" dangerouslySetInnerHTML={{__html: this.state.summary}}/>
+                            <div className="recipeSummary" dangerouslySetInnerHTML={{__html: this.state.summary}}/>
+                        </section>
 
-                        <CommentList id={this.props.id}/>
+                        <aside className="commentCol">
+                            <CommentList id={this.props.id}/>
+                        </aside>
                     </div>
 
                 </Modal>

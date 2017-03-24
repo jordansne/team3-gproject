@@ -86,7 +86,7 @@ div.recipeBox button.save {
 
 div.recipeDetails {
     position: absolute;
-    width: 450px;
+    width: 750px;
     height: 550px;
     top: 50%;
     left: 50%;
@@ -95,6 +95,73 @@ div.recipeDetails {
     background-color: white;
     box-shadow: 0 5px 15px rgba(0,0,0,.5);
     padding: 20px;
+}
+
+div.recipeDetails section.mainCol {
+    display: inline-block;
+    width: 60%;
+    overflow: scroll;
+    height: 86%;
+    margin-top: 58px;
+}
+
+div.recipeDetails aside.commentCol {
+    display: inline-block;
+    width: 30%;
+    height: 80%;
+
+    position: absolute;
+    right: 0;
+    top: 60px;
+
+    margin: 20px;
+    padding-bottom: 10px;
+}
+
+div.recipeDetails aside.commentCol form#commentInput {
+    position: absolute;
+
+    bottom: 20px;
+    left: 10px;
+}
+
+div.recipeDetails aside.commentCol div#commentList {
+    height: 100%;
+    background-color: #e5e5e5;
+}
+
+div.recipeDetails aside.commentCol div#commentList {
+    height: 100%;
+    background-color: #e5e5e5;
+    border-radius: 2px;
+    overflow: auto;
+}
+
+div.recipeDetails aside.commentCol div#commentList h3 {
+    padding: 7px;
+    margin: 0;
+}
+
+div.recipeDetails aside.commentCol div#commentList section#comments {
+    height: 82%;
+    overflow: auto;
+}
+
+div.recipeDetails aside.commentCol div#commentList section#comments div.comment {
+    margin: 5px;
+    background-color: white;
+    border-radius: 2px;
+    padding: 4px;
+}
+
+div.recipeDetails aside.commentCol div#commentList section#comments div.comment h4 {
+    margin: 0.5em;
+    font-size: 1em;
+}
+
+div.recipeDetails aside.commentCol div#commentList section#comments div.comment p {
+    margin: 0.5em;
+    font-size: 0.75em;
 }
 
 div.recipeDetails button {
@@ -106,10 +173,8 @@ div.recipeDetails button {
     color: white;
 }
 
-div.recipeDetails div.img {
-    width: 100%;
-    height: 40%;
-    margin-top: 10%;
+div.recipeDetails section.mainCol div.img {
+    height: 300px;
     background-size: 100% auto;
     background-repeat: no-repeat;
     background-position: center;
@@ -125,6 +190,7 @@ div.recipeDetails button.like {
 
 div.recipeSummary {
     font-size: 10pt;
+    margin-top: 10px;
 }
 
 div.backdrop {
@@ -136,4 +202,12 @@ div.backdrop {
     z-index: auto;
     background-color: #000;
     opacity: 0.5;
+}
+
+div#recipeDetails div#commentList {
+    background-color: #e5e5e5;
+
+    width: 100%;
+    height: 200px;
+    overflow: scroll;
 }
