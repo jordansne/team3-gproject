@@ -89,11 +89,11 @@ export class IngredientListBuilder extends React.Component {
         const restrictionType = document.getElementById('filter_restriction').value;
 
         if (filterType !== "none") {
-            ingredientListURL += "?type=" + document.getElementById('filter_type').value;
+            ingredientListURL += "&type=" + document.getElementById('filter_type').value;
         }
 
         if (restrictionType !== "none") {
-            ingredientListURL += "?restriction=" + document.getElementById('filter_restriction').value;
+            ingredientListURL += "&restriction=" + document.getElementById('filter_restriction').value;
         }
 
         // Set the current window to the new URL

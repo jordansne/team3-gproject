@@ -51,9 +51,23 @@ export class RecipeView extends React.Component {
      * Takes the search parameters and converts to a GET API query string.
      */
     buildApiParams(search) {
-        let paramString = "/Ingredient/getRecipesByComplex?foodtype=&diet=&cuisine=&ingredients=";
+        let paramString = "/Ingredient/getRecipesByComplex?foodtype=";
 
-        // TODO: Enable filter search in query
+        if(search.type){
+            let foodparam = search.type;
+            const foodtype = foodparam.replace("-", "%2B");
+            paramString += foodtype + "&diet=";
+        }else {
+            paramString += "&diet=";
+        }
+
+        if (search.restriction) {
+            const diet = search.restriction;
+            paramString += diet + "&cuisine=&ingredients=";
+        } else {
+            paramString += "&cuisine=&ingredients=";
+        }
+
 
         const ingredientArray = search.ingredients.split(",");
         for (let i = 0; i < ingredientArray.length; i++) {

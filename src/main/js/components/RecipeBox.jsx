@@ -17,8 +17,7 @@ export class RecipeBox extends React.Component {
                 }}
             >
                 <section className="buttons">
-                    <button className="like">Like</button>
-                    <button className="save">Save</button>
+                    <button className="like"></button>
                     <div className="titleBackground">
                         <section className="recipeName">
                             {this.props.name}
