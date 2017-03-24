@@ -148,4 +148,5 @@ header div#userBox section#pic img {
     margin-bottom: -0.4em;
     background-color: #bcbcbc;
     border-radius: 50%;
+    overflow: hidden;
 }
