@@ -5,52 +5,108 @@
 
 import React from 'react';
 
+import { Comment } from './Comment.jsx';
+
 export class CommentList extends React.Component {
 
-    // TODO: Complete CommentList component
-
-    constructor() {
+    constructor(props) {
         super();
 
-        this.setState({
-            commentList: []
+        this.state = {
+            commentList: [],
+            currentComment: ""
+        };
+
+        // Set firebase database reference
+        this.myFirebaseRef = firebase.database().ref('comments/' + props.id + '/');
+    }
+
+    /**
+     * Initialize firebase database listener on mount.
+     */
+    componentDidMount() {
+        // Add comment listener
+        this.myFirebaseRef.on('child_added', (snapshot) => {
+            const comment = snapshot.val();
+
+            // Add new comment to state
+            const commentList = this.state.commentList;
+            commentList.push({
+                user: comment.name,
+                message: comment.message
+            });
+
+            this.setState({
+                commentList: commentList,
+                currentComment: ""
+            });
         });
     }
 
-    componentDidMount() {
-        // TODO: Setup firebase API call to retrieve comments
-        var myFirebaseRef = firebase.database().ref('comments/');
+    /**
+     * Called when the comment is to be sent.
+     * @param event: The click event.
+     */
+    sendComment(event) {
+        event.preventDefault();
 
-        var pushedRef;
+        // TODO: Check if user is signed in before allowing comments
 
-        var sendMessage = function () {
-            pushedRef = myFirebaseRef.push({
-                name: document.getElementById('name').value,
-                //name: firebase.auth().currentUser.displayName,
-                //uid: firebase.auth().currentUser.uid,
-                message: document.getElementById('message').value
-            });
-            document.getElementById('message').value = '';
-        };
+        this.myFirebaseRef.push({
+            name: firebase.auth().currentUser.displayName,
+            //uid: firebase.auth().currentUser.uid,
+            message: this.state.currentComment
+        }, (error) => {
 
+            if (error) {
+                // If comment could not be sent
+                console.error("Error: failed to send comment. " + error.message);
+            }
 
-
-        myFirebaseRef.on('child_added', function(snapshot) {
-            var message = snapshot.val();
-            addMessage(message.name, message.message);
         });
+    }
 
+    /**
+     * Called when updating the comment text box.
+     * @param event: The onChange event.
+     */
+    updateComment(event) {
+        event.preventDefault();
 
-        var addMessage = function(name, message) {
-            var messages = document.getElementById('messages');
-            messages.innerHTML = '<dt class="entry">'+name+'</dt><dd class="entry"> '+message+'</dd>'+messages.innerHTML;
-        };
-
+        this.setState({
+            commentList: this.state.commentList,
+            currentComment: event.target.value
+        });
     }
 
     render() {
+        // Array to store the comment components
+        const comments = [];
+
+        for (let i = 0; i < this.state.commentList.length; i++) {
+            // Append new comment components
+            comments.push(
+                <Comment
+                    user={this.state.commentList[i].user}
+                    commentMsg={this.state.commentList[i].message}
+                />
+            );
+        }
+
         return (
             <div id="comment">
+                <form onSubmit={(event) => this.sendComment(event)}>
+                    <input
+                        type="text"
+                        value={this.state.currentComment}
+                        onChange={(event) => this.updateComment(event)}
+                        id="commentMessage"
+                    />
+
+                    <button type="submit">
+                        Send
+                    </button>
+                </form>
             </div>
         );
     }
