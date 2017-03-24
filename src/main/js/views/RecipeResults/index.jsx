@@ -14,7 +14,8 @@ export class RecipeView extends React.Component {
 
         // Initialize state with blank array
         this.state = {
-            recipeList: []
+            recipeList: [],
+            apiCallFinished: false
         };
     }
 
@@ -30,7 +31,8 @@ export class RecipeView extends React.Component {
                 // Process the JSON and update the component's state
                 response.json().then((recipeObject) => {
                     this.setState({
-                        recipeList: recipeObject
+                        recipeList: recipeObject,
+                        apiCallFinished: true
                     });
                 })
 
@@ -67,11 +69,20 @@ export class RecipeView extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <h1>Recipe Search Results</h1>
-                <RecipeGrid recipes={this.state.recipeList}/>
-            </div>
-        );
+        if(this.state.apiCallFinished == true && this.state.recipeList.length == 0) {
+            return (
+                <div>
+                    <h1>No Results Found</h1>
+                </div>
+            );
+        }else {
+            return (
+                <div>
+                    <h1>Recipe Search Results</h1>
+                    <RecipeGrid recipes={this.state.recipeList}/>
+                </div>
+            );
+        }
+
     }
 }
