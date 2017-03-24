@@ -54,7 +54,8 @@ export class RecipeView extends React.Component {
         let paramString = "/Ingredient/getRecipesByComplex?foodtype=";
 
         if(search.type){
-            const foodtype = search.type;
+            let foodparam = search.type;
+            const foodtype = foodparam.replace("-", "%2B");
             paramString += foodtype + "&diet=";
         }else {
             paramString += "&diet=";
