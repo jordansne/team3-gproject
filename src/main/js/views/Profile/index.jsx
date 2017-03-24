@@ -31,6 +31,8 @@ export class Profile extends React.Component {
                     signedIn: true,
                     likedRecipes: this.state.likedRecipes
                 });
+
+                this.retrieveLikedRecipes();
             } else {
                 this.setState({
                     signedIn: false,
@@ -38,8 +40,6 @@ export class Profile extends React.Component {
                 });
             }
         });
-
-        this.retrieveLikedRecipes();
     }
 
     /**

@@ -12849,6 +12849,8 @@ var Profile = exports.Profile = function (_React$Component) {
                         signedIn: true,
                         likedRecipes: _this2.state.likedRecipes
                     });
+
+                    _this2.retrieveLikedRecipes();
                 } else {
                     _this2.setState({
                         signedIn: false,
@@ -12856,8 +12858,6 @@ var Profile = exports.Profile = function (_React$Component) {
                     });
                 }
             });
-
-            this.retrieveLikedRecipes();
         }
 
         /**
