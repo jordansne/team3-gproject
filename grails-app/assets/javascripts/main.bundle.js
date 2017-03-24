@@ -13967,79 +13967,112 @@ var FilterSpecifier = exports.FilterSpecifier = function (_React$Component) {
     }
 
     _createClass(FilterSpecifier, [{
-        key: "handleSave",
+        key: 'componentDidMount',
 
 
         /**
-         * Called when the add button is pressed.
+         * Called when component mounted to update the current diet setting.
          */
+        value: function componentDidMount() {
+            var firebasePath = firebase.database().ref('dietPref/' + firebase.auth().currentUser.uid + '/');
+
+            firebasePath.once('value').then(function (snapshot) {
+                var setting = snapshot.val();
+
+                if (setting !== null) {
+                    document.getElementById('filterSetting').value = setting;
+                } else {
+                    document.getElementById('filterSetting').value = "none";
+                }
+            });
+        }
+
+        /**
+         * Called when the save button is pressed.
+         */
+
+    }, {
+        key: 'handleSave',
         value: function handleSave() {
-            // TODO: Firebase - Save restriction to database
-            alert("WIP!");
+            var firebasePath = firebase.database().ref('dietPref/' + firebase.auth().currentUser.uid + '/');
+            var setting = document.getElementById('filterSetting').value;
+
+            if (setting !== "none") {
+                firebasePath.set(document.getElementById('filterSetting').value);
+            } else {
+                firebasePath.remove();
+            }
+
+            alert("Dietary Restriction saved!");
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var _this2 = this;
 
             return _react2.default.createElement(
-                "div",
-                { id: "filterSpecifier" },
+                'div',
+                { id: 'filterSpecifier' },
                 _react2.default.createElement(
-                    "select",
-                    { id: "filterSetting" },
+                    'h5',
+                    null,
+                    'Diet Preference Setting'
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { id: 'filterSetting' },
                     _react2.default.createElement(
-                        "option",
-                        { value: "none" },
-                        "Select a dietary restriction"
+                        'option',
+                        { value: 'none' },
+                        'None'
                     ),
                     _react2.default.createElement(
-                        "option",
-                        { value: "lactose-intolerant" },
-                        "Lactose-intolerant"
+                        'option',
+                        { value: 'lactose-intolerant' },
+                        'Lactose-intolerant'
                     ),
                     _react2.default.createElement(
-                        "option",
-                        { value: "vegetarian" },
-                        "Vegetarian"
+                        'option',
+                        { value: 'vegetarian' },
+                        'Vegetarian'
                     ),
                     _react2.default.createElement(
-                        "option",
-                        { value: "pescetarian" },
-                        "Pescetarian"
+                        'option',
+                        { value: 'pescetarian' },
+                        'Pescetarian'
                     ),
                     _react2.default.createElement(
-                        "option",
-                        { value: "lacto-vegetarian" },
-                        "Lactose Intolerant Vegetarian"
+                        'option',
+                        { value: 'lacto-vegetarian' },
+                        'Lactose Intolerant Vegetarian'
                     ),
                     _react2.default.createElement(
-                        "option",
-                        { value: "ovo-vegetarian" },
-                        "Ovo Vegetarian"
+                        'option',
+                        { value: 'ovo-vegetarian' },
+                        'Ovo Vegetarian'
                     ),
                     _react2.default.createElement(
-                        "option",
-                        { value: "paleo" },
-                        "Paleo"
+                        'option',
+                        { value: 'paleo' },
+                        'Paleo'
                     ),
                     _react2.default.createElement(
-                        "option",
-                        { value: "primal" },
-                        "Primal"
+                        'option',
+                        { value: 'primal' },
+                        'Primal'
                     ),
                     _react2.default.createElement(
-                        "option",
-                        { value: "vegan" },
-                        "Vegan"
+                        'option',
+                        { value: 'vegan' },
+                        'Vegan'
                     )
                 ),
                 _react2.default.createElement(
-                    "button",
+                    'button',
                     { onClick: function onClick() {
                             return _this2.handleSave();
                         } },
-                    "Save"
+                    'Save'
                 )
             );
         }

@@ -26,6 +26,10 @@ div#profile aside#pref h2 {
     margin-top: 0;
 }
 
+div#profile aside#pref h5 {
+    margin: 0.5em 0;
+}
+
 /* Filter dropdown themselves. */
 div#profile select#filterSetting {
     box-sizing: content-box;

@@ -8,18 +8,44 @@ import React from 'react';
 export class FilterSpecifier extends React.Component {
 
     /**
-     * Called when the add button is pressed.
+     * Called when component mounted to update the current diet setting.
+     */
+    componentDidMount() {
+        const firebasePath = firebase.database().ref('dietPref/' + firebase.auth().currentUser.uid + '/');
+
+        firebasePath.once('value').then((snapshot) => {
+            const setting = snapshot.val();
+
+            if (setting !== null) {
+                document.getElementById('filterSetting').value = setting;
+            } else {
+                document.getElementById('filterSetting').value = "none";
+            }
+        })
+    }
+
+    /**
+     * Called when the save button is pressed.
      */
     handleSave() {
-        // TODO: Firebase - Save restriction to database
-        alert("WIP!");
+        const firebasePath = firebase.database().ref('dietPref/' + firebase.auth().currentUser.uid + '/');
+        const setting = document.getElementById('filterSetting').value;
+
+        if (setting !== "none") {
+            firebasePath.set(document.getElementById('filterSetting').value);
+        } else {
+            firebasePath.remove();
+        }
+
+        alert("Dietary Restriction saved!");
     }
 
     render() {
         return (
             <div id="filterSpecifier">
+                <h5>Diet Preference Setting</h5>
                 <select id="filterSetting">
-                    <option value="none">Select a dietary restriction</option>
+                    <option value="none">None</option>
                     <option value="lactose-intolerant">Lactose-intolerant</option>
                     <option value="vegetarian">Vegetarian</option>
                     <option value="pescetarian">Pescetarian</option>
