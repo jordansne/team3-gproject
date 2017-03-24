@@ -12838,8 +12838,8 @@ var Profile = exports.Profile = function (_React$Component) {
 
 
     _createClass(Profile, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
             var _this2 = this;
 
             // onAuthStateChanged returns an unregister function
@@ -12847,7 +12847,7 @@ var Profile = exports.Profile = function (_React$Component) {
                 if (user) {
                     _this2.setState({
                         signedIn: true,
-                        likedRecipes: _this2.retrieveLikedRecipes()
+                        likedRecipes: _this2.state.likedRecipes
                     });
                 } else {
                     _this2.setState({
@@ -12856,6 +12856,8 @@ var Profile = exports.Profile = function (_React$Component) {
                     });
                 }
             });
+
+            this.retrieveLikedRecipes();
         }
 
         /**
@@ -12876,10 +12878,49 @@ var Profile = exports.Profile = function (_React$Component) {
     }, {
         key: 'retrieveLikedRecipes',
         value: function retrieveLikedRecipes() {
-            // TODO: Set up with proper firebase backend API
+            var _this3 = this;
 
-            // Test data
-            return [{ name: "Food Item #1" }, { name: "Food Item #2" }, { name: "Food Item #3" }, { name: "Food Item #4" }, { name: "Food Item #5" }];
+            var firebaseRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
+            var newLikedRecipes = [];
+
+            firebaseRef.once('value').then(function (snapshot) {
+                var likedRecipes = snapshot.val();
+
+                if (likedRecipes !== null) {
+                    // Add all recipes to the likedRecipe list
+                    for (var i = 0; i < likedRecipes.length; i++) {
+                        _this3.addToLikedRecipes(newLikedRecipes, likedRecipes[i]);
+                    }
+                }
+            });
+        }
+    }, {
+        key: 'addToLikedRecipes',
+        value: function addToLikedRecipes(recipeList, id) {
+            var _this4 = this;
+
+            var apiURL = "/Ingredient/getRecipeInfo?recipeID=" + id;
+
+            fetch(apiURL).then(function (response) {
+                if (response.ok) {
+
+                    response.json().then(function (recipeObject) {
+                        var recipeList = _this4.state.likedRecipes.slice();
+                        recipeList.push(recipeObject);
+
+                        _this4.setState({
+                            likedRecipes: recipeList,
+                            signedIn: _this4.state.signedIn
+                        });
+                    });
+                } else {
+                    // TODO: Handle server response error
+                    console.error("Server response error: " + response.message);
+                }
+            }).catch(function (error) {
+                // TODO: Handle connection error
+                console.error("Server response error: " + error.message);
+            });
         }
 
         /**
@@ -12903,9 +12944,38 @@ var Profile = exports.Profile = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this5 = this;
 
             var profilePage = void 0;
+            var recipes = void 0;
+
+            if (this.state.likedRecipes.length > 0) {
+                recipes = _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'h2',
+                        null,
+                        'Liked Recipes'
+                    ),
+                    _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.likedRecipes })
+                );
+            } else {
+                recipes = _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'h2',
+                        null,
+                        'Liked Recipes'
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        'Like recipes your favourite recipes and see them all right here!'
+                    )
+                );
+            }
 
             if (this.state.signedIn) {
                 // If the user is signed in..
@@ -12933,12 +13003,7 @@ var Profile = exports.Profile = function (_React$Component) {
                         ),
                         _react2.default.createElement(_FilterSpecifier.FilterSpecifier, null)
                     ),
-                    _react2.default.createElement(
-                        'h2',
-                        null,
-                        'Liked Recipes'
-                    ),
-                    _react2.default.createElement(_RecipeGrid.RecipeGrid, { recipes: this.state.likedRecipes }),
+                    recipes,
                     _react2.default.createElement(
                         'h2',
                         null,
@@ -12947,7 +13012,7 @@ var Profile = exports.Profile = function (_React$Component) {
                     _react2.default.createElement(
                         'button',
                         { id: 'deleteAccount', onClick: function onClick() {
-                                return _this3.handleDeleteAccount();
+                                return _this5.handleDeleteAccount();
                             } },
                         'Delete Account'
                     )

@@ -23,13 +23,13 @@ export class Profile extends React.Component {
      * Called before component is mounted. Register event listener for if user logs in
      * while on the profile page is open so it can be updated with user info.
      */
-    componentWillMount() {
+    componentDidMount() {
         // onAuthStateChanged returns an unregister function
         this.unregisterAuthEvent = firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 this.setState({
                     signedIn: true,
-                    likedRecipes: this.retrieveLikedRecipes()
+                    likedRecipes: this.state.likedRecipes
                 });
             } else {
                 this.setState({
@@ -38,6 +38,8 @@ export class Profile extends React.Component {
                 });
             }
         });
+
+        this.retrieveLikedRecipes();
     }
 
     /**
@@ -52,16 +54,46 @@ export class Profile extends React.Component {
      * Retrieve a list of liked recipes from backend.
      */
     retrieveLikedRecipes() {
-        // TODO: Set up with proper firebase backend API
+        const firebaseRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
+        const newLikedRecipes = [];
 
-        // Test data
-        return [
-            { name: "Food Item #1" },
-            { name: "Food Item #2" },
-            { name: "Food Item #3" },
-            { name: "Food Item #4" },
-            { name: "Food Item #5" }
-        ];
+        firebaseRef.once('value').then((snapshot) => {
+            let likedRecipes = snapshot.val();
+
+            if (likedRecipes !== null) {
+                // Add all recipes to the likedRecipe list
+                for (let i = 0; i < likedRecipes.length; i++) {
+                    this.addToLikedRecipes(newLikedRecipes, likedRecipes[i]);
+                }
+            }
+        });
+    }
+
+    addToLikedRecipes(recipeList, id) {
+        let apiURL = "/Ingredient/getRecipeInfo?recipeID=" + id;
+
+        fetch(apiURL).then((response) => {
+            if (response.ok) {
+
+                response.json().then((recipeObject) => {
+                    const recipeList = this.state.likedRecipes.slice();
+                    recipeList.push(recipeObject);
+
+                    this.setState({
+                        likedRecipes: recipeList,
+                        signedIn: this.state.signedIn
+                    })
+                })
+
+            } else {
+                // TODO: Handle server response error
+                console.error("Server response error: " + response.message);
+            }
+
+        }).catch((error) => {
+            // TODO: Handle connection error
+            console.error("Server response error: " + error.message);
+        });
     }
 
     /**
@@ -84,6 +116,23 @@ export class Profile extends React.Component {
 
     render() {
         let profilePage;
+        let recipes;
+
+        if (this.state.likedRecipes.length > 0) {
+            recipes = (
+                <div>
+                    <h2>Liked Recipes</h2>
+                    <RecipeGrid recipes={this.state.likedRecipes}/>
+                </div>
+            );
+        } else {
+            recipes = (
+                <div>
+                    <h2>Liked Recipes</h2>
+                    <p>Like recipes your favourite recipes and see them all right here!</p>
+                </div>
+            );
+        }
 
         if (this.state.signedIn) {
             // If the user is signed in..
@@ -97,8 +146,7 @@ export class Profile extends React.Component {
                         <FilterSpecifier/>
                     </aside>
 
-                    <h2>Liked Recipes</h2>
-                    <RecipeGrid recipes={this.state.likedRecipes}/>
+                    {recipes}
 
                     <h2>Settings</h2>
                     <button id="deleteAccount" onClick={() => this.handleDeleteAccount()}>
