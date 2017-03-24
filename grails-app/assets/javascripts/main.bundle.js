@@ -13004,6 +13004,7 @@ var CommentList = exports.CommentList = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (CommentList.__proto__ || Object.getPrototypeOf(CommentList)).call(this));
 
         _this.state = {
+            signedIn: false,
             commentList: [],
             currentComment: ""
         };
@@ -13014,7 +13015,7 @@ var CommentList = exports.CommentList = function (_React$Component) {
     }
 
     /**
-     * Initialize firebase database listener on mount.
+     * Initialize firebase database listener on mount & add authentication listener.
      */
 
 
@@ -13035,10 +13036,39 @@ var CommentList = exports.CommentList = function (_React$Component) {
                 });
 
                 _this2.setState({
+                    signedIn: _this2.state.signedIn,
                     commentList: commentList,
                     currentComment: ""
                 });
             });
+
+            // onAuthStateChanged returns an unregister function
+            this.unregisterAuthEvent = firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    _this2.setState({
+                        signedIn: true,
+                        commentList: _this2.state.commentList,
+                        currentComment: _this2.state.currentComment
+                    });
+                } else {
+                    _this2.setState({
+                        signedIn: false,
+                        commentList: _this2.state.commentList,
+                        currentComment: _this2.state.currentComment
+                    });
+                }
+            });
+        }
+
+        /**
+         * Called before component is unmounted. Unregister event listener when user leaves
+         * profile page to prevent setting state of component that isn't mounted.
+         */
+
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.unregisterAuthEvent();
         }
 
         /**
@@ -13051,7 +13081,10 @@ var CommentList = exports.CommentList = function (_React$Component) {
         value: function sendComment(event) {
             event.preventDefault();
 
-            // TODO: Check if user is signed in before allowing comments
+            if (!this.state.signedIn) {
+                alert("Please sign up or sign in to comment on recipes!");
+                return;
+            }
 
             this.myFirebaseRef.push({
                 name: firebase.auth().currentUser.displayName,
@@ -13077,6 +13110,7 @@ var CommentList = exports.CommentList = function (_React$Component) {
             event.preventDefault();
 
             this.setState({
+                signedIn: this.state.signedIn,
                 commentList: this.state.commentList,
                 currentComment: event.target.value
             });

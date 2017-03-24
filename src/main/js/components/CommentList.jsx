@@ -13,6 +13,7 @@ export class CommentList extends React.Component {
         super();
 
         this.state = {
+            signedIn: false,
             commentList: [],
             currentComment: ""
         };
@@ -22,7 +23,7 @@ export class CommentList extends React.Component {
     }
 
     /**
-     * Initialize firebase database listener on mount.
+     * Initialize firebase database listener on mount & add authentication listener.
      */
     componentDidMount() {
         // Add comment listener
@@ -37,10 +38,36 @@ export class CommentList extends React.Component {
             });
 
             this.setState({
+                signedIn: this.state.signedIn,
                 commentList: commentList,
                 currentComment: ""
             });
         });
+
+        // onAuthStateChanged returns an unregister function
+        this.unregisterAuthEvent = firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({
+                    signedIn: true,
+                    commentList: this.state.commentList,
+                    currentComment: this.state.currentComment
+                });
+            } else {
+                this.setState({
+                    signedIn: false,
+                    commentList: this.state.commentList,
+                    currentComment: this.state.currentComment
+                });
+            }
+        });
+    }
+
+    /**
+     * Called before component is unmounted. Unregister event listener when user leaves
+     * profile page to prevent setting state of component that isn't mounted.
+     */
+    componentWillUnmount() {
+        this.unregisterAuthEvent();
     }
 
     /**
@@ -50,7 +77,10 @@ export class CommentList extends React.Component {
     sendComment(event) {
         event.preventDefault();
 
-        // TODO: Check if user is signed in before allowing comments
+        if (!this.state.signedIn) {
+            alert("Please sign up or sign in to comment on recipes!");
+            return;
+        }
 
         this.myFirebaseRef.push({
             name: firebase.auth().currentUser.displayName,
@@ -74,6 +104,7 @@ export class CommentList extends React.Component {
         event.preventDefault();
 
         this.setState({
+            signedIn: this.state.signedIn,
             commentList: this.state.commentList,
             currentComment: event.target.value
         });
