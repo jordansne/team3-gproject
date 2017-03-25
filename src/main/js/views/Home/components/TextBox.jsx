@@ -7,6 +7,27 @@ import React from 'react';
 
 export class TextBox extends React.Component {
 
+    componentDidMount() {
+        // onAuthStateChanged returns an unregister function
+        this.unregisterAuthEvent = firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // Preset dietary restrictions
+                const firebasePath = firebase.database().ref('dietPref/' + firebase.auth().currentUser.uid + '/');
+
+                firebasePath.once('value').then((snapshot) => {
+                    const setting = snapshot.val();
+
+                    if (setting !== null) {
+                        document.getElementById('filter_restriction').value = setting;
+                    } else {
+                        document.getElementById('filter_restriction').value = "none";
+                    }
+                });
+
+            }
+        });
+    }
+
     /**
      * Called when the add button is pressed.
      */

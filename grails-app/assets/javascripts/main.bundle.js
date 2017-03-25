@@ -14460,12 +14460,33 @@ var TextBox = exports.TextBox = function (_React$Component) {
     }
 
     _createClass(TextBox, [{
-        key: "handleAdd",
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            // onAuthStateChanged returns an unregister function
+            this.unregisterAuthEvent = firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    // Preset dietary restrictions
+                    var firebasePath = firebase.database().ref('dietPref/' + firebase.auth().currentUser.uid + '/');
 
+                    firebasePath.once('value').then(function (snapshot) {
+                        var setting = snapshot.val();
+
+                        if (setting !== null) {
+                            document.getElementById('filter_restriction').value = setting;
+                        } else {
+                            document.getElementById('filter_restriction').value = "none";
+                        }
+                    });
+                }
+            });
+        }
 
         /**
          * Called when the add button is pressed.
          */
+
+    }, {
+        key: 'handleAdd',
         value: function handleAdd(e) {
             // Prevent window reload
             e.preventDefault();
@@ -14476,117 +14497,117 @@ var TextBox = exports.TextBox = function (_React$Component) {
             document.getElementById("textBoxForm").reset();
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var _this2 = this;
 
             return _react2.default.createElement(
-                "div",
-                { id: "textBox" },
+                'div',
+                { id: 'textBox' },
                 _react2.default.createElement(
-                    "form",
-                    { id: "textBoxForm", onSubmit: function onSubmit(e) {
+                    'form',
+                    { id: 'textBoxForm', onSubmit: function onSubmit(e) {
                             return _this2.handleAdd(e);
                         } },
                     _react2.default.createElement(
-                        "label",
+                        'label',
                         null,
-                        _react2.default.createElement("input", { type: "text", value: this.props.textBoxValue, onChange: this.props.updateText })
+                        _react2.default.createElement('input', { type: 'text', value: this.props.textBoxValue, onChange: this.props.updateText })
                     ),
-                    _react2.default.createElement("input", { id: "add", type: "submit", value: "Add" })
+                    _react2.default.createElement('input', { id: 'add', type: 'submit', value: 'Add' })
                 ),
-                _react2.default.createElement("br", null),
+                _react2.default.createElement('br', null),
                 _react2.default.createElement(
-                    "div",
-                    { id: "filters" },
+                    'div',
+                    { id: 'filters' },
                     _react2.default.createElement(
-                        "select",
-                        { className: "dropdown", id: "filter_type" },
+                        'select',
+                        { className: 'dropdown', id: 'filter_type' },
                         _react2.default.createElement(
-                            "option",
-                            { value: "none" },
-                            "Select a Meal Type"
+                            'option',
+                            { value: 'none' },
+                            'Select a Meal Type'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "main-course" },
-                            "Main Course"
+                            'option',
+                            { value: 'main-course' },
+                            'Main Course'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "side-dish" },
-                            "Side Dish"
+                            'option',
+                            { value: 'side-dish' },
+                            'Side Dish'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "dessert" },
-                            "Dessert"
+                            'option',
+                            { value: 'dessert' },
+                            'Dessert'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "appetizer" },
-                            "Appetizer"
+                            'option',
+                            { value: 'appetizer' },
+                            'Appetizer'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "breakfast" },
-                            "Breakfast"
+                            'option',
+                            { value: 'breakfast' },
+                            'Breakfast'
                         )
                     ),
                     _react2.default.createElement(
-                        "select",
-                        { className: "dropdown", id: "filter_restriction" },
+                        'select',
+                        { className: 'dropdown', id: 'filter_restriction' },
                         _react2.default.createElement(
-                            "option",
-                            { value: "none" },
-                            "Select a dietary restriction"
+                            'option',
+                            { value: 'none' },
+                            'Select a dietary restriction'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "lactose-intolerant" },
-                            "Lactose-intolerant"
+                            'option',
+                            { value: 'lactose-intolerant' },
+                            'Lactose-intolerant'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "vegetarian" },
-                            "Vegetarian"
+                            'option',
+                            { value: 'vegetarian' },
+                            'Vegetarian'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "pescetarian" },
-                            "Pescetarian"
+                            'option',
+                            { value: 'pescetarian' },
+                            'Pescetarian'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "lacto-vegetarian" },
-                            "Lactose Intolerant Vegetarian"
+                            'option',
+                            { value: 'lacto-vegetarian' },
+                            'Lactose Intolerant Vegetarian'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "ovo-vegetarian" },
-                            "Ovo Vegetarian"
+                            'option',
+                            { value: 'ovo-vegetarian' },
+                            'Ovo Vegetarian'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "paleo" },
-                            "Paleo"
+                            'option',
+                            { value: 'paleo' },
+                            'Paleo'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "primal" },
-                            "Primal"
+                            'option',
+                            { value: 'primal' },
+                            'Primal'
                         ),
                         _react2.default.createElement(
-                            "option",
-                            { value: "vegan" },
-                            "Vegan"
+                            'option',
+                            { value: 'vegan' },
+                            'Vegan'
                         )
                     )
                 ),
                 _react2.default.createElement(
-                    "button",
+                    'button',
                     { onClick: this.props.doSearch },
-                    "Go"
+                    'Go'
                 )
             );
         }

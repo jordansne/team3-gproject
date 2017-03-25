@@ -21,7 +21,7 @@ export class FilterSpecifier extends React.Component {
             } else {
                 document.getElementById('filterSetting').value = "none";
             }
-        })
+        });
     }
 
     /**
