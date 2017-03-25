@@ -158,7 +158,7 @@ export class RecipeDetails extends React.Component {
                     <button className="close" onClick={this.props.close}>Close</button>
 
                     <section className="mainCol">
-                        <a href={this.state.url}>
+                        <a target="_blank" href={this.state.url}>
                             <div style={{backgroundImage: 'url(' + this.state.image + ')'}} className="img"/>
                         </a>
 

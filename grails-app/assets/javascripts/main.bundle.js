@@ -8597,7 +8597,7 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                             { className: 'mainCol' },
                             _react2.default.createElement(
                                 'a',
-                                { href: this.state.url },
+                                { target: '_blank', href: this.state.url },
                                 _react2.default.createElement('div', { style: { backgroundImage: 'url(' + this.state.image + ')' }, className: 'img' })
                             ),
                             _react2.default.createElement('div', { className: 'recipeSummary', dangerouslySetInnerHTML: { __html: this.state.summary } })
