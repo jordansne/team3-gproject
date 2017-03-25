@@ -5575,7 +5575,10 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
     _createClass(RecipeGrid, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
+            // Initialize reference is currentUser has been set
+            if (firebase.auth().currentUser != null) {
+                this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
+            }
         }
 
         /**
@@ -5586,6 +5589,11 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(props) {
             var _this2 = this;
+
+            // Initialize reference if is has not already
+            if (this.firebaseSavedRef == null) {
+                this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
+            }
 
             var _loop = function _loop(i) {
                 var currentID = props.recipes[i].identity;
