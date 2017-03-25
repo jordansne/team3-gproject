@@ -27,6 +27,10 @@ export class RecipeDetails extends React.Component {
      * Called when the like button is pressed.
      */
     handleLikeClick() {
+        if (!this.props.likeClicked(this.props.id)) {
+            return;
+        }
+
         if (!this.props.isLiked) {
 
             // If the recipe is current not liked, increment like number and update state
@@ -56,8 +60,6 @@ export class RecipeDetails extends React.Component {
             });
         }
 
-        // Handle is parent component
-        this.props.likeClicked(this.props.id);
     }
 
     /**

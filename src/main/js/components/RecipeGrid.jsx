@@ -15,8 +15,8 @@ export class RecipeGrid extends React.Component {
         // Initialize state with blank array
         this.state = {
             currentDetailsID: 0,
-            signedIn: false,
-            recipesLikeStatus: {}
+            recipesLikeStatus: {},
+            signedIn: false
         };
     }
 
@@ -24,44 +24,41 @@ export class RecipeGrid extends React.Component {
      * Called to initialize firebase reference
      */
     componentDidMount() {
-        // Initialize reference is currentUser has been set
-        if (firebase.auth().currentUser != null) {
-            this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
-        }
+        // onAuthStateChanged returns an unregister function
+        this.unregisterAuthEvent = firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.state = {
+                    currentDetailsID: 0,
+                    recipesLikeStatus: {},
+                    signedIn: true
+                };
+
+                this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
+                this.initializeLikedRecipes(true);
+            } else {
+                this.state = {
+                    currentDetailsID: 0,
+                    recipesLikeStatus: {},
+                    signedIn: false
+                };
+                this.initializeLikedRecipes(false);
+            }
+        });
     }
 
-    /**
-     * Called to initialize like status of each recipe.
-     */
-    componentWillReceiveProps(props) {
-        // Initialize reference if is has not already
-        if (this.firebaseSavedRef == null) {
-            this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
-        }
+    initializeLikedRecipes(signedIn) {
+        if (signedIn) {
 
-        for (let i = 0; i < props.recipes.length; i++) {
-            const currentID = props.recipes[i].identity;
+            for (let i = 0; i < this.props.recipes.length; i++) {
+                const currentID = this.props.recipes[i].identity;
 
-            // Check if liked already
-            this.firebaseSavedRef.once('value').then((snapshot) => {
-                let likedRecipes = snapshot.val();
+                // Check if liked already
+                this.firebaseSavedRef.once('value').then((snapshot) => {
+                    let likedRecipes = snapshot.val();
 
-                // If no likes are in a user saved recipe
-                if (likedRecipes === null) {
-                    this.state.recipesLikeStatus[currentID] = false;
-                    this.setState({
-                        recipesLikeStatus: this.state.recipesLikeStatus,
-                        currentDetailsID: this.state.currentDetailsID,
-                        signedIn: this.state.signedIn,
-                    });
-
-                    return;
-                }
-
-                // Check if already liked
-                for (let i = 0; i < likedRecipes.length; i++) {
-                    if (likedRecipes[i] === currentID) {
-                        this.state.recipesLikeStatus[currentID] = true;
+                    // If no likes are in a user saved recipe
+                    if (likedRecipes === null) {
+                        this.state.recipesLikeStatus[currentID] = false;
                         this.setState({
                             recipesLikeStatus: this.state.recipesLikeStatus,
                             currentDetailsID: this.state.currentDetailsID,
@@ -70,24 +67,60 @@ export class RecipeGrid extends React.Component {
 
                         return;
                     }
-                }
 
-                // If not found, user has not liked
-                this.state.recipesLikeStatus[currentID] = false;
-                this.setState({
-                    recipesLikeStatus: this.state.recipesLikeStatus,
-                    currentDetailsID: this.state.currentDetailsID,
-                    signedIn: this.state.signedIn,
+                    // Check if already liked
+                    for (let i = 0; i < likedRecipes.length; i++) {
+                        if (likedRecipes[i] === currentID) {
+                            this.state.recipesLikeStatus[currentID] = true;
+                            this.setState({
+                                recipesLikeStatus: this.state.recipesLikeStatus,
+                                currentDetailsID: this.state.currentDetailsID,
+                                signedIn: this.state.signedIn,
+                            });
+
+                            return;
+                        }
+                    }
+
+                    // If not found, user has not liked
+                    this.state.recipesLikeStatus[currentID] = false;
+                    this.setState({
+                        recipesLikeStatus: this.state.recipesLikeStatus,
+                        currentDetailsID: this.state.currentDetailsID,
+                        signedIn: this.state.signedIn,
+                    });
                 });
+            }
+        } else {
+
+            // If not signed in
+            const newRecipesLikeStatus = {};
+            for (let i = 0; i < this.props.recipes.length; i++) {
+                const currentID = this.props.recipes[i].identity;
+
+                newRecipesLikeStatus[currentID] = false;
+            }
+
+            this.setState({
+                recipesLikeStatus: newRecipesLikeStatus,
+                currentDetailsID: this.state.currentDetailsID,
+                signedIn: this.state.signedIn
             });
+
         }
     }
 
     /**
      * Called when a user pressed the like button.
      * @param recipeID: The recipe to like/unlike.
+     * @return: If like was processed.
      */
     handleLikeClick(recipeID) {
+        if (!this.state.signedIn) {
+            alert("Please sign up or sign in to like recipes!");
+            return false;
+        }
+
         this.firebaseLikesRef = firebase.database().ref('likes/' + recipeID + '/');
 
         this.firebaseSavedRef.once('value').then((snapshot) => {
@@ -110,6 +143,8 @@ export class RecipeGrid extends React.Component {
             // Like if not already liked
             this.handleLike(recipeID, likedRecipes);
         });
+
+        return true;
     }
 
     /**
@@ -217,7 +252,7 @@ export class RecipeGrid extends React.Component {
                     id={this.props.recipes[i].identity}
                     image={this.props.recipes[i].image}
                     setDetailsView={(id) => this.setDetailsView(id)}
-                    likeClicked={(id) => this.handleLikeClick(id)}
+                    likeClicked={(id) => {return this.handleLikeClick(id)}}
                     isLiked={this.state.recipesLikeStatus[this.props.recipes[i].identity]}
                 />
 
@@ -229,7 +264,7 @@ export class RecipeGrid extends React.Component {
         if (this.state.currentDetailsID !== 0) {
             recipeModal = <RecipeDetails
                 id={this.state.currentDetailsID}
-                likeClicked={(id) => this.handleLikeClick(id)}
+                likeClicked={(id) => {return this.handleLikeClick(id)}}
                 close={() => this.closeDetails()}
                 isLiked = {this.state.recipesLikeStatus[this.state.currentDetailsID]}
             />;
