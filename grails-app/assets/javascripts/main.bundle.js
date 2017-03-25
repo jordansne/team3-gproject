@@ -8814,11 +8814,11 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                         });
                     });
                 } else {
-                    // TODO: Handle server response error
+                    alert("Could not retrieve recipe details :(. Please try again later!");
                     console.error("Server response error: " + response.message);
                 }
             }).catch(function (error) {
-                // TODO: Handle connection error
+                alert("Could not retrieve recipe details :(. Please check your internet connection or try again later!");
                 console.error("Server response error: " + error.message);
             });
 
@@ -12912,11 +12912,11 @@ var ExploreRecipe = exports.ExploreRecipe = function (_React$Component) {
                         });
                     });
                 } else {
-                    // TODO: Handle server response error
+                    alert("Could not retrieve any recipes :(. Please try again later!");
                     console.error("Server response error: " + response.message);
                 }
             }).catch(function (error) {
-                // TODO: Handle connection error
+                alert("Could not retrieve any recipes :(. Please check your internet connection or try again later!");
                 console.error("Server response error: " + error.message);
             });
         }
@@ -13202,11 +13202,11 @@ var Profile = exports.Profile = function (_React$Component) {
                         });
                     });
                 } else {
-                    // TODO: Handle server response error
+                    alert("Could not retrieve any recipes :(. Please try again later!");
                     console.error("Server response error: " + response.message);
                 }
             }).catch(function (error) {
-                // TODO: Handle connection error
+                alert("Could not retrieve any recipes :(. Please check your internet connection or try again later!");
                 console.error("Server response error: " + error.message);
             });
         }
@@ -13411,11 +13411,11 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
                         });
                     });
                 } else {
-                    // TODO: Handle server response error
+                    alert("Could not retrieve any recipes :(. Please try again later!");
                     console.error("Server response error: " + response.message);
                 }
             }).catch(function (error) {
-                // TODO: Handle connection error
+                alert("Could not retrieve any recipes :(. Please check your internet connection or try again later!");
                 console.error("Server response error: " + error.message);
             });
         }

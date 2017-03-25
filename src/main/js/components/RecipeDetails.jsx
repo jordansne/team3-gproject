@@ -81,12 +81,12 @@ export class RecipeDetails extends React.Component {
                 })
 
             } else {
-                // TODO: Handle server response error
+                alert("Could not retrieve recipe details :(. Please try again later!");
                 console.error("Server response error: " + response.message);
             }
 
         }).catch((error) => {
-            // TODO: Handle connection error
+            alert("Could not retrieve recipe details :(. Please check your internet connection or try again later!");
             console.error("Server response error: " + error.message);
         });
 
