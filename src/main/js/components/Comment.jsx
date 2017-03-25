@@ -7,8 +7,6 @@ import React from 'react';
 
 export class Comment extends React.Component {
 
-    // TODO: Complete Comment component
-
     render() {
         return (
             <div className="comment">

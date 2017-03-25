@@ -16,37 +16,68 @@ export class RecipeGrid extends React.Component {
         this.state = {
             currentDetailsID: 0,
             signedIn: false,
-            liked: {}
-
+            recipesLikeStatus: {}
         };
-
     }
 
     /**
-     * Callback to open details window using the recipe ID.
+     * Called to initialize like status of each recipe.
      */
-    componentDidMount(){
+    componentWillReceiveProps(props) {
+        this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
 
-        const array = {};
+        for (let i = 0; i < props.recipes.length; i++) {
+            const currentID = props.recipes[i].identity;
 
-        for(let i = 0; i < this.props.recipes.length; i++ ){
+            // Check if liked already
+            this.firebaseSavedRef.once('value').then((snapshot) => {
+                let likedRecipes = snapshot.val();
 
-            array[this.props.recipeList[i].id] = false;
+                // If no likes are in a user saved recipe
+                if (likedRecipes === null) {
+                    this.state.recipesLikeStatus[currentID] = false;
+                    this.setState({
+                        recipesLikeStatus: this.state.recipesLikeStatus,
+                        currentDetailsID: this.state.currentDetailsID,
+                        signedIn: this.state.signedIn,
+                    });
+
+                    return;
+                }
+
+                // Check if already liked
+                for (let i = 0; i < likedRecipes.length; i++) {
+                    if (likedRecipes[i] === currentID) {
+                        this.state.recipesLikeStatus[currentID] = true;
+                        this.setState({
+                            recipesLikeStatus: this.state.recipesLikeStatus,
+                            currentDetailsID: this.state.currentDetailsID,
+                            signedIn: this.state.signedIn,
+                        });
+
+                        return;
+                    }
+                }
+
+                // If not found, user has not liked
+                this.state.recipesLikeStatus[currentID] = false;
+                this.setState({
+                    recipesLikeStatus: this.state.recipesLikeStatus,
+                    currentDetailsID: this.state.currentDetailsID,
+                    signedIn: this.state.signedIn,
+                });
+            });
         }
-
-        this.setState({
-            liked: array,
-            currentDetailsID: this.state.currentDetailsID,
-            signedIn: this.state.signedIn,
-        });
-
-        this.myFirebaseRefsaved = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
     }
 
-    likeRecipe(recipeID){
-        this.myFirebaseReflikes = firebase.database().ref('likes/' + recipeID + '/');
+    /**
+     * Called when a user pressed the like button.
+     * @param recipeID: The recipe to like/unlike.
+     */
+    handleLikeClick(recipeID) {
+        this.firebaseLikesRef = firebase.database().ref('likes/' + recipeID + '/');
 
-        this.myFirebaseRefsaved.once('value').then((snapshot) => {
+        this.firebaseSavedRef.once('value').then((snapshot) => {
             let likedRecipes = snapshot.val();
 
             // If no likes are in a user saved recipe
@@ -68,76 +99,87 @@ export class RecipeGrid extends React.Component {
         });
     }
 
+    /**
+     * Called when need to handle liking a recipe.
+     * @param recipeID: The recipe to like.
+     * @param currentList: The current list of liked recipes from the database.
+     */
     handleLike(recipeID, currentList) {
-
-        // Add to user recipe list
+        // Create new array if currently blank in database
         if (currentList === null) {
             currentList = [];
         }
 
+        // Add recipe & set the new liked list for user on the database
         currentList.push(recipeID);
-        this.myFirebaseRefsaved.set(currentList);
+        this.firebaseSavedRef.set(currentList);
 
-        // Update recipe like count
-        this.myFirebaseReflikes.once('value').then((snapshot) => {
+        // Update recipe like count on the database
+        this.firebaseLikesRef.once('value').then((snapshot) => {
             let likes = snapshot.val();
-
 
             if (likes === null) {
                 likes = 1;
-
-
             } else {
-                likes += 1;
+                likes++;
             }
 
-            this.myFirebaseReflikes.set(likes);
+            this.firebaseLikesRef.set(likes);
         });
 
-        this.state.liked[recipeID] = true;
+        // Update state with new liked status
+        this.state.recipesLikeStatus[recipeID] = true;
         this.setState({
-            liked: this.state.liked,
+            recipesLikeStatus: this.state.recipesLikeStatus,
             currentDetailsID: this.state.currentDetailsID,
             signedIn: this.state.signedIn
         });
     }
 
-
-
-
+    /**
+     * Called when need to handle unliking a recipe.
+     * @param recipeID: The recipe to unlike.
+     * @param currentList: The current list of liked recipes from the database.
+     */
     handleUnlike(recipeID, currentList) {
-        // Remove from user recipe list
+        // Remove recipe & set the new liked list for user on the database
         const index = currentList.indexOf(recipeID);
         currentList.splice (index, 1);
-        this.myFirebaseRefsaved.set(currentList);
+        this.firebaseSavedRef.set(currentList);
 
-        // Update recipe like count
-        this.myFirebaseReflikes.once('value').then((snapshot) => {
+        // Update recipe like count on the database
+        this.firebaseLikesRef.once('value').then((snapshot) => {
             let likes = snapshot.val();
 
             likes -= 1;
 
             if (likes <= 0) {
-                this.myFirebaseReflikes.remove();
+                this.firebaseLikesRef.remove();
 
             } else {
-                this.myFirebaseReflikes.set(likes);
+                this.firebaseLikesRef.set(likes);
 
             }
         });
 
-        this.state.liked[recipeID] = false;
+        // Update state with new liked status
+        this.state.recipesLikeStatus[recipeID] = false;
         this.setState({
-            liked: this.state.liked,
+            recipesLikeStatus: this.state.recipesLikeStatus,
             currentDetailsID: this.state.currentDetailsID,
             signedIn: this.state.signedIn
         });
-
     }
 
+    /**
+     * Called when a RecipeBox is clicked to view recipe details.
+     * @param recipeID: The recipe to open details of.
+     */
     setDetailsView(recipeID) {
         this.setState({
-            currentDetailsID: recipeID
+            currentDetailsID: recipeID,
+            signedIn: this.state.signedIn,
+            recipesLikeStatus: this.state.recipesLikeStatus
         });
     }
 
@@ -149,10 +191,10 @@ export class RecipeGrid extends React.Component {
     }
 
     render() {
-
         // Array to store the recipe boxes
         const recipeBoxes = [];
 
+        // Generate RecipeBox's
         for (let i = 0; i < this.props.recipes.length; i++) {
             // Append new recipe box to recipeBox array
             recipeBoxes.push(
@@ -162,25 +204,25 @@ export class RecipeGrid extends React.Component {
                     id={this.props.recipes[i].identity}
                     image={this.props.recipes[i].image}
                     setDetailsView={(id) => this.setDetailsView(id)}
-                    liked = {(id) => this.likeRecipe(id) }
-                    isliked ={this.state.liked[this.props.recipes[i].identity]}
+                    likeClicked={(id) => this.handleLikeClick(id)}
+                    isLiked={this.state.recipesLikeStatus[this.props.recipes[i].identity]}
                 />
 
             );
-
         }
 
+        // Show RecipeDetail modal is user opened it
         let recipeModal = "";
         if (this.state.currentDetailsID !== 0) {
             recipeModal = <RecipeDetails
                 id={this.state.currentDetailsID}
-                liked={(id) => this.likeRecipe(id)}
+                likeClicked={(id) => this.handleLikeClick(id)}
                 close={() => this.closeDetails()}
-                isliked = {this.state.liked[this.state.currentDetailsID]}
+                isLiked = {this.state.recipesLikeStatus[this.state.currentDetailsID]}
             />;
         }
 
-        return(
+        return (
             <div>
                 <div id="recipeGrid">
                     {recipeBoxes}

@@ -90,7 +90,7 @@ export class CommentList extends React.Component {
         }, (error) => {
 
             if (error) {
-                // If comment could not be sent
+                alert("Could not send your comment! Please check your internet connection or try again later!");
                 console.error("Error: failed to send comment. " + error.message);
             }
 

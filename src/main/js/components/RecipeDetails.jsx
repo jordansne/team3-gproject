@@ -23,11 +23,15 @@ export class RecipeDetails extends React.Component {
         };
     }
 
-    liked() {
+    /**
+     * Called when the like button is pressed.
+     */
+    handleLikeClick() {
+        if (!this.props.isLiked) {
 
-        if (this.props.isliked) {
+            // If the recipe is current not liked, increment like number and update state
             let newLikes = this.state.likes;
-            newLikes -= 1;
+            newLikes++;
 
             this.setState({
                 name: this.state.name,
@@ -36,9 +40,12 @@ export class RecipeDetails extends React.Component {
                 summary: this.state.summary,
                 likes: newLikes
             });
+
         } else {
+
+            // If the recipe is current is liked, decrement like number and update state
             let newLikes = this.state.likes;
-            newLikes += 1;
+            newLikes --;
 
             this.setState({
                 name: this.state.name,
@@ -49,9 +56,9 @@ export class RecipeDetails extends React.Component {
             });
         }
 
-        this.props.liked(this.props.id)
+        // Handle is parent component
+        this.props.likeClicked(this.props.id);
     }
-
 
     /**
      * Beginning retrieving recipe data once mounted.
@@ -59,6 +66,7 @@ export class RecipeDetails extends React.Component {
     componentDidMount() {
         let apiURL = "/Ingredient/getRecipeInfo?recipeID=" + this.props.id;
 
+        // Retrieve recipe details
         fetch(apiURL).then((response) => {
             if (response.ok) {
 
@@ -82,96 +90,90 @@ export class RecipeDetails extends React.Component {
             console.error("Server response error: " + error.message);
         });
 
-        this.likesref = firebase.database().ref('likes/' + this.props.id + '/');
-        this.likesref.once('value').then((snapshot) => {
-            let likecount = snapshot.val();
+        // Retrieve number of likes of recipe
+        const firebaseRef = firebase.database().ref('likes/' + this.props.id + '/');
 
-            if (likecount === null) {
+        firebaseRef.once('value').then((snapshot) => {
+            let likeCount = snapshot.val();
+
+            if (likeCount === null) {
                 this.setState({
                     name: this.state.name,
                     image: this.state.image,
                     url: this.state.url,
                     summary: this.state.summary,
                     likes: 0
-                })
-            }
-            else {
+                });
+
+            } else {
                 this.setState({
                     name: this.state.name,
                     image: this.state.image,
                     url: this.state.url,
                     summary: this.state.summary,
-                    likes: likecount
+                    likes: likeCount
                 });
             }
-        })
-
+        });
     }
 
     render() {
+        // CSS for the Modal (pop-up window)
+        const modalStyle = {
+            position: 'fixed',
+            zIndex: 1040,
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0
+        };
 
-    // CSS for the Modal (pop-up window)
-
-    const modalStyle = {
-        position: 'fixed',
-        zIndex: 1040,
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0
-    };
-    let buttonStyle;
-    if (this.props.isliked) {
-
-         buttonStyle = {
-
-            backgroundImage: "url('/assets/favouriteliked.png')"
+        // Set appropriate like image
+        let buttonStyle;
+        if (this.props.isLiked) {
+            buttonStyle = { backgroundImage: "url('/assets/favouriteliked.png')" };
+        } else {
+            buttonStyle = { backgroundImage: "url('/assets/favourite.png')" };
         }
-    }
-    else{
-         buttonStyle = {
 
-            backgroundImage: "url('/assets/favourite.png')"
+        // Do not show number of likes if zero
+        let likesHTML = "";
+        if (this.state.likes !== 0) {
+            likesHTML = this.state.likes;
         }
+
+        return (
+            <div>
+                <Modal
+                    aria-labelledby='modal-label'
+                    style={modalStyle}
+                    backdrop={true}
+                    backdropClassName="backdrop"
+                    onHide={this.props.close}
+                    show={true}
+                >
+
+                    <div className = "recipeDetails">
+                        <button className ="like" style={buttonStyle} onClick={() => this.handleLikeClick()}/>
+
+                        <div className="likes">{likesHTML}</div>
+                        <button className="close" onClick={this.props.close}>Close</button>
+
+                        <section className="mainCol">
+                            <a target="_blank" href={this.state.url}>
+                                <div style={{backgroundImage: 'url(' + this.state.image + ')'}} className="img"/>
+                            </a>
+
+                            <div className="recipeSummary" dangerouslySetInnerHTML={{__html: this.state.summary}}/>
+                        </section>
+
+                        <aside className="commentCol">
+                            <CommentList id={this.props.id}/>
+                        </aside>
+                    </div>
+
+                </Modal>
+            </div>
+        );
     }
-    let likeStyle = "";
-    if(this.state.likes !== 0){
-        likeStyle = this.state.likes;
-    }
-
-
-    return (
-        <div>
-            <Modal
-                aria-labelledby='modal-label'
-                style={modalStyle}
-                backdrop={true}
-                backdropClassName="backdrop"
-                onHide={this.props.close}
-                show={true}
-            >
-
-                <div className = "recipeDetails">
-                    <button className ="like" style ={buttonStyle} onClick={() => this.liked()}/>
-
-                    <div className="likes">{likeStyle}</div>
-                    <button className="close" onClick={this.props.close}>Close</button>
-
-                    <section className="mainCol">
-                        <a target="_blank" href={this.state.url}>
-                            <div style={{backgroundImage: 'url(' + this.state.image + ')'}} className="img"/>
-                        </a>
-
-                        <div className="recipeSummary" dangerouslySetInnerHTML={{__html: this.state.summary}}/>
-                    </section>
-
-                    <aside className="commentCol">
-                        <CommentList id={this.props.id}/>
-                    </aside>
-                </div>
-
-            </Modal>
-        </div>
-    );
 }
-  }

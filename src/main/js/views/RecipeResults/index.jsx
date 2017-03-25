@@ -53,14 +53,16 @@ export class RecipeView extends React.Component {
     buildApiParams(search) {
         let paramString = "/Ingredient/getRecipesByComplex?foodtype=";
 
-        if(search.type){
-            let foodparam = search.type;
-            const foodtype = foodparam.replace("-", "%2B");
-            paramString += foodtype + "&diet=";
-        }else {
+        // Add food type to API request
+        if (search.type) {
+            let foodParam = search.type;
+            const foodType = foodParam.replace("-", "%2B");
+            paramString += foodType + "&diet=";
+        } else {
             paramString += "&diet=";
         }
 
+        // Add restriction to API request
         if (search.restriction) {
             const diet = search.restriction;
             paramString += diet + "&cuisine=&ingredients=";
@@ -68,7 +70,7 @@ export class RecipeView extends React.Component {
             paramString += "&cuisine=&ingredients=";
         }
 
-
+        // Add ingredients to API request
         const ingredientArray = search.ingredients.split(",");
         for (let i = 0; i < ingredientArray.length; i++) {
             paramString += ingredientArray[i];
@@ -83,13 +85,13 @@ export class RecipeView extends React.Component {
     }
 
     render() {
-        if(this.state.apiCallFinished == true && this.state.recipeList.length == 0) {
+        if (this.state.apiCallFinished && this.state.recipeList.length === 0) {
             return (
                 <div>
                     <h1>No Results Found</h1>
                 </div>
             );
-        }else {
+        } else {
             return (
                 <div>
                     <h1>Recipe Search Results</h1>

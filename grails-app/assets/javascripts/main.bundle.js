@@ -8444,13 +8444,19 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
         return _this;
     }
 
-    _createClass(RecipeDetails, [{
-        key: 'liked',
-        value: function liked() {
+    /**
+     * Called when the like button is pressed.
+     */
 
-            if (this.props.isliked) {
+
+    _createClass(RecipeDetails, [{
+        key: 'handleLikeClick',
+        value: function handleLikeClick() {
+            if (!this.props.isLiked) {
+
+                // If the recipe is current not liked, increment like number and update state
                 var newLikes = this.state.likes;
-                newLikes -= 1;
+                newLikes++;
 
                 this.setState({
                     name: this.state.name,
@@ -8460,8 +8466,10 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                     likes: newLikes
                 });
             } else {
+
+                // If the recipe is current is liked, decrement like number and update state
                 var _newLikes = this.state.likes;
-                _newLikes += 1;
+                _newLikes--;
 
                 this.setState({
                     name: this.state.name,
@@ -8472,7 +8480,8 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                 });
             }
 
-            this.props.liked(this.props.id);
+            // Handle is parent component
+            this.props.likeClicked(this.props.id);
         }
 
         /**
@@ -8486,6 +8495,7 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
 
             var apiURL = "/Ingredient/getRecipeInfo?recipeID=" + this.props.id;
 
+            // Retrieve recipe details
             fetch(apiURL).then(function (response) {
                 if (response.ok) {
 
@@ -8507,11 +8517,13 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                 console.error("Server response error: " + error.message);
             });
 
-            this.likesref = firebase.database().ref('likes/' + this.props.id + '/');
-            this.likesref.once('value').then(function (snapshot) {
-                var likecount = snapshot.val();
+            // Retrieve number of likes of recipe
+            var firebaseRef = firebase.database().ref('likes/' + this.props.id + '/');
 
-                if (likecount === null) {
+            firebaseRef.once('value').then(function (snapshot) {
+                var likeCount = snapshot.val();
+
+                if (likeCount === null) {
                     _this2.setState({
                         name: _this2.state.name,
                         image: _this2.state.image,
@@ -8525,7 +8537,7 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                         image: _this2.state.image,
                         url: _this2.state.url,
                         summary: _this2.state.summary,
-                        likes: likecount
+                        likes: likeCount
                     });
                 }
             });
@@ -8536,7 +8548,6 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
             var _this3 = this;
 
             // CSS for the Modal (pop-up window)
-
             var modalStyle = {
                 position: 'fixed',
                 zIndex: 1040,
@@ -8545,22 +8556,19 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                 left: 0,
                 right: 0
             };
+
+            // Set appropriate like image
             var buttonStyle = void 0;
-            if (this.props.isliked) {
-
-                buttonStyle = {
-
-                    backgroundImage: "url('/assets/favouriteliked.png')"
-                };
+            if (this.props.isLiked) {
+                buttonStyle = { backgroundImage: "url('/assets/favouriteliked.png')" };
             } else {
-                buttonStyle = {
-
-                    backgroundImage: "url('/assets/favourite.png')"
-                };
+                buttonStyle = { backgroundImage: "url('/assets/favourite.png')" };
             }
-            var likeStyle = "";
+
+            // Do not show number of likes if zero
+            var likesHTML = "";
             if (this.state.likes !== 0) {
-                likeStyle = this.state.likes;
+                likesHTML = this.state.likes;
             }
 
             return _react2.default.createElement(
@@ -8580,12 +8588,12 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                         'div',
                         { className: 'recipeDetails' },
                         _react2.default.createElement('button', { className: 'like', style: buttonStyle, onClick: function onClick() {
-                                return _this3.liked();
+                                return _this3.handleLikeClick();
                             } }),
                         _react2.default.createElement(
                             'div',
                             { className: 'likes' },
-                            likeStyle
+                            likesHTML
                         ),
                         _react2.default.createElement(
                             'button',
@@ -8661,133 +8669,197 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
         _this.state = {
             currentDetailsID: 0,
             signedIn: false,
-            liked: {}
-
+            recipesLikeStatus: {}
         };
-
         return _this;
     }
 
     /**
-     * Callback to open details window using the recipe ID.
+     * Called to initialize like status of each recipe.
      */
 
 
     _createClass(RecipeGrid, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-
-            var array = {};
-
-            for (var i = 0; i < this.props.recipes.length; i++) {
-
-                array[this.props.recipeList[i].id] = false;
-            }
-
-            this.setState({
-                liked: array,
-                currentDetailsID: this.state.currentDetailsID,
-                signedIn: this.state.signedIn
-            });
-
-            this.myFirebaseRefsaved = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
-        }
-    }, {
-        key: 'likeRecipe',
-        value: function likeRecipe(recipeID) {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(props) {
             var _this2 = this;
 
-            this.myFirebaseReflikes = firebase.database().ref('likes/' + recipeID + '/');
+            this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
 
-            this.myFirebaseRefsaved.once('value').then(function (snapshot) {
+            var _loop = function _loop(i) {
+                var currentID = props.recipes[i].identity;
+
+                // Check if liked already
+                _this2.firebaseSavedRef.once('value').then(function (snapshot) {
+                    var likedRecipes = snapshot.val();
+
+                    // If no likes are in a user saved recipe
+                    if (likedRecipes === null) {
+                        _this2.state.recipesLikeStatus[currentID] = false;
+                        _this2.setState({
+                            recipesLikeStatus: _this2.state.recipesLikeStatus,
+                            currentDetailsID: _this2.state.currentDetailsID,
+                            signedIn: _this2.state.signedIn
+                        });
+
+                        return;
+                    }
+
+                    // Check if already liked
+                    for (var _i = 0; _i < likedRecipes.length; _i++) {
+                        if (likedRecipes[_i] === currentID) {
+                            _this2.state.recipesLikeStatus[currentID] = true;
+                            _this2.setState({
+                                recipesLikeStatus: _this2.state.recipesLikeStatus,
+                                currentDetailsID: _this2.state.currentDetailsID,
+                                signedIn: _this2.state.signedIn
+                            });
+
+                            return;
+                        }
+                    }
+
+                    // If not found, user has not liked
+                    _this2.state.recipesLikeStatus[currentID] = false;
+                    _this2.setState({
+                        recipesLikeStatus: _this2.state.recipesLikeStatus,
+                        currentDetailsID: _this2.state.currentDetailsID,
+                        signedIn: _this2.state.signedIn
+                    });
+                });
+            };
+
+            for (var i = 0; i < props.recipes.length; i++) {
+                _loop(i);
+            }
+        }
+
+        /**
+         * Called when a user pressed the like button.
+         * @param recipeID: The recipe to like/unlike.
+         */
+
+    }, {
+        key: 'handleLikeClick',
+        value: function handleLikeClick(recipeID) {
+            var _this3 = this;
+
+            this.firebaseLikesRef = firebase.database().ref('likes/' + recipeID + '/');
+
+            this.firebaseSavedRef.once('value').then(function (snapshot) {
                 var likedRecipes = snapshot.val();
 
                 // If no likes are in a user saved recipe
                 if (likedRecipes === null) {
-                    _this2.handleLike(recipeID, likedRecipes);
+                    _this3.handleLike(recipeID, likedRecipes);
                     return;
                 }
 
                 // Check if already liked
                 for (var i = 0; i < likedRecipes.length; i++) {
                     if (likedRecipes[i] === recipeID) {
-                        _this2.handleUnlike(recipeID, likedRecipes);
+                        _this3.handleUnlike(recipeID, likedRecipes);
                         return;
                     }
                 }
 
                 // Like if not already liked
-                _this2.handleLike(recipeID, likedRecipes);
+                _this3.handleLike(recipeID, likedRecipes);
             });
         }
+
+        /**
+         * Called when need to handle liking a recipe.
+         * @param recipeID: The recipe to like.
+         * @param currentList: The current list of liked recipes from the database.
+         */
+
     }, {
         key: 'handleLike',
         value: function handleLike(recipeID, currentList) {
-            var _this3 = this;
+            var _this4 = this;
 
-            // Add to user recipe list
+            // Create new array if currently blank in database
             if (currentList === null) {
                 currentList = [];
             }
 
+            // Add recipe & set the new liked list for user on the database
             currentList.push(recipeID);
-            this.myFirebaseRefsaved.set(currentList);
+            this.firebaseSavedRef.set(currentList);
 
-            // Update recipe like count
-            this.myFirebaseReflikes.once('value').then(function (snapshot) {
+            // Update recipe like count on the database
+            this.firebaseLikesRef.once('value').then(function (snapshot) {
                 var likes = snapshot.val();
 
                 if (likes === null) {
                     likes = 1;
                 } else {
-                    likes += 1;
+                    likes++;
                 }
 
-                _this3.myFirebaseReflikes.set(likes);
+                _this4.firebaseLikesRef.set(likes);
             });
 
-            this.state.liked[recipeID] = true;
+            // Update state with new liked status
+            this.state.recipesLikeStatus[recipeID] = true;
             this.setState({
-                liked: this.state.liked,
+                recipesLikeStatus: this.state.recipesLikeStatus,
                 currentDetailsID: this.state.currentDetailsID,
                 signedIn: this.state.signedIn
             });
         }
+
+        /**
+         * Called when need to handle unliking a recipe.
+         * @param recipeID: The recipe to unlike.
+         * @param currentList: The current list of liked recipes from the database.
+         */
+
     }, {
         key: 'handleUnlike',
         value: function handleUnlike(recipeID, currentList) {
-            var _this4 = this;
+            var _this5 = this;
 
-            // Remove from user recipe list
+            // Remove recipe & set the new liked list for user on the database
             var index = currentList.indexOf(recipeID);
             currentList.splice(index, 1);
-            this.myFirebaseRefsaved.set(currentList);
+            this.firebaseSavedRef.set(currentList);
 
-            // Update recipe like count
-            this.myFirebaseReflikes.once('value').then(function (snapshot) {
+            // Update recipe like count on the database
+            this.firebaseLikesRef.once('value').then(function (snapshot) {
                 var likes = snapshot.val();
 
                 likes -= 1;
 
                 if (likes <= 0) {
-                    _this4.myFirebaseReflikes.remove();
+                    _this5.firebaseLikesRef.remove();
                 } else {
-                    _this4.myFirebaseReflikes.set(likes);
+                    _this5.firebaseLikesRef.set(likes);
                 }
             });
 
-            this.state.liked[recipeID] = false;
+            // Update state with new liked status
+            this.state.recipesLikeStatus[recipeID] = false;
             this.setState({
-                liked: this.state.liked,
+                recipesLikeStatus: this.state.recipesLikeStatus,
                 currentDetailsID: this.state.currentDetailsID,
                 signedIn: this.state.signedIn
             });
         }
+
+        /**
+         * Called when a RecipeBox is clicked to view recipe details.
+         * @param recipeID: The recipe to open details of.
+         */
+
     }, {
         key: 'setDetailsView',
         value: function setDetailsView(recipeID) {
             this.setState({
-                currentDetailsID: recipeID
+                currentDetailsID: recipeID,
+                signedIn: this.state.signedIn,
+                recipesLikeStatus: this.state.recipesLikeStatus
             });
         }
 
@@ -8803,11 +8875,12 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this5 = this;
+            var _this6 = this;
 
             // Array to store the recipe boxes
             var recipeBoxes = [];
 
+            // Generate RecipeBox's
             for (var i = 0; i < this.props.recipes.length; i++) {
                 // Append new recipe box to recipeBox array
                 recipeBoxes.push(_react2.default.createElement(_RecipeBox.RecipeBox, {
@@ -8816,26 +8889,27 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                     id: this.props.recipes[i].identity,
                     image: this.props.recipes[i].image,
                     setDetailsView: function setDetailsView(id) {
-                        return _this5.setDetailsView(id);
+                        return _this6.setDetailsView(id);
                     },
-                    liked: function liked(id) {
-                        return _this5.likeRecipe(id);
+                    likeClicked: function likeClicked(id) {
+                        return _this6.handleLikeClick(id);
                     },
-                    isliked: this.state.liked[this.props.recipes[i].identity]
+                    isLiked: this.state.recipesLikeStatus[this.props.recipes[i].identity]
                 }));
             }
 
+            // Show RecipeDetail modal is user opened it
             var recipeModal = "";
             if (this.state.currentDetailsID !== 0) {
                 recipeModal = _react2.default.createElement(_RecipeDetails.RecipeDetails, {
                     id: this.state.currentDetailsID,
-                    liked: function liked(id) {
-                        return _this5.likeRecipe(id);
+                    likeClicked: function likeClicked(id) {
+                        return _this6.handleLikeClick(id);
                     },
                     close: function close() {
-                        return _this5.closeDetails();
+                        return _this6.closeDetails();
                     },
-                    isliked: this.state.liked[this.state.currentDetailsID]
+                    isLiked: this.state.recipesLikeStatus[this.state.currentDetailsID]
                 });
             }
 
@@ -13085,14 +13159,16 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
         value: function buildApiParams(search) {
             var paramString = "/Ingredient/getRecipesByComplex?foodtype=";
 
+            // Add food type to API request
             if (search.type) {
-                var foodparam = search.type;
-                var foodtype = foodparam.replace("-", "%2B");
-                paramString += foodtype + "&diet=";
+                var foodParam = search.type;
+                var foodType = foodParam.replace("-", "%2B");
+                paramString += foodType + "&diet=";
             } else {
                 paramString += "&diet=";
             }
 
+            // Add restriction to API request
             if (search.restriction) {
                 var diet = search.restriction;
                 paramString += diet + "&cuisine=&ingredients=";
@@ -13100,6 +13176,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
                 paramString += "&cuisine=&ingredients=";
             }
 
+            // Add ingredients to API request
             var ingredientArray = search.ingredients.split(",");
             for (var i = 0; i < ingredientArray.length; i++) {
                 paramString += ingredientArray[i];
@@ -13115,7 +13192,7 @@ var RecipeView = exports.RecipeView = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            if (this.state.apiCallFinished == true && this.state.recipeList.length == 0) {
+            if (this.state.apiCallFinished && this.state.recipeList.length === 0) {
                 return _react2.default.createElement(
                     'div',
                     null,
@@ -13183,10 +13260,6 @@ var Comment = exports.Comment = function (_React$Component) {
 
     _createClass(Comment, [{
         key: "render",
-
-
-        // TODO: Complete Comment component
-
         value: function render() {
             return _react2.default.createElement(
                 "div",
@@ -13337,7 +13410,7 @@ var CommentList = exports.CommentList = function (_React$Component) {
             }, function (error) {
 
                 if (error) {
-                    // If comment could not be sent
+                    alert("Could not send your comment! Please check your internet connection or try again later!");
                     console.error("Error: failed to send comment. " + error.message);
                 }
             });
@@ -13455,9 +13528,17 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
 
     _createClass(RecipeBox, [{
         key: "handleLikeClick",
+
+
+        /**
+         * Called when the like button is pressed.
+         * @param event
+         */
         value: function handleLikeClick(event) {
+            // Prevent from triggering div onClick event
             event.stopPropagation();
-            this.props.liked(this.props.id);
+
+            this.props.likeClicked(this.props.id);
         }
     }, {
         key: "render",
@@ -13465,17 +13546,12 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
             var _this2 = this;
 
             var buttonStyle = void 0;
-            if (this.props.isliked) {
 
-                buttonStyle = {
-
-                    backgroundImage: "url('/assets/favouriteliked.png')"
-                };
+            // Set appropriate like image
+            if (this.props.isLiked) {
+                buttonStyle = { backgroundImage: "url('/assets/favouriteliked.png')" };
             } else {
-                buttonStyle = {
-
-                    backgroundImage: "url('/assets/favourite.png')"
-                };
+                buttonStyle = { backgroundImage: "url('/assets/favourite.png')" };
             }
 
             return _react2.default.createElement(
