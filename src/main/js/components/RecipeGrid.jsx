@@ -15,16 +15,31 @@ export class RecipeGrid extends React.Component {
         // Initialize state with blank array
         this.state = {
             currentDetailsID: 0,
-            signedIn: false
+            signedIn: false,
+            liked: {}
+
         };
 
-        //creates a path??
     }
 
     /**
      * Callback to open details window using the recipe ID.
      */
     componentDidMount(){
+
+        const array = {};
+
+        for(let i = 0; i < this.props.recipes.length; i++ ){
+
+            array[this.props.recipeList[i].id] = false;
+        }
+
+        this.setState({
+            liked: array,
+            currentDetailsID: this.state.currentDetailsID,
+            signedIn: this.state.signedIn,
+        });
+
         this.myFirebaseRefsaved = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
     }
 
@@ -54,6 +69,7 @@ export class RecipeGrid extends React.Component {
     }
 
     handleLike(recipeID, currentList) {
+
         // Add to user recipe list
         if (currentList === null) {
             currentList = [];
@@ -66,15 +82,28 @@ export class RecipeGrid extends React.Component {
         this.myFirebaseReflikes.once('value').then((snapshot) => {
             let likes = snapshot.val();
 
+
             if (likes === null) {
                 likes = 1;
+
+
             } else {
                 likes += 1;
             }
 
             this.myFirebaseReflikes.set(likes);
         });
+
+        this.state.liked[recipeID] = true;
+        this.setState({
+            liked: this.state.liked,
+            currentDetailsID: this.state.currentDetailsID,
+            signedIn: this.state.signedIn
+        });
     }
+
+
+
 
     handleUnlike(recipeID, currentList) {
         // Remove from user recipe list
@@ -90,10 +119,20 @@ export class RecipeGrid extends React.Component {
 
             if (likes <= 0) {
                 this.myFirebaseReflikes.remove();
+
             } else {
                 this.myFirebaseReflikes.set(likes);
+
             }
         });
+
+        this.state.liked[recipeID] = false;
+        this.setState({
+            liked: this.state.liked,
+            currentDetailsID: this.state.currentDetailsID,
+            signedIn: this.state.signedIn
+        });
+
     }
 
     setDetailsView(recipeID) {
@@ -110,6 +149,7 @@ export class RecipeGrid extends React.Component {
     }
 
     render() {
+
         // Array to store the recipe boxes
         const recipeBoxes = [];
 
@@ -123,7 +163,9 @@ export class RecipeGrid extends React.Component {
                     image={this.props.recipes[i].image}
                     setDetailsView={(id) => this.setDetailsView(id)}
                     liked = {(id) => this.likeRecipe(id) }
+                    isliked ={this.state.liked[this.props.recipes[i].identity]}
                 />
+
             );
 
         }
@@ -134,6 +176,7 @@ export class RecipeGrid extends React.Component {
                 id={this.state.currentDetailsID}
                 liked={(id) => this.likeRecipe(id)}
                 close={() => this.closeDetails()}
+                isliked = {this.state.liked[this.state.currentDetailsID]}
             />;
         }
 

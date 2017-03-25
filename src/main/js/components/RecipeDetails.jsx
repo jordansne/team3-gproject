@@ -18,9 +18,40 @@ export class RecipeDetails extends React.Component {
             name: "",
             image: "",
             url: "",
-            summary: ""
+            summary: "",
+            likes: 0
         };
     }
+
+    liked() {
+
+        if (this.props.isliked) {
+            let newLikes = this.state.likes;
+            newLikes -= 1;
+
+            this.setState({
+                name: this.state.name,
+                image: this.state.image,
+                url: this.state.url,
+                summary: this.state.summary,
+                likes: newLikes
+            });
+        } else {
+            let newLikes = this.state.likes;
+            newLikes += 1;
+
+            this.setState({
+                name: this.state.name,
+                image: this.state.image,
+                url: this.state.url,
+                summary: this.state.summary,
+                likes: newLikes
+            });
+        }
+
+        this.props.liked(this.props.id)
+    }
+
 
     /**
      * Beginning retrieving recipe data once mounted.
@@ -36,7 +67,8 @@ export class RecipeDetails extends React.Component {
                         name: recipeObject["name"],
                         image: recipeObject["image"],
                         url: recipeObject["url"],
-                        summary: recipeObject["summary"]
+                        summary: recipeObject["summary"],
+                        likes: this.state.likes
                     });
                 })
 
@@ -49,49 +81,97 @@ export class RecipeDetails extends React.Component {
             // TODO: Handle connection error
             console.error("Server response error: " + error.message);
         });
+
+        this.likesref = firebase.database().ref('likes/' + this.props.id + '/');
+        this.likesref.once('value').then((snapshot) => {
+            let likecount = snapshot.val();
+
+            if (likecount === null) {
+                this.setState({
+                    name: this.state.name,
+                    image: this.state.image,
+                    url: this.state.url,
+                    summary: this.state.summary,
+                    likes: 0
+                })
+            }
+            else {
+                this.setState({
+                    name: this.state.name,
+                    image: this.state.image,
+                    url: this.state.url,
+                    summary: this.state.summary,
+                    likes: likecount
+                });
+            }
+        })
+
     }
 
     render() {
-        // CSS for the Modal (pop-up window)
-        const modalStyle = {
-            position: 'fixed',
-            zIndex: 1040,
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0
-        };
 
-        return (
-            <div>
-                <Modal
-                    aria-labelledby='modal-label'
-                    style={modalStyle}
-                    backdrop={true}
-                    backdropClassName="backdrop"
-                    onHide={this.props.close}
-                    show={true}
-                >
+    // CSS for the Modal (pop-up window)
 
-                    <div className="recipeDetails">
-                        <button className="like" onClick ={() => this.props.liked(this.props.id)}/>
-                        <button className="close" onClick={this.props.close}>Close</button>
+    const modalStyle = {
+        position: 'fixed',
+        zIndex: 1040,
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+    };
+    let buttonStyle;
+    if (this.props.isliked) {
 
-                        <section className="mainCol">
-                            <a href={this.state.url}>
-                                <div style={{backgroundImage: 'url(' + this.state.image + ')'}} className="img"/>
-                            </a>
+         buttonStyle = {
 
-                            <div className="recipeSummary" dangerouslySetInnerHTML={{__html: this.state.summary}}/>
-                        </section>
-
-                        <aside className="commentCol">
-                            <CommentList id={this.props.id}/>
-                        </aside>
-                    </div>
-
-                </Modal>
-            </div>
-       );
+            backgroundImage: "url('/assets/favouriteliked.png')"
+        }
     }
+    else{
+         buttonStyle = {
+
+            backgroundImage: "url('/assets/favourite.png')"
+        }
+    }
+    let likeStyle = "";
+    if(this.state.likes !== 0){
+        likeStyle = this.state.likes;
+    }
+
+
+    return (
+        <div>
+            <Modal
+                aria-labelledby='modal-label'
+                style={modalStyle}
+                backdrop={true}
+                backdropClassName="backdrop"
+                onHide={this.props.close}
+                show={true}
+            >
+
+                <div className = "recipeDetails">
+                    <button className ="like" style ={buttonStyle} onClick={() => this.liked()}/>
+
+                    <div className="likes">{likeStyle}</div>
+                    <button className="close" onClick={this.props.close}>Close</button>
+
+                    <section className="mainCol">
+                        <a href={this.state.url}>
+                            <div style={{backgroundImage: 'url(' + this.state.image + ')'}} className="img"/>
+                        </a>
+
+                        <div className="recipeSummary" dangerouslySetInnerHTML={{__html: this.state.summary}}/>
+                    </section>
+
+                    <aside className="commentCol">
+                        <CommentList id={this.props.id}/>
+                    </aside>
+                </div>
+
+            </Modal>
+        </div>
+    );
+}
   }

@@ -8438,17 +8438,48 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
             name: "",
             image: "",
             url: "",
-            summary: ""
+            summary: "",
+            likes: 0
         };
         return _this;
     }
 
-    /**
-     * Beginning retrieving recipe data once mounted.
-     */
-
-
     _createClass(RecipeDetails, [{
+        key: 'liked',
+        value: function liked() {
+
+            if (this.props.isliked) {
+                var newLikes = this.state.likes;
+                newLikes -= 1;
+
+                this.setState({
+                    name: this.state.name,
+                    image: this.state.image,
+                    url: this.state.url,
+                    summary: this.state.summary,
+                    likes: newLikes
+                });
+            } else {
+                var _newLikes = this.state.likes;
+                _newLikes += 1;
+
+                this.setState({
+                    name: this.state.name,
+                    image: this.state.image,
+                    url: this.state.url,
+                    summary: this.state.summary,
+                    likes: _newLikes
+                });
+            }
+
+            this.props.liked(this.props.id);
+        }
+
+        /**
+         * Beginning retrieving recipe data once mounted.
+         */
+
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             var _this2 = this;
@@ -8463,7 +8494,8 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                             name: recipeObject["name"],
                             image: recipeObject["image"],
                             url: recipeObject["url"],
-                            summary: recipeObject["summary"]
+                            summary: recipeObject["summary"],
+                            likes: _this2.state.likes
                         });
                     });
                 } else {
@@ -8474,6 +8506,29 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                 // TODO: Handle connection error
                 console.error("Server response error: " + error.message);
             });
+
+            this.likesref = firebase.database().ref('likes/' + this.props.id + '/');
+            this.likesref.once('value').then(function (snapshot) {
+                var likecount = snapshot.val();
+
+                if (likecount === null) {
+                    _this2.setState({
+                        name: _this2.state.name,
+                        image: _this2.state.image,
+                        url: _this2.state.url,
+                        summary: _this2.state.summary,
+                        likes: 0
+                    });
+                } else {
+                    _this2.setState({
+                        name: _this2.state.name,
+                        image: _this2.state.image,
+                        url: _this2.state.url,
+                        summary: _this2.state.summary,
+                        likes: likecount
+                    });
+                }
+            });
         }
     }, {
         key: 'render',
@@ -8481,6 +8536,7 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
             var _this3 = this;
 
             // CSS for the Modal (pop-up window)
+
             var modalStyle = {
                 position: 'fixed',
                 zIndex: 1040,
@@ -8489,6 +8545,23 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                 left: 0,
                 right: 0
             };
+            var buttonStyle = void 0;
+            if (this.props.isliked) {
+
+                buttonStyle = {
+
+                    backgroundImage: "url('/assets/favouriteliked.png')"
+                };
+            } else {
+                buttonStyle = {
+
+                    backgroundImage: "url('/assets/favourite.png')"
+                };
+            }
+            var likeStyle = "";
+            if (this.state.likes !== 0) {
+                likeStyle = this.state.likes;
+            }
 
             return _react2.default.createElement(
                 'div',
@@ -8506,9 +8579,14 @@ var RecipeDetails = exports.RecipeDetails = function (_React$Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'recipeDetails' },
-                        _react2.default.createElement('button', { className: 'like', onClick: function onClick() {
-                                return _this3.props.liked(_this3.props.id);
+                        _react2.default.createElement('button', { className: 'like', style: buttonStyle, onClick: function onClick() {
+                                return _this3.liked();
                             } }),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'likes' },
+                            likeStyle
+                        ),
                         _react2.default.createElement(
                             'button',
                             { className: 'close', onClick: this.props.close },
@@ -8582,10 +8660,11 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
 
         _this.state = {
             currentDetailsID: 0,
-            signedIn: false
+            signedIn: false,
+            liked: {}
+
         };
 
-        //creates a path??
         return _this;
     }
 
@@ -8597,6 +8676,20 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
     _createClass(RecipeGrid, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
+
+            var array = {};
+
+            for (var i = 0; i < this.props.recipes.length; i++) {
+
+                array[this.props.recipeList[i].id] = false;
+            }
+
+            this.setState({
+                liked: array,
+                currentDetailsID: this.state.currentDetailsID,
+                signedIn: this.state.signedIn
+            });
+
             this.myFirebaseRefsaved = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
         }
     }, {
@@ -8652,6 +8745,13 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
 
                 _this3.myFirebaseReflikes.set(likes);
             });
+
+            this.state.liked[recipeID] = true;
+            this.setState({
+                liked: this.state.liked,
+                currentDetailsID: this.state.currentDetailsID,
+                signedIn: this.state.signedIn
+            });
         }
     }, {
         key: 'handleUnlike',
@@ -8674,6 +8774,13 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                 } else {
                     _this4.myFirebaseReflikes.set(likes);
                 }
+            });
+
+            this.state.liked[recipeID] = false;
+            this.setState({
+                liked: this.state.liked,
+                currentDetailsID: this.state.currentDetailsID,
+                signedIn: this.state.signedIn
             });
         }
     }, {
@@ -8713,7 +8820,8 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                     },
                     liked: function liked(id) {
                         return _this5.likeRecipe(id);
-                    }
+                    },
+                    isliked: this.state.liked[this.props.recipes[i].identity]
                 }));
             }
 
@@ -8726,7 +8834,8 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                     },
                     close: function close() {
                         return _this5.closeDetails();
-                    }
+                    },
+                    isliked: this.state.liked[this.state.currentDetailsID]
                 });
             }
 
@@ -13345,14 +13454,34 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
     }
 
     _createClass(RecipeBox, [{
-        key: 'render',
+        key: "handleLikeClick",
+        value: function handleLikeClick(event) {
+            event.stopPropagation();
+            this.props.liked(this.props.id);
+        }
+    }, {
+        key: "render",
         value: function render() {
             var _this2 = this;
 
+            var buttonStyle = void 0;
+            if (this.props.isliked) {
+
+                buttonStyle = {
+
+                    backgroundImage: "url('/assets/favouriteliked.png')"
+                };
+            } else {
+                buttonStyle = {
+
+                    backgroundImage: "url('/assets/favourite.png')"
+                };
+            }
+
             return _react2.default.createElement(
-                'div',
+                "div",
                 {
-                    className: 'recipeBox',
+                    className: "recipeBox",
                     onClick: function onClick() {
                         return _this2.props.setDetailsView(_this2.props.id);
                     },
@@ -13361,17 +13490,17 @@ var RecipeBox = exports.RecipeBox = function (_React$Component) {
                     }
                 },
                 _react2.default.createElement(
-                    'section',
-                    { className: 'buttons' },
-                    _react2.default.createElement('button', { className: 'like', onClick: function onClick() {
-                            return _this2.props.liked(_this2.props.id);
+                    "section",
+                    { className: "buttons" },
+                    _react2.default.createElement("button", { className: "like", style: buttonStyle, onClick: function onClick(event) {
+                            return _this2.handleLikeClick(event);
                         } }),
                     _react2.default.createElement(
-                        'div',
-                        { className: 'titleBackground' },
+                        "div",
+                        { className: "titleBackground" },
                         _react2.default.createElement(
-                            'section',
-                            { className: 'recipeName' },
+                            "section",
+                            { className: "recipeName" },
                             this.props.name
                         )
                     )
