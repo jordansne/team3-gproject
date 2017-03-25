@@ -27,30 +27,44 @@ export class RecipeGrid extends React.Component {
         // onAuthStateChanged returns an unregister function
         this.unregisterAuthEvent = firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                this.state = {
+                this.setState({
                     currentDetailsID: 0,
                     recipesLikeStatus: {},
                     signedIn: true
-                };
+                });
 
                 this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
-                this.initializeLikedRecipes(true);
+
+                // If provided with any recipes immediately in props, initialize liked recipes
+                if (this.props.recipes.length > 0) {
+                    this.initializeLikedRecipes(this.props);
+                }
             } else {
-                this.state = {
+                this.setState({
                     currentDetailsID: 0,
                     recipesLikeStatus: {},
                     signedIn: false
-                };
-                this.initializeLikedRecipes(false);
+                });
+
+                this.firebaseSavedRef = null;
+                this.initializeLikedRecipes();
             }
         });
     }
 
-    initializeLikedRecipes(signedIn) {
-        if (signedIn) {
+    /**
+     * Initialize any new recipes that are added to props (i.e. in the case that they are coming from API calls)
+     * @param newProps: The new props object with the new recipe
+     */
+    componentWillReceiveProps(newProps) {
+        this.initializeLikedRecipes(newProps);
+    }
 
-            for (let i = 0; i < this.props.recipes.length; i++) {
-                const currentID = this.props.recipes[i].identity;
+    initializeLikedRecipes(props) {
+        if (this.state.signedIn) {
+
+            for (let i = 0; i < props.recipes.length; i++) {
+                const currentID = props.recipes[i].identity;
 
                 // Check if liked already
                 this.firebaseSavedRef.once('value').then((snapshot) => {
@@ -108,6 +122,13 @@ export class RecipeGrid extends React.Component {
             });
 
         }
+    }
+
+    /**
+     * Called to unregister the authentication event listener
+     */
+    componentWillUnmount() {
+        this.unregisterAuthEvent();
     }
 
     /**
