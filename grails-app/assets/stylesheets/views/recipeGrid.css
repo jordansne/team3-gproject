@@ -27,6 +27,7 @@ div.recipeBox {
 
 div.recipeBox section.recipeName {
     text-align: center;
+    width: inherit;
     margin-left: auto;
     margin-right: auto;
     padding: 0.5em;
@@ -97,13 +98,14 @@ div.recipeDetails button.like{
 
 div.recipeDetails {
     position: absolute;
-    width: 750px;
-    height: 550px;
+    width: 50%;
+    height: 90%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     border: 1px solid #e5e5e5;
-    background-color: #b9b9b9;
+    border-radius: 3px;
+    background-color: white;
     box-shadow: 0 5px 15px rgba(0,0,0,.5);
     padding: 20px;
 }
@@ -178,7 +180,7 @@ div.recipeDetails aside.commentCol div#commentList section#comments div.comment 
 div.recipeDetails button {
     font-size: 0.85em;
     border-radius: 3px;
-    background-color: #4f3366;
+
     padding: 0.5em;
     border: none;
     color: white;
@@ -193,6 +195,9 @@ div.recipeDetails section.mainCol div.img {
 
 div.recipeDetails button.close {
     float: right;
+    float: right;
+    background-color: #4a89a5;
+    width: 5em;
 }
 
 div.recipeDetails button.like {
@@ -201,18 +206,16 @@ div.recipeDetails button.like {
 div.recipeDetails div.likes{
     padding: 4px;
     float: left;
-    color: white;
+    color: black;
     font-weight: bold;
     font-size: 20px;
 }
 
 div.recipeSummary {
     font-size: 10pt;
-    margin-top: 10px;
-    background-color: white;
-    font-family: 'Lato', sans-serif;
-    padding: 4px;
-}
+    margin: 1.5em 0.5em 1em 0.5em;
+    text-align: justify;}
+
 
 div.backdrop {
     position: fixed;

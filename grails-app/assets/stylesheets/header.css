@@ -13,29 +13,33 @@
 header {
     font-size: 1em;
     background-color: #4f3366;
-
     position: relative;
     width: auto;
-
-    padding: 0em 5em;
+    height: 100px;
+    overflow: visible;
 }
 
 /* Header Bar Title (Replace with logo?) */
 header h1 {
     display: inline-block;
+    font-family: 'Montserrat', sans-serif;
     color: white;
-    margin: 0em;
-    padding: 1em 0em;
+    margin: 0;
+    padding: 0.5em 0 0.5em 0.75em;
+}
+header img#logo{
+    height: 100px;
+    width: auto;
 }
 
 header aside#right {
     display: inline-block;
     padding: inherit;
-    margin: 0em;
+    margin: 0;
 
     position: absolute;
-    bottom: 0em;
-    right: 0em;
+    bottom: 0;
+    right: 0;
 }
 
 /**
@@ -51,14 +55,13 @@ header ul {
     vertical-align: bottom;
 
     display: inline-block;
-    padding: 0em;
-    margin: 0em;
+    padding: 0;
+    margin: 0;
 }
 
 /* Header bar link containers */
 header ul li {
     color: white;
-    background-color: rgba(108, 95, 110, 0.6);
 
     display: block;
     float: left;
@@ -84,7 +87,7 @@ header ul li a {
 
 /* Navigation bar rollover */
 header li:hover {
-    background-color: rgba(110, 110, 110, 0.9);
+    background-color: rgba(108, 95, 110, 0.6);
 }
 
 /**
@@ -146,7 +149,7 @@ header div#userBox section#pic img {
     width: 4em;
     height: 4em;
     margin-bottom: -0.4em;
-    background-color: #bcbcbc;
+    background-color: #bcbcbc ;
     border-radius: 50%;
     overflow: hidden;
 }

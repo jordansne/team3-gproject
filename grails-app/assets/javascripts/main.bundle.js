@@ -13042,13 +13042,9 @@ var Header = exports.Header = function (_React$Component) {
                 'header',
                 null,
                 _react2.default.createElement(
-                    'h1',
-                    null,
-                    _react2.default.createElement(
-                        _reactRouter.Link,
-                        { to: '/' },
-                        'EmptyMyFridge'
-                    )
+                    _reactRouter.Link,
+                    { to: '/' },
+                    _react2.default.createElement('img', { src: '/assets/EmptyMyFridgeLogo.jpg', id: 'logo' })
                 ),
                 _react2.default.createElement(
                     'aside',
