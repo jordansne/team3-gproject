@@ -11,9 +11,11 @@
 
 /* Entire TextBox component. */
 div#textBox {
-    width: 85%;
+    width: 90%;
     margin: 0 auto;
     max-width: 700px;
+    position: relative;
+    margin-bottom: 25px;
 }
 
 /* TextBox and Add button. */
@@ -28,10 +30,22 @@ div#textBox form label input {
 
     font-size: 1em;
 
-    margin: 1em 0.5em;
+    margin: 1em 0 0.75em 0;
     padding: 0.5em;
 
-    width: 400px;
+    width: 610px;
+}
+
+/* Filter dropdown parent div. */
+div#textBox div#filters {
+    display: inline-block;
+}
+
+/* Filter dropdown themselves. */
+div#textBox div#filters select.dropdown {
+    box-sizing: content-box;
+    padding: 0.5em;
+    margin-right: 1em;
 }
 
 /* Both Add & Go buttons. */
@@ -44,30 +58,33 @@ div#textBox button {
 
     font-size: 1em;
 
-    margin: 1em 0em;
-    padding: 0.5em;
+    margin: 1em 0.5em 0 0;
+    padding: 0.6em 0.5em 0.4em 0.5em;
+
+    position: absolute;
+    right: 0;
 }
 
 /* Add Button. */
 div#textBox form input#add {
-    background-color: #00db19;
+    background-color: #4fbab3;
 }
 
 div#textBox form input#add:hover {
-    background-color: #00a512;
+    background-color: #347b76;
     cursor: pointer;
 }
 
 /* Go Button. */
 div#textBox button {
-    background-color: #2476c9;
-    margin: 1em 0.5em;
-    padding: 0.5em 2em;
-    float: right;
+    background-color: #4a89a5;
+    margin: 0 0.5em 0 0;
+    padding-left: 2em;
+    padding-right: 2em;
 }
 
 div#textBox button:hover {
-    background-color: #1b5999;
+    background-color: #3e627c;
     cursor: pointer;
 }
 
@@ -79,7 +96,7 @@ div#textBox button:hover {
 
 /* Entire IngredientList component. */
 div#ingredientList {
-    background-color: #e5e5e5;
+    background-color: white;
     border-radius: 3px;
 
     padding: 2em 3em;
@@ -97,6 +114,7 @@ div#ingredientList h4 {
     font-size: 1.5em;
     margin: 0em 0.5em;
 }
+
 
 div#ingredientList h4#empty {
     color: black;
@@ -135,7 +153,7 @@ ul#ingredientList li.ingredient h5 {
 }
 
 ul#ingredientList li.ingredient button {
-    background-color: red;
+    background-color: #741b2e;
     color: white;
     font-size: 1em;
     border: none;
@@ -147,8 +165,7 @@ ul#ingredientList li.ingredient button {
     display: inline-block;
     float: right;
 }
-
 ul#ingredientList li.ingredient button:hover {
-    background-color: #bf1401;
+    background-color: #961e36;
     cursor: pointer;
 }

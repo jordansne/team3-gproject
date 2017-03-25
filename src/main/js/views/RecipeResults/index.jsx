@@ -5,8 +5,7 @@
 
 import React from 'react';
 
-import { RecipeGrid } from './components/RecipeGrid.jsx';
-import { Filters } from './components/Filters.jsx';
+import { RecipeGrid } from '../../components/RecipeGrid.jsx';
 
 export class RecipeView extends React.Component {
 
@@ -15,7 +14,8 @@ export class RecipeView extends React.Component {
 
         // Initialize state with blank array
         this.state = {
-            recipeList: []
+            recipeList: [],
+            apiCallFinished: false
         };
     }
 
@@ -31,17 +31,18 @@ export class RecipeView extends React.Component {
                 // Process the JSON and update the component's state
                 response.json().then((recipeObject) => {
                     this.setState({
-                        recipeList: recipeObject
+                        recipeList: recipeObject,
+                        apiCallFinished: true
                     });
                 })
 
             } else {
-                // TODO: Handle server response error
+                alert("Could not retrieve any recipes :(. Please try again later!");
                 console.error("Server response error: " + response.message);
             }
 
         }).catch((error) => {
-            // TODO: Handle connection error
+            alert("Could not retrieve any recipes :(. Please check your internet connection or try again later!");
             console.error("Server response error: " + error.message);
         });
     }
@@ -50,8 +51,26 @@ export class RecipeView extends React.Component {
      * Takes the search parameters and converts to a GET API query string.
      */
     buildApiParams(search) {
-        let paramString = "/Ingredient/getRecipesByIngredients?ingredients=";
+        let paramString = "/Ingredient/getRecipesByComplex?foodtype=";
 
+        // Add food type to API request
+        if (search.type) {
+            let foodParam = search.type;
+            const foodType = foodParam.replace("-", "%2B");
+            paramString += foodType + "&diet=";
+        } else {
+            paramString += "&diet=";
+        }
+
+        // Add restriction to API request
+        if (search.restriction) {
+            const diet = search.restriction;
+            paramString += diet + "&cuisine=&ingredients=";
+        } else {
+            paramString += "&cuisine=&ingredients=";
+        }
+
+        // Add ingredients to API request
         const ingredientArray = search.ingredients.split(",");
         for (let i = 0; i < ingredientArray.length; i++) {
             paramString += ingredientArray[i];
@@ -66,12 +85,20 @@ export class RecipeView extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <Filters/>
-                <h1>Recipe Search Results</h1>
-                <RecipeGrid recipes={this.state.recipeList}/>
-            </div>
-        );
+        if (this.state.apiCallFinished && this.state.recipeList.length === 0) {
+            return (
+                <div>
+                    <h1>No Results Found</h1>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <h1>Recipe Search Results</h1>
+                    <RecipeGrid recipes={this.state.recipeList}/>
+                </div>
+            );
+        }
+
     }
 }

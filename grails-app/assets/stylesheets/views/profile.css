@@ -1,0 +1,84 @@
+/**
+ * profile.css - EmptyMyFridge
+ * Stylesheet for the profile page.
+ */
+
+/**
+ * ======================================================
+ * =================== Signed In CSS ====================
+ * ======================================================
+ */
+
+/* Entire profile component. */
+div#profile {
+    position: relative;
+}
+
+/* User preference area. */
+div#profile aside#pref {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1em;
+}
+
+div#profile aside#pref h2 {
+    margin-top: 0;
+}
+
+div#profile aside#pref h5 {
+    margin: 0.5em 0;
+}
+
+/* Filter dropdown themselves. */
+div#profile select#filterSetting {
+    box-sizing: content-box;
+    padding: 0.5em;
+    margin-right: 1em;
+}
+
+/* Delete account button */
+div#profile button#deleteAccount {
+    color: white;
+    background-color: red;
+
+    border: none;
+    border-radius: 3px;
+
+    font-size: 1em;
+
+    margin: 2em 0em;
+    padding: 0.5em;
+}
+
+div#profile button#deleteAccount:hover {
+    background-color: #bf1401;
+    cursor: pointer;
+}
+
+/**
+ * ======================================================
+ * ================= Not Signed In CSS ==================
+ * ======================================================
+ */
+
+div#profileNoSignIn {
+    background-color: #f4f4f4;
+
+    border-radius: 5px;
+    text-align: center;
+    padding: 3em 0em;
+}
+
+div#profileNoSignIn h1 {
+    font-size: 3em;
+}
+
+div#profileNoSignIn h2 {
+    font-size: 1.5em;
+}
+
+div#profileNoSignIn h3 {
+    color: gray;
+    font-size: 1em;
+}

@@ -11,6 +11,8 @@ import { Header } from './views/Header/index.jsx';
 import { Home } from './views/Home/index.jsx';
 import { Error } from './Error.jsx';
 import { RecipeView } from './views/RecipeResults/index.jsx';
+import { ExploreRecipe } from './views/ExploreRecipes/index.jsx';
+import { Profile } from './views/Profile/index.jsx';
 
 // App component that represent the entire web app
 export class App extends React.Component {
@@ -34,6 +36,8 @@ ReactDOM.render((
         <Route component={App}>
             <Route path="/" component={Home}/>
             <Route path="/recipeSearch" component={RecipeView}/>
+            <Route path="/profile" component={Profile}/>
+            <Route path="/explore" component={ExploreRecipe}/>
             <Route path="*" component={Error}/>
         </Route>
     </Router>
