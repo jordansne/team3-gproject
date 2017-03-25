@@ -5568,16 +5568,24 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
     }
 
     /**
-     * Called to initialize like status of each recipe.
+     * Called to initialize firebase reference
      */
 
 
     _createClass(RecipeGrid, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
+        }
+
+        /**
+         * Called to initialize like status of each recipe.
+         */
+
+    }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(props) {
             var _this2 = this;
-
-            this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
 
             var _loop = function _loop(i) {
                 var currentID = props.recipes[i].identity;

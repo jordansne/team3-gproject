@@ -21,11 +21,16 @@ export class RecipeGrid extends React.Component {
     }
 
     /**
+     * Called to initialize firebase reference
+     */
+    componentDidMount() {
+        this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
+    }
+
+    /**
      * Called to initialize like status of each recipe.
      */
     componentWillReceiveProps(props) {
-        this.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
-
         for (let i = 0; i < props.recipes.length; i++) {
             const currentID = props.recipes[i].identity;
 
