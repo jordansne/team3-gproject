@@ -5580,32 +5580,49 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
             // onAuthStateChanged returns an unregister function
             this.unregisterAuthEvent = firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
-                    _this2.state = {
+                    _this2.setState({
                         currentDetailsID: 0,
                         recipesLikeStatus: {},
                         signedIn: true
-                    };
+                    });
 
                     _this2.firebaseSavedRef = firebase.database().ref('saved/' + firebase.auth().currentUser.uid + '/');
-                    _this2.initializeLikedRecipes(true);
+
+                    // If provided with any recipes immediately in props, initialize liked recipes
+                    if (_this2.props.recipes.length > 0) {
+                        _this2.initializeLikedRecipes(_this2.props);
+                    }
                 } else {
-                    _this2.state = {
+                    _this2.setState({
                         currentDetailsID: 0,
                         recipesLikeStatus: {},
                         signedIn: false
-                    };
-                    _this2.initializeLikedRecipes(false);
+                    });
+
+                    _this2.firebaseSavedRef = null;
+                    _this2.initializeLikedRecipes();
                 }
             });
         }
+
+        /**
+         * Initialize any new recipes that are added to props (i.e. in the case that they are coming from API calls)
+         * @param newProps: The new props object with the new recipe
+         */
+
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(newProps) {
+            this.initializeLikedRecipes(newProps);
+        }
     }, {
         key: 'initializeLikedRecipes',
-        value: function initializeLikedRecipes(signedIn) {
+        value: function initializeLikedRecipes(props) {
             var _this3 = this;
 
-            if (signedIn) {
+            if (this.state.signedIn) {
                 var _loop = function _loop(i) {
-                    var currentID = _this3.props.recipes[i].identity;
+                    var currentID = props.recipes[i].identity;
 
                     // Check if liked already
                     _this3.firebaseSavedRef.once('value').then(function (snapshot) {
@@ -5647,7 +5664,7 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                     });
                 };
 
-                for (var i = 0; i < this.props.recipes.length; i++) {
+                for (var i = 0; i < props.recipes.length; i++) {
                     _loop(i);
                 }
             } else {
@@ -5666,6 +5683,16 @@ var RecipeGrid = exports.RecipeGrid = function (_React$Component) {
                     signedIn: this.state.signedIn
                 });
             }
+        }
+
+        /**
+         * Called to unregister the authentication event listener
+         */
+
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.unregisterAuthEvent();
         }
 
         /**
