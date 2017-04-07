@@ -22,6 +22,52 @@
 
     <section class="main-content">
         <h1>Project Retrospective</h1>
+
+        <h3>Workflow</h3>
+        <p>Throughout the duration of our project, we took </p>
+
+        <h3>Refractor Retrospect</h3>
+            <h4>Areas that were strong</h4>
+            <p>One area of strength in the object-oriented design of our project was the reusability of React components. Some
+            of the components we use in our project are rendered in many places in our app. For example, the RecipeBox and
+            RecipeGrid components are used on the recipe results page, the explore recipes page and the user profile page.
+            These components are used to display recipes in a grid with the recipe name and an image of the recipe.
+            Additionally, the RecipeDetails component was integrated into the the recipe grid. This allowed for the rendering
+            of the details to be handled by the RecipeGrid, and not the page of the app itself, despite it appearing to take up
+            the entirety of the window, not just inside the RecipeGrid component’s area. This was a major function of our
+            application and the ability to reuse these components greatly reduced the amount of work any new pages would
+            require. For making changes or fixing bugs with the grid view, code would only have to editted in one location, as
+            opposed to three different places. Finally, this allowed views of the grid to stay consistent throughout different
+            areas of the app, as the same code would be used.</p>
+
+            <p>Another area of strength in the object-oriented design of the app was the decision to handle the Spoonacular API
+            key on our back end. This was good for security in our application because it meant the API key was not directly
+            accessible by the user, given as the API key is licensed to the provider only (i.e. our team). As well, Spoonacular
+            limits usage of the API requests, so it should not be publicly accessible to prevent abuse or users saving the key
+            to use for own purposes.</p>
+
+            <p>Finally, we felt the implementation of our frontend React structure was effective and conventional in that it
+            can be modified and understood easily to not only our own team members, but to any other React developer that
+            would happen to look at the source code. As well, consistency of programming style and commenting were paid
+            attention to to ensure easy readability. Ensuring the proper design of software both in a readability sense and an
+            implementation sense is important for efficiency, scalability and ease of altering or adding more features in the
+            future.</p>
+
+            <h4>Areas that were weak</h4>
+            <p>One area of the project we felt was weak was only storing recipe ID’s in our database. This meant an API call
+            was required for each of a user’s saved recipes to gather the information about that recipe. In a commercial
+            application, there would be a cost associated with a large number of API calls. Depending on usage rights, storing
+            the full information of a user’s saved recipe in our database would save ourselves the extra calls to the
+            Spoonacular API. With this method we would have to make occasional requests to retrieve information about the
+            recipe, to ensure that any update made to its information is updated in our database as well.</p>
+
+        	<p>While stated above that the reusability of components was taken advantage of when able, we did feel that some
+            code used inside of our components were very similar in terms of general logic. For example, the code on the
+            frontend that prepares and makes an API request to the IngredientController of our backend is used everywhere that
+            makes an API call and each is very similar in terms of structure and data being retrieved. The action of making an
+            API request and retrieving data be factored into its own function and reused in each place it was required to save
+            rewriting similar code and generally reduce the bulk of each individual component.</p>
+
         <hr class="footer">
     </section>
 </body>
