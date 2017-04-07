@@ -24,7 +24,35 @@
         <h1>Project Retrospective</h1>
 
         <h3>Workflow</h3>
-        <p>Throughout the duration of our project, we took </p>
+            <p>Throughout the duration of our project, we took measures to ensure that standard git practices were followed. We
+            decided to use a feature branch model, where if any major feature was to be added (more than one commit), it was to
+            be completed in another branch before being merged into the main development branch. This helped to minimize
+            conflictsthat occurred when many features were being added at once and helped to avoid confusion. When the feature
+            was completed, it was merged in the development branch and any conflicts that arose were dealt with at the same
+            time. As well, when able to, we tried to pull from the server before making any commits on our local branch, to
+            help avoid created conflicts.</p>
+
+            <p>The major tool that was utilized for this project was the Gradle build tool. Gradle helped to simplify the
+            building, testing and deployment process by automating all the needed steps to perform such tasks. Additionally,
+            this allowed our project to more easily manage dependencies, as Gradle would ensure that every dependency was
+            installed and using the latest version whenever building the app. By allowing Gradle to perform dependency
+            management, this meant that dependency files themselves did not have to be included in our git repository, causing
+            the size of the project to be significantly less and avoiding pointless commits regarding changes that occurred to
+            a dependency irrelevant to our own code. Additionally, the IDE used by our team - IntelliJ IDE - assisted us in the
+            usage of git, code refactoring, and manage our project's gradle configuration.</p>
+
+            <p>In term of the actual stack that our app, a Grails backend was used to provide a web server and a RESTful API to
+            our frontend and a React based frontend was used to provide a single-page app experience to our users. The decision
+            to use Grails was decided based on the fact that it provided a good all-in-one package to handle backend tasks, as
+            well as being powerful enough to implement complex features in the future. The decision to use a React based
+            frontend was decided based on the fact that almost all of our app’s HTML elements were dynamic in some way and
+            React provided a simple way to implement a complex user interface with minimal code.</p>
+
+            <p>Our team worked well in managing task distributions. Given the nature of our React frontend (where most of our
+            code resided), assigning specific people to code different components worked well. Once one or more components were
+            developed, typically our group would be together in order to address any questions or concerns with each other when
+            the merge was actually performed. This helped to better our workflow and avoid problems due to uncertainty further
+            into the development process.</p>
 
         <h3>Refractor Retrospect</h3>
             <h4>Areas that were strong</h4>
