@@ -42,7 +42,7 @@
             management, this meant that dependency files themselves did not have to be included in our git repository, causing
             the size of the project to be significantly less and avoiding pointless commits regarding changes that occurred to
             a dependency irrelevant to our own code. Additionally, the IDE used by our team - IntelliJ IDE - assisted us in the
-            usage of git, code refactoring, and manage our project's gradle configuration.</p>
+            usage of git, code refactoring, and manage our project's Gradle configuration.</p>
 
             <p>In term of the actual stack that our app, a Grails backend was used to provide a web server and a RESTful API to
             our frontend and a React based frontend was used to provide a single-page app experience to our users. The decision
@@ -59,9 +59,9 @@
 
         <h3>MVC &amp; Design Patterns</h3>
 
-            <img src="./image/MVCexample.png" style="width: 600px; height auto;"/>
+            <img src="./image/MVCexample.png" style="width: 700px; height auto;"/>
 
-            <h4>What is the relationship between user interfaces, application logic, and data in your project?</h4>
+            <h4>Relationship between user interfaces, application logic, and data</h4>
             <p>In the user interface, a user will begin by logging onto the <i>EmptyMyFridge</i> website through their Google
             account. User authentication is handled in the front-end through Firebase.</p>
 
@@ -81,7 +81,7 @@
 
             <p>The communication between the back-end and the front-end is done using a REST API.</p>
 
-            <h4>Which collection of classes serve as the M, V, and C in MVC?</h4>
+            <h4>Distribution of MVC code</h4>
             <h4>View</h4>
             Index files in the front-end views handle information that was passed from the user and use it to make a
             call to the back-end for recipe information. When the JSON objects containing the recipes return from the back-end,
@@ -105,8 +105,7 @@
             <p>The model of this project is the Recipe domain class. This class creates an object with the sole purpose of
             immediately casting them into JSON objects for the front-end to use.</p>
 
-            <h4>If you were to start the project again today, what aspects of code organization could be improved in your
-            project?</h4>
+            <h4>Aspects of code organization that could been improved on if the project was re-developed</h4>
 
             <p>If we could legally store the information retrieved from Spoonacular, we would be interested in developing our
             own database in the back-end which could store the Recipe objects directly. When a user likes a recipe, the recipe
