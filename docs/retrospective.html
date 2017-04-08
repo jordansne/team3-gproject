@@ -57,6 +57,68 @@
             the merge was actually performed. This helped to better our workflow and avoid problems due to uncertainty further
             into the development process.</p>
 
+        <h3>MVC &amp; Design Patterns</h3>
+
+            <h4>What is the relationship between user interfaces, application logic, and data in your project?</h4>
+            <p>In the user interface, a user will begin by logging onto the <i>EmptyMyFridge</i> website through their Google
+            account. User authentication is handled in the front-end through Firebase.</p>
+
+            <p>When a user begins a new search, a list of ingredients and dietary preferences is passed as a string from the
+            front-end of the program to the back-end. In the back-end, a request is made to the Spoonacular API. Information in
+            the back-end is parsed and formatted to be returned to the front-end so the user may see the results.</p>
+
+            <p>After viewing his/her results, a user may choose to “like” a recipe, which will save the recipe details to their
+            account page. This is done by using Firebase to store the recipeID associated with each recipe returned by
+            Spoonacular. Each time a user returns to his/her account page, the recipes he/she liked will be visible. This is
+            done by retrieving the recipeIDs associated with that user though Firebase and passing them to the back-end. The
+            Spoonacular API uses the recipeID to return the recipe details to the front-end.</p>
+
+            <p>If a user wishes to browse recipes are popular, an explore page allows the user to see 20 trending recipes. The
+            front-end makes a call of a back-end function which calls Spoonacular to return the appropriate recipes. As before,
+            the return information is parsed and formatted in the back-end and returned to the front-end.</p>
+
+            <p>The communication between the back-end and the front-end is done using a REST API.</p>
+
+            <h4>Which collection of classes serve as the M, V, and C in MVC?</h4>
+            <h4>View</h4>
+            Index files in the front-end views handle information that was passed from the user and use it to make a
+            call to the back-end for recipe information. When the JSON objects containing the recipes return from the back-end,
+            they are processed in the front-end to build the appropriate view.</p>
+
+            <p>This is done by storing the information in the JSON objects into arrays. When components are to be rendered in a
+            view, the array is passed to that view and the components handle the individual items of each JSON object in the
+            array.</p>
+
+            <h4>Controller</h4>
+            The controller class of the project is the Ingredient Controller in the back-end. This class makes all the
+            Spoonacular calls required for the project.</p>
+
+            <p>When a request is made by the front-end through the REST API, a subsequent call is made to Spoonacular by taking
+            the parameters passed and incorporating them into a specially formatted string. This new string is then passed to
+            Spoonacular.</p>
+
+            <p>Since Spoonacular returns JSON nodes of different structures, there exists classes in the controller specifically designed to parse and format the information to build an object of type Recipe</p>
+
+            <h4>Model</h4>
+            <p>The model of this project is the Recipe domain class. This class creates an object with the sole purpose of
+            immediately casting them into JSON objects for the front-end to use.</p>
+
+            <h4>If you were to start the project again today, what aspects of code organization could be improved in your
+            project?</h4>
+
+            <p>If we could legally store the information retrieved from Spoonacular, we would be interested in developing our
+            own database in the back-end which could store the Recipe objects directly. When a user likes a recipe, the recipe
+            object can be directly associated with the users account, rather than saving only the recipeID. This would reduce
+            the number of API calls we would need to make (which, outside of a school setting, each call costs money).</p>
+
+            <p>Developing our own database would also allow us to no longer rely on Firebase for user authentication (though we
+            like being able to log in through a google account and feel it is still relevant even if we had our own
+            database).</p>
+
+            <p>Building our own database would also allow us to develop our own system of recipe suggesting. This could be done
+            by considering which recipes a person likes, what meal types they are, what diet restrictions are imposed, etc. The
+            current system only returns popular recipes of any type.</p>
+
         <h3>Refractor Retrospect</h3>
             <h4>Areas that were strong</h4>
             <p>One area of strength in the object-oriented design of our project was the reusability of React components. Some
