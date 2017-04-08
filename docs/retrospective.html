@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8">
+    <title>Team 3 Project Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <section class="page-header">
+        <h1 class="project-name">Team 3's Software Project</h1>
+
+        <a href="index.html" class="btn">Home</a>
+        <a href="retrospective.html" class="btn">Project Retrospective</a>
+        <a href="plan.html" class="btn">Project Plan</a>
+        <a href="team.html" class="btn">Team Roster</a>
+        <a href="software-design.html" class="btn">Software Design</a>
+        <a href="ui-design.html" class="btn">UI Design</a>
+    </section>
+
+    <section class="main-content">
+        <h1>Project Retrospective</h1>
+        <h3>Video Demo</h3>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/NvTMpJkO2PM" frameborder="0" allowfullscreen>
+        </iframe>
+
+        <h3>Workflow</h3>
+            <p>Throughout the duration of our project, we took measures to ensure that standard git practices were followed. We
+            decided to use a feature branch model, where if any major feature was to be added (more than one commit), it was to
+            be completed in another branch before being merged into the main development branch. This helped to minimize
+            conflictsthat occurred when many features were being added at once and helped to avoid confusion. When the feature
+            was completed, it was merged in the development branch and any conflicts that arose were dealt with at the same
+            time. As well, when able to, we tried to pull from the server before making any commits on our local branch, to
+            help avoid created conflicts.</p>
+
+            <p>The major tool that was utilized for this project was the Gradle build tool. Gradle helped to simplify the
+            building, testing and deployment process by automating all the needed steps to perform such tasks. Additionally,
+            this allowed our project to more easily manage dependencies, as Gradle would ensure that every dependency was
+            installed and using the latest version whenever building the app. By allowing Gradle to perform dependency
+            management, this meant that dependency files themselves did not have to be included in our git repository, causing
+            the size of the project to be significantly less and avoiding pointless commits regarding changes that occurred to
+            a dependency irrelevant to our own code. Additionally, the IDE used by our team - IntelliJ IDE - assisted us in the
+            usage of git, code refactoring, and manage our project's Gradle configuration.</p>
+
+            <p>In term of the actual stack that our app, a Grails backend was used to provide a web server and a RESTful API to
+            our frontend and a React based frontend was used to provide a single-page app experience to our users. The decision
+            to use Grails was decided based on the fact that it provided a good all-in-one package to handle backend tasks, as
+            well as being powerful enough to implement complex features in the future. The decision to use a React based
+            frontend was decided based on the fact that almost all of our app’s HTML elements were dynamic in some way and
+            React provided a simple way to implement a complex user interface with minimal code.</p>
+
+            <p>Our team worked well in managing task distributions. Given the nature of our React frontend (where most of our
+            code resided), assigning specific people to code different components worked well. Once one or more components were
+            developed, typically our group would be together in order to address any questions or concerns with each other when
+            the merge was actually performed. This helped to better our workflow and avoid problems due to uncertainty further
+            into the development process.</p>
+
+        <h3>MVC &amp; Design Patterns</h3>
+
+            <img src="./image/MVCexample.png" style="width: 700px; height auto;"/>
+
+            <h4>Relationship between user interfaces, application logic, and data</h4>
+            <p>In the user interface, a user will begin by logging onto the <i>EmptyMyFridge</i> website through their Google
+            account. User authentication is handled in the front-end through Firebase.</p>
+
+            <p>When a user begins a new search, a list of ingredients and dietary preferences is passed as a string from the
+            front-end of the program to the back-end. In the back-end, a request is made to the Spoonacular API. Information in
+            the back-end is parsed and formatted to be returned to the front-end so the user may see the results.</p>
+
+            <p>After viewing his/her results, a user may choose to “like” a recipe, which will save the recipe details to their
+            account page. This is done by using Firebase to store the recipeID associated with each recipe returned by
+            Spoonacular. Each time a user returns to his/her account page, the recipes he/she liked will be visible. This is
+            done by retrieving the recipeIDs associated with that user though Firebase and passing them to the back-end. The
+            Spoonacular API uses the recipeID to return the recipe details to the front-end.</p>
+
+            <p>If a user wishes to browse recipes are popular, an explore page allows the user to see 20 trending recipes. The
+            front-end makes a call of a back-end function which calls Spoonacular to return the appropriate recipes. As before,
+            the return information is parsed and formatted in the back-end and returned to the front-end.</p>
+
+            <p>The communication between the back-end and the front-end is done using a REST API.</p>
+
+            <h4>Distribution of MVC code</h4>
+            <h4>View</h4>
+            Index files in the front-end views handle information that was passed from the user and use it to make a
+            call to the back-end for recipe information. When the JSON objects containing the recipes return from the back-end,
+            they are processed in the front-end to build the appropriate view.</p>
+
+            <p>This is done by storing the information in the JSON objects into arrays. When components are to be rendered in a
+            view, the array is passed to that view and the components handle the individual items of each JSON object in the
+            array.</p>
+
+            <h4>Controller</h4>
+            The controller class of the project is the Ingredient Controller in the back-end. This class makes all the
+            Spoonacular calls required for the project.</p>
+
+            <p>When a request is made by the front-end through the REST API, a subsequent call is made to Spoonacular by taking
+            the parameters passed and incorporating them into a specially formatted string. This new string is then passed to
+            Spoonacular.</p>
+
+            <p>Since Spoonacular returns JSON nodes of different structures, there exists classes in the controller specifically designed to parse and format the information to build an object of type Recipe</p>
+
+            <h4>Model</h4>
+            <p>The model of this project is the Recipe domain class. This class creates an object with the sole purpose of
+            immediately casting them into JSON objects for the front-end to use.</p>
+
+            <h4>Aspects of code organization that could been improved on if the project was re-developed</h4>
+
+            <p>If we could legally store the information retrieved from Spoonacular, we would be interested in developing our
+            own database in the back-end which could store the Recipe objects directly. When a user likes a recipe, the recipe
+            object can be directly associated with the users account, rather than saving only the recipeID. This would reduce
+            the number of API calls we would need to make (which, outside of a school setting, each call costs money).</p>
+
+            <p>Developing our own database would also allow us to no longer rely on Firebase for user authentication (though we
+            like being able to log in through a google account and feel it is still relevant even if we had our own
+            database).</p>
+
+            <p>Building our own database would also allow us to develop our own system of recipe suggesting. This could be done
+            by considering which recipes a person likes, what meal types they are, what diet restrictions are imposed, etc. The
+            current system only returns popular recipes of any type.</p>
+
+        <h3>Refractor Retrospective</h3>
+            <h4>Areas that were strong</h4>
+            <p>One area of strength in the object-oriented design of our project was the reusability of React components. Some
+            of the components we use in our project are rendered in many places in our app. For example, the RecipeBox and
+            RecipeGrid components are used on the recipe results page, the explore recipes page and the user profile page.
+            These components are used to display recipes in a grid with the recipe name and an image of the recipe.
+            Additionally, the RecipeDetails component was integrated into the the recipe grid. This allowed for the rendering
+            of the details to be handled by the RecipeGrid, and not the page of the app itself, despite it appearing to take up
+            the entirety of the window, not just inside the RecipeGrid component’s area. This was a major function of our
+            application and the ability to reuse these components greatly reduced the amount of work any new pages would
+            require. For making changes or fixing bugs with the grid view, code would only have to editted in one location, as
+            opposed to three different places. Finally, this allowed views of the grid to stay consistent throughout different
+            areas of the app, as the same code would be used.</p>
+
+            <p>Another area of strength in the object-oriented design of the app was the decision to handle the Spoonacular API
+            key on our back end. This was good for security in our application because it meant the API key was not directly
+            accessible by the user, given as the API key is licensed to the provider only (i.e. our team). As well, Spoonacular
+            limits usage of the API requests, so it should not be publicly accessible to prevent abuse or users saving the key
+            to use for own purposes.</p>
+
+            <p>Finally, we felt the implementation of our frontend React structure was effective and conventional in that it
+            can be modified and understood easily to not only our own team members, but to any other React developer that
+            would happen to look at the source code. As well, consistency of programming style and commenting were paid
+            attention to to ensure easy readability. Ensuring the proper design of software both in a readability sense and an
+            implementation sense is important for efficiency, scalability and ease of altering or adding more features in the
+            future.</p>
+
+            <h4>Areas that were weak</h4>
+            <p>One area of the project we felt was weak was only storing recipe ID’s in our database. This meant an API call
+            was required for each of a user’s saved recipes to gather the information about that recipe. In a commercial
+            application, there would be a cost associated with a large number of API calls. Depending on usage rights, storing
+            the full information of a user’s saved recipe in our database would save ourselves the extra calls to the
+            Spoonacular API. With this method we would have to make occasional requests to retrieve information about the
+            recipe, to ensure that any update made to its information is updated in our database as well.</p>
+
+        	<p>While stated above that the reusability of components was taken advantage of when able, we did feel that some
+            code used inside of our components were very similar in terms of general logic. For example, the code on the
+            frontend that prepares and makes an API request to the IngredientController of our backend is used everywhere that
+            makes an API call and each is very similar in terms of structure and data being retrieved. The action of making an
+            API request and retrieving data be factored into its own function and reused in each place it was required to save
+            rewriting similar code and generally reduce the bulk of each individual component.</p>
+
+        <h3>Project Retrospective</h3>
+
+            <p>The overall group experience on this project seemed to be a positive learning one. Starting at Stage 1, the team
+            had established a group culture where members were open to share their ideas and discuss others’ ideas which led
+            the group to their recipe search application. Stage 1 went extremely well since the group accomplished to create a
+            clear and concise plan for the front and back end of the project. Based on the foundation of well planning, team 3
+            managed to stay efficient in decision making throughout all the stages and not waste time on changing so many ideas
+            since they tried really hard to stick with the initial plan. Despite a difficult learning curve with Grails, React
+            and the Spoonacular API, members were able to step up and meet the user role requirements for Stage 2 which only
+            helped them stay on track in Stage 3. Members were able to complete everything by the deadline and many stepped up
+            by helping extra for the sake of the group and not just an individual mark. Meetings also, were very efficient and
+            most of the time ended with the knowledge of the next step in the project plan. The group very much enjoyed the
+            choice to project manage through slack and google docs. Since this was a learning experience for everyone, many
+            members were willing to help and teach other group members to keep everyone involved and part of the process.
+            Overall the group is happy that they managed to reach the goal of creating a very API dependant application with a
+            solid user interface.</p>
+
+            <p>The group project was an overall positive experience, however there were some areas in project management that
+            could have improved the entire process. Sometimes, meetings were unnecessary because there was not a clear plan of
+            what needs to be covered and thus goals for the current stage were not always known. Along with this, members were
+            not always aware of their roles which could have been clearer if there was project manager/organizer role in the
+            project. Someone in a project managing role would have been able to organize and keep track of user tasks, roles
+            and other goals throughout every stage and not just rely on google docs. The group could have also set group
+            deadlines prior to the real stage deadlines for certain parts of the project which would have certainly avoided
+            deadline panic. The group was strong enough to meet deadlines but the panic could have been avoided.</p>
+
+            <p>The team dealt with Grails, firebase, and React throughout the project. What members liked about Grails, was how
+            MVC was enforced, allowing them to stick to good design principles throughout the project. Another favourite with
+            Grails was how it was able to do automatic conversion of domain class objects in JSON objects simply by using one
+            of it’s many useful methods. Firebase, which was used for the database and authentication, was also a favourite
+            since it had a simple API available in numerous languages and very clear documentation on its website. Firebase
+            also had easy to write security rules for the data storage and made it very easy to deal with JSON.  Using React,
+            once fully understood, was intuitive and help made developing UIs, that would be complex to implement, simpler.
+            With React, it is easy to write and implement components and based on the way React works, many components were
+            reusable in the project making the experience with it more favourable. A few downsides would include the intense
+            learning curve required to use React and JavaScript since at this point, most students didn’t have a background in
+            front end web development. Another difficulty with JavaScript and React was that it was harder to debug. Once you
+            pass the learning curve with these frameworks, they were overall a good experience to use.</p>
+
+        <hr class="footer">
+    </section>
+</body>
+</html>

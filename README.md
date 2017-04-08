@@ -42,7 +42,7 @@ $ gradlew build
 
 After completing the build, you can run the app by running the bootRun task via Gradle:
 ```
-gradle bootRun
+$ gradle bootRun
 ```
 
 or if you're using Gradle Wrapper:
